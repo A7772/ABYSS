@@ -4,9 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
     <title>ABYSS SOCIETY — EST. 2026</title>
-
     <style>
-        /* ── RESET Y ESTILOS GLOBALES ── */
         * {
             margin: 0;
             padding: 0;
@@ -23,112 +21,23 @@
             --gr: #2ecc71;
             --rd: #c0392b;
             --nav-h: 64px;
-            --font-display: 'Impact', 'Arial Narrow', Arial, sans-serif;
-            --font-mono: 'Courier New', Courier, monospace;
-            --font-serif: Georgia, 'Times New Roman', serif;
         }
         html,
         body {
             background: var(--k);
             color: var(--w);
-            font-family: var(--font-mono);
-            overflow-x: hidden;
-            overflow-y: auto;
-            width: 100%;
-            min-height: 100%;
-            -webkit-font-smoothing: antialiased;
-        }
-        @media(pointer:fine) {
-            body {
-                cursor: none;
-            }
-        }
-
-        /* ── CURSOR ── */
-        #cur {
-            position: fixed;
-            width: 18px;
-            height: 18px;
-            border: 1.5px solid rgba(26, 79, 191, 0.5);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, border-color 0.3s, opacity 0.3s;
-            opacity: 0;
-            backdrop-filter: blur(2px);
-            -webkit-backdrop-filter: blur(2px);
-        }
-        .trail {
-            position: fixed;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9998;
-            background: rgba(26, 79, 191, 0.15);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        body:has(a:hover, button:hover, [onclick]:hover) #cur {
-            width: 28px;
-            height: 28px;
-            border-color: rgba(26, 79, 191, 0.8);
-        }
-
-        /* ── VEIL (pantalla de carga) ── */
-        #veil {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--k);
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            gap: 12px;
-            transition: opacity 0.7s ease;
-        }
-        #veil-logo {
-            font-family: var(--font-display);
-            font-size: clamp(48px, 12vw, 120px);
-            letter-spacing: 0.14em;
-            animation: glitch 0.07s infinite alternate;
-        }
-        @keyframes glitch {
-            0% {
-                text-shadow: 2px 0 var(--c), -2px 0 var(--rd);
-            }
-            100% {
-                text-shadow: -2px 0 var(--c), 2px 0 var(--rd);
-            }
-        }
-        #veil-sub {
-            font-size: clamp(8px, 1.2vw, 11px);
-            letter-spacing: 0.55em;
-            color: var(--c);
-            text-transform: uppercase;
-        }
-        #veil-pct {
-            font-size: 7px;
-            letter-spacing: 0.3em;
-            color: var(--g);
-        }
-        #veil-bar {
-            width: clamp(140px, 30vw, 240px);
-            height: 1px;
-            background: #1a1a1a;
+            font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
-            margin-top: 10px;
-        }
-        #veil-fill {
+            width: 100%;
             height: 100%;
-            background: var(--c);
-            width: 0%;
+        }
+        a,
+        button,
+        [onclick] {
+            cursor: pointer;
         }
 
-        /* ── NAV ── */
+        /* NAV */
         #nav {
             position: fixed;
             top: 0;
@@ -143,10 +52,9 @@
             background: rgba(6, 6, 8, 0.96);
             border-bottom: 1px solid var(--bd);
             backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
         }
         .nav-logo {
-            font-family: var(--font-display);
+            font-family: 'Impact', 'Arial Narrow', Arial, sans-serif;
             font-size: 18px;
             letter-spacing: 0.26em;
             color: var(--w);
@@ -162,7 +70,7 @@
             color: var(--c);
             display: block;
             margin-top: -2px;
-            font-family: var(--font-mono);
+            font-family: 'Courier New', Courier, monospace;
         }
         #nav-links {
             display: flex;
@@ -202,7 +110,7 @@
             padding: 6px 10px;
             background: transparent;
             border: none;
-            font-family: var(--font-mono);
+            font-family: 'Courier New', Courier, monospace;
             transition: all 0.16s;
         }
         .lb.on {
@@ -265,7 +173,7 @@
             color: var(--k);
         }
 
-        /* ── PROGRESS ── */
+        /* PROGRESS */
         #prog {
             position: fixed;
             right: 14px;
@@ -289,7 +197,7 @@
             transform: scale(2.2);
         }
 
-        /* ── SECCIONES (la clave del scroll) ── */
+        /* SCENES */
         .sc {
             position: fixed !important;
             top: var(--nav-h);
@@ -305,9 +213,7 @@
             pointer-events: none;
             transition: opacity 0.6s ease;
             overflow-y: auto;
-            overflow-x: hidden;
             padding: 20px 20px 60px;
-            -webkit-overflow-scrolling: touch;
         }
         .sc.on {
             opacity: 1;
@@ -318,19 +224,8 @@
             padding: 0;
             overflow: hidden;
         }
-        @media (max-width: 768px) {
-            .sc {
-                padding: 10px 10px 50px;
-                align-items: flex-start;
-                justify-content: flex-start;
-            }
-            #s0 {
-                padding: 0;
-                justify-content: center;
-            }
-        }
 
-        /* ── S0: HERO ── */
+        /* S0 HERO */
         #s0 {
             overflow: hidden;
             z-index: 11;
@@ -359,12 +254,11 @@
             opacity: 1;
         }
         .slide-content {
-            font-family: var(--font-display);
+            font-family: 'Impact', 'Arial Narrow', Arial, sans-serif;
             font-size: clamp(48px, 10vw, 120px);
             color: rgba(255, 255, 255, 0.06);
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            user-select: none;
             text-align: center;
         }
         .slide-content small {
@@ -373,10 +267,7 @@
             letter-spacing: 0.5em;
             color: rgba(255, 255, 255, 0.03);
         }
-
-        /* Botones fijos */
-        .sl-arr,
-        .pv-arr {
+        .sl-arr {
             position: fixed;
             top: 50%;
             transform: translateY(-50%);
@@ -393,24 +284,17 @@
             font-size: 20px;
             background: rgba(6, 6, 8, 0.3);
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            box-shadow: 0 0 16px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
         }
-        .sl-arr:hover,
-        .pv-arr:hover {
+        .sl-arr:hover {
             border-color: rgba(26, 79, 191, 0.7);
-            color: rgba(255, 255, 255, 0.95);
+            color: #fff;
             background: rgba(26, 79, 191, 0.2);
-            box-shadow: 0 0 30px rgba(26, 79, 191, 0.3);
-            transform: translateY(-50%) scale(1.06);
         }
-        #sl-prev,
-        #pva-p {
+        #sl-prev {
             left: 20px;
         }
-        #sl-next,
-        #pva-n {
+        #sl-next {
             right: 20px;
         }
         #sl-dots {
@@ -453,7 +337,7 @@
             pointer-events: none;
         }
         .h-title {
-            font-family: var(--font-display);
+            font-family: 'Impact', 'Arial Narrow', Arial, sans-serif;
             font-size: clamp(48px, 14vw, 195px);
             letter-spacing: 0.06em;
             line-height: 0.87;
@@ -474,25 +358,13 @@
             color: var(--c);
             text-transform: uppercase;
             margin-top: 14px;
-            animation: fup 1.8s 0.4s both;
         }
         .h-tag {
-            font-family: var(--font-serif);
+            font-family: Georgia, 'Times New Roman', serif;
             font-style: italic;
             font-size: clamp(14px, 1.5vw, 18px);
             color: rgba(240, 240, 240, 0.28);
             margin-top: 22px;
-            animation: fup 1.8s 0.9s both;
-        }
-        @keyframes fup {
-            from {
-                opacity: 0;
-                transform: translateY(12px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
         .h-enter {
             margin-top: 42px;
@@ -507,7 +379,6 @@
             padding: 12px 24px;
             transition: all 0.22s;
             background: transparent;
-            animation: fup 1.8s 1.3s both;
         }
         .h-enter:hover {
             background: var(--c);
@@ -556,7 +427,7 @@
             }
         }
 
-        /* ── S1: COLLECTION ── */
+        /* S1 COLLECTION */
         #s1 {
             flex-direction: column;
             overflow: hidden;
@@ -576,7 +447,7 @@
             gap: 8px;
         }
         .col-ttl {
-            font-family: var(--font-display);
+            font-family: 'Impact', 'Arial Narrow', Arial, sans-serif;
             font-size: clamp(26px, 3.5vw, 42px);
             letter-spacing: 0.1em;
         }
@@ -609,11 +480,10 @@
             transition: all 0.18s;
             background: transparent;
         }
-        .ftab:hover,
         .ftab.on {
             border-color: var(--c);
             color: var(--w);
-            background: var(--ca);
+            background: rgba(26, 79, 191, 0.13);
         }
         .rail {
             position: absolute;
@@ -686,7 +556,6 @@
             width: 74%;
             transition: transform 0.34s ease;
             max-height: 100%;
-            object-fit: contain;
         }
         .mc:hover .mv svg {
             transform: scale(1.04);
@@ -707,13 +576,12 @@
             transition: opacity 0.3s ease;
             pointer-events: none;
             backdrop-filter: blur(3px);
-            -webkit-backdrop-filter: blur(3px);
         }
         .mc:hover .mc-overlay {
             opacity: 1;
         }
         .mc-overlay span {
-            font-family: var(--font-display);
+            font-family: 'Impact', 'Arial Narrow', Arial, sans-serif;
             font-size: clamp(16px, 2vw, 24px);
             letter-spacing: 0.1em;
             color: var(--w);
@@ -732,7 +600,7 @@
             border-top: 1px solid var(--bd);
         }
         .mn {
-            font-family: var(--font-display);
+            font-family: 'Impact', 'Arial Narrow', Arial, sans-serif;
             font-size: 15px;
             letter-spacing: 0.1em;
             margin-bottom: 2px;
@@ -750,7 +618,7 @@
         }
         .mp {
             font-size: 14px;
-            font-family: var(--font-display);
+            font-family: 'Impact', 'Arial Narrow', Arial, sans-serif;
             letter-spacing: 0.08em;
         }
         .mst {
@@ -795,7 +663,7 @@
             color: var(--w);
         }
 
-        /* ── S2: HOODS ── */
+        /* S2 HOODS */
         #s2 {
             flex-direction: column;
             min-height: 100vh;
@@ -810,7 +678,7 @@
             text-align: center;
         }
         .w-title {
-            font-family: var(--font-display);
+            font-family: 'Impact', 'Arial Narrow', Arial, sans-serif;
             font-size: clamp(13px, 2.2vw, 20px);
             letter-spacing: 0.5em;
             color: var(--g);
@@ -835,7 +703,7 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            transition: border-color 0.36s, flex 0.44s;
+            transition: border-color 0.36s;
             min-height: 300px;
             display: flex;
             flex-direction: column;
@@ -843,7 +711,6 @@
         }
         .wc:hover {
             border-color: var(--c);
-            flex: 2;
         }
         .wc::before {
             content: '';
@@ -874,7 +741,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: var(--font-display);
+            font-family: 'Impact', 'Arial Narrow', Arial, sans-serif;
             font-size: 190px;
             color: rgba(255, 255, 255, 0.015);
             z-index: 0;
@@ -899,13 +766,13 @@
             margin-bottom: 8px;
         }
         .wname {
-            font-family: var(--font-display);
+            font-family: 'Impact', 'Arial Narrow', Arial, sans-serif;
             font-size: 40px;
             letter-spacing: 0.12em;
             margin-bottom: 4px;
         }
         .wdesc {
-            font-family: var(--font-serif);
+            font-family: Georgia, 'Times New Roman', serif;
             font-style: italic;
             font-size: 12px;
             color: var(--g);
@@ -919,7 +786,7 @@
             color: rgba(240, 240, 240, 0.48);
         }
 
-        /* ── S3: DROP ── */
+        /* S3 DROP */
         #s3 {
             flex-direction: column;
             min-height: 100vh;
@@ -951,7 +818,7 @@
         }
         .drop-intro-content {
             text-align: center;
-            font-family: var(--font-display);
+            font-family: 'Impact', 'Arial Narrow', Arial, sans-serif;
         }
         .drop-intro-content .big {
             font-size: clamp(48px, 10vw, 140px);
@@ -987,14 +854,14 @@
             text-align: center;
         }
         .d-ttl {
-            font-family: var(--font-display);
+            font-family: 'Impact', 'Arial Narrow', Arial, sans-serif;
             font-size: clamp(44px, 7.5vw, 92px);
             letter-spacing: 0.08em;
             margin-bottom: 6px;
             text-align: center;
         }
         .d-sub {
-            font-family: var(--font-serif);
+            font-family: Georgia, 'Times New Roman', serif;
             font-style: italic;
             color: var(--g);
             font-size: 14px;
@@ -1034,13 +901,12 @@
             width: 75%;
             transition: transform 0.28s;
             max-height: 100%;
-            object-fit: contain;
         }
         .dc:hover .dv2 svg {
             transform: scale(1.03);
         }
         .dn2 {
-            font-family: var(--font-display);
+            font-family: 'Impact', 'Arial Narrow', Arial, sans-serif;
             font-size: 14px;
             letter-spacing: 0.1em;
             margin-bottom: 2px;
@@ -1086,7 +952,7 @@
             color: var(--k);
         }
 
-        /* ── S4: MANIFESTO ── */
+        /* S4 MANIFESTO */
         #s4 {
             flex-direction: column;
             text-align: center;
@@ -1094,7 +960,7 @@
             min-height: 100vh;
         }
         .man-t {
-            font-family: var(--font-serif);
+            font-family: Georgia, 'Times New Roman', serif;
             font-style: italic;
             font-size: clamp(15px, 2.2vw, 24px);
             line-height: 1.92;
@@ -1114,7 +980,7 @@
             text-transform: uppercase;
         }
 
-        /* ── S5: FAQ ── */
+        /* S5 FAQ */
         #s5 {
             flex-direction: column;
             padding: var(--nav-h) 7vw 60px;
@@ -1130,7 +996,7 @@
             margin-bottom: 8px;
         }
         .faq-ttl {
-            font-family: var(--font-display);
+            font-family: 'Impact', 'Arial Narrow', Arial, sans-serif;
             font-size: clamp(30px, 5vw, 58px);
             letter-spacing: 0.08em;
             margin-bottom: 24px;
@@ -1198,7 +1064,7 @@
             padding: 0 18px 14px;
         }
 
-        /* ── S6: CONTACT / FOOTER ── */
+        /* S6 CONTACT */
         #s6 {
             flex-direction: column;
             justify-content: flex-start;
@@ -1231,7 +1097,7 @@
             margin-bottom: 6px;
         }
         .ftb-ttl {
-            font-family: var(--font-display);
+            font-family: 'Impact', 'Arial Narrow', Arial, sans-serif;
             font-size: 20px;
             letter-spacing: 0.1em;
             margin-bottom: 10px;
@@ -1276,7 +1142,7 @@
         }
         .soc:hover {
             border-color: var(--c);
-            background: var(--ca);
+            background: rgba(26, 79, 191, 0.13);
         }
         .soc-ico {
             font-size: 14px;
@@ -1297,1903 +1163,4 @@
             margin-left: auto;
         }
         .ft-strip {
-            background: var(--k);
-            border-top: 1px solid var(--bd);
-            padding: 14px 7vw;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .ft-copy {
-            font-size: 7px;
-            letter-spacing: 0.16em;
-            color: var(--g);
-            text-transform: uppercase;
-        }
-        .ft-lnks {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-        .ft-lnks a {
-            font-size: 7px;
-            letter-spacing: 0.14em;
-            color: var(--g);
-            text-decoration: none;
-            cursor: pointer;
-            transition: color 0.14s;
-        }
-        .ft-lnks a:hover {
-            color: var(--c);
-        }
-        .ft-num {
-            font-size: 7px;
-            letter-spacing: 0.16em;
-            color: var(--c);
-        }
-
-        /* ── TOAST ── */
-        #toast {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%) translateY(56px);
-            background: var(--c);
-            color: var(--k);
-            font-size: 8px;
-            letter-spacing: 0.26em;
-            text-transform: uppercase;
-            padding: 10px 18px;
-            z-index: 1000;
-            opacity: 0;
-            transition: all 0.28s;
-            white-space: nowrap;
-        }
-        #toast.on {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-
-        /* ── PERFIL ── */
-        #profile-scene {
-            display: none;
-            flex-direction: column;
-            padding: var(--nav-h) 20px 60px;
-            min-height: 100vh;
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        #profile-scene.on {
-            display: flex;
-        }
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-        .profile-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: var(--c);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            color: var(--k);
-            border: 2px solid var(--bd);
-            flex-shrink: 0;
-        }
-        .profile-name {
-            font-family: var(--font-display);
-            font-size: 32px;
-            letter-spacing: 0.08em;
-        }
-        .profile-email {
-            font-size: 9px;
-            color: var(--g);
-            letter-spacing: 0.1em;
-        }
-        .profile-stats {
-            display: flex;
-            gap: 24px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-        .profile-stat {
-            background: var(--s);
-            border: 1px solid var(--bd);
-            padding: 14px 20px;
-            flex: 1;
-            min-width: 100px;
-            text-align: center;
-        }
-        .profile-stat .num {
-            font-family: var(--font-display);
-            font-size: 24px;
-            display: block;
-        }
-        .profile-stat .label {
-            font-size: 7px;
-            letter-spacing: 0.2em;
-            color: var(--g);
-            text-transform: uppercase;
-        }
-        .profile-section-title {
-            font-family: var(--font-display);
-            font-size: 18px;
-            letter-spacing: 0.1em;
-            margin: 20px 0 12px;
-            border-bottom: 1px solid var(--bd);
-            padding-bottom: 8px;
-        }
-        .profile-order {
-            background: var(--s);
-            border: 1px solid var(--bd);
-            padding: 14px 18px;
-            margin-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .profile-order .id {
-            font-size: 10px;
-            letter-spacing: 0.05em;
-        }
-        .profile-order .date {
-            font-size: 8px;
-            color: var(--g);
-        }
-        .profile-order .status {
-            font-size: 7px;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--gr);
-            border: 1px solid var(--gr);
-            padding: 2px 8px;
-        }
-        .profile-order .status.shipped {
-            color: var(--c);
-            border-color: var(--c);
-        }
-        .profile-order .status.delivered {
-            color: var(--gr);
-            border-color: var(--gr);
-        }
-        .profile-fav-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 10px;
-            margin-top: 8px;
-        }
-        .profile-fav-item {
-            background: var(--s);
-            border: 1px solid var(--bd);
-            padding: 12px;
-            text-align: center;
-            transition: border-color 0.2s;
-            cursor: pointer;
-        }
-        .profile-fav-item:hover {
-            border-color: var(--c);
-        }
-        .profile-fav-item .name {
-            font-family: var(--font-display);
-            font-size: 12px;
-            letter-spacing: 0.06em;
-            margin-top: 4px;
-        }
-        .profile-fav-item .price {
-            font-size: 9px;
-            color: var(--g);
-        }
-        .profile-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 16px;
-        }
-        .profile-actions button {
-            padding: 10px 20px;
-            background: transparent;
-            border: 1px solid var(--bd);
-            color: var(--g);
-            font-size: 7px;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.16s;
-            font-family: var(--font-mono);
-        }
-        .profile-actions button:hover {
-            border-color: var(--c);
-            color: var(--w);
-            background: var(--ca);
-        }
-        .profile-actions button.danger:hover {
-            border-color: var(--rd);
-            color: var(--rd);
-            background: rgba(192, 57, 43, 0.1);
-        }
-
-        /* ── CART ── */
-        #cart-dr {
-            position: fixed;
-            top: var(--nav-h);
-            right: 0;
-            bottom: 0;
-            width: 350px;
-            z-index: 450;
-            background: var(--s);
-            border-left: 1px solid var(--bd);
-            transform: translateX(100%);
-            transition: transform 0.34s ease;
-            display: flex;
-            flex-direction: column;
-        }
-        #cart-dr.on {
-            transform: translateX(0);
-        }
-        .dr-hdr {
-            padding: 14px 20px;
-            border-bottom: 1px solid var(--bd);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-shrink: 0;
-        }
-        .dr-title {
-            font-family: var(--font-display);
-            font-size: 20px;
-            letter-spacing: 0.1em;
-        }
-        .dr-cls {
-            font-size: 7px;
-            letter-spacing: 0.26em;
-            color: var(--g);
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: color 0.16s;
-            background: transparent;
-            border: none;
-        }
-        .dr-cls:hover {
-            color: var(--w);
-        }
-        .dr-items {
-            flex: 1;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: var(--bd) transparent;
-        }
-        .dr-items::-webkit-scrollbar {
-            width: 2px;
-        }
-        .dr-items::-webkit-scrollbar-thumb {
-            background: var(--bd);
-        }
-        .dr-empty {
-            padding: 36px 20px;
-            text-align: center;
-            color: var(--g);
-            font-size: 10px;
-            line-height: 2;
-        }
-        .dr-empty b {
-            display: block;
-            font-family: var(--font-display);
-            font-size: 22px;
-            color: rgba(240, 240, 240, 0.14);
-            margin-bottom: 8px;
-            letter-spacing: 0.08em;
-        }
-        .dr-ft {
-            border-top: 1px solid var(--bd);
-            padding: 14px 20px;
-            flex-shrink: 0;
-        }
-        .promo-row {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 10px;
-        }
-        .promo-inp {
-            flex: 1;
-            background: var(--k);
-            border: 1px solid var(--bd);
-            padding: 8px 10px;
-            color: var(--w);
-            font-size: 8px;
-            font-family: var(--font-mono);
-            letter-spacing: 0.1em;
-            outline: none;
-            transition: border-color 0.16s;
-        }
-        .promo-inp:focus {
-            border-color: var(--c);
-        }
-        .promo-btn {
-            padding: 8px 11px;
-            background: transparent;
-            border: 1px solid var(--bd);
-            color: var(--g);
-            font-size: 6.5px;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            cursor: pointer;
-            font-family: var(--font-mono);
-            transition: all 0.16s;
-        }
-        .promo-btn:hover {
-            border-color: var(--c);
-            color: var(--w);
-        }
-        .subtotal-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 4px;
-        }
-        .subtotal-row span:first-child {
-            font-size: 6.5px;
-            letter-spacing: 0.26em;
-            color: var(--g);
-            text-transform: uppercase;
-        }
-        .subtotal-row span:last-child {
-            font-size: 16px;
-            font-family: var(--font-display);
-        }
-        .ship-txt {
-            font-size: 6.5px;
-            letter-spacing: 0.18em;
-            color: var(--g);
-            margin-bottom: 12px;
-            text-transform: uppercase;
-        }
-        .btn-chk {
-            width: 100%;
-            padding: 13px;
-            background: var(--c);
-            border: none;
-            color: var(--k);
-            font-size: 7.5px;
-            letter-spacing: 0.34em;
-            text-transform: uppercase;
-            cursor: pointer;
-            font-family: var(--font-mono);
-            transition: opacity 0.16s;
-            margin-bottom: 6px;
-        }
-        .btn-chk:hover {
-            opacity: 0.82;
-        }
-        .btn-cs {
-            width: 100%;
-            padding: 9px;
-            background: transparent;
-            border: 1px solid var(--bd);
-            color: var(--g);
-            font-size: 7px;
-            letter-spacing: 0.24em;
-            text-transform: uppercase;
-            cursor: pointer;
-            font-family: var(--font-mono);
-            transition: all 0.16s;
-        }
-        .btn-cs:hover {
-            border-color: var(--c);
-            color: var(--w);
-        }
-
-        /* ── AUTH ── */
-        #auth-dr {
-            position: fixed;
-            top: var(--nav-h);
-            right: 0;
-            bottom: 0;
-            width: 340px;
-            z-index: 450;
-            background: var(--s);
-            border-left: 1px solid var(--bd);
-            transform: translateX(100%);
-            transition: transform 0.34s ease;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            scrollbar-width: none;
-        }
-        #auth-dr.on {
-            transform: translateX(0);
-        }
-        #auth-dr::-webkit-scrollbar {
-            display: none;
-        }
-        .auth-tabs {
-            display: flex;
-            border-bottom: 1px solid var(--bd);
-            flex-shrink: 0;
-        }
-        .atab {
-            flex: 1;
-            padding: 14px;
-            text-align: center;
-            font-size: 7px;
-            letter-spacing: 0.24em;
-            text-transform: uppercase;
-            cursor: pointer;
-            color: var(--g);
-            border-bottom: 2px solid transparent;
-            transition: all 0.16s;
-            background: transparent;
-        }
-        .atab.on {
-            color: var(--w);
-            border-bottom-color: var(--c);
-        }
-        .a-panel {
-            display: none;
-            flex-direction: column;
-            gap: 11px;
-            padding: 20px;
-        }
-        .a-panel.on {
-            display: flex;
-        }
-        .afield label {
-            font-size: 6px;
-            letter-spacing: 0.26em;
-            color: var(--c);
-            text-transform: uppercase;
-            display: block;
-            margin-bottom: 5px;
-        }
-        .afield input {
-            width: 100%;
-            background: var(--k);
-            border: 1px solid var(--bd);
-            padding: 10px 11px;
-            color: var(--w);
-            font-size: 9px;
-            font-family: var(--font-mono);
-            outline: none;
-            transition: border-color 0.16s;
-        }
-        .afield input:focus {
-            border-color: var(--c);
-        }
-        .abtn {
-            width: 100%;
-            padding: 12px;
-            background: var(--c);
-            border: none;
-            color: var(--k);
-            font-size: 7px;
-            letter-spacing: 0.34em;
-            text-transform: uppercase;
-            cursor: pointer;
-            font-family: var(--font-mono);
-            transition: opacity 0.16s;
-            margin-top: 2px;
-        }
-        .abtn:hover {
-            opacity: 0.82;
-        }
-        .a-foot {
-            font-size: 8.5px;
-            color: var(--g);
-            text-align: center;
-        }
-        .a-foot a {
-            color: var(--c);
-            cursor: pointer;
-        }
-        #acct-view {
-            display: none;
-            flex-direction: column;
-            padding: 20px;
-            gap: 16px;
-        }
-        #acct-view.on {
-            display: flex;
-        }
-        .acct-name {
-            font-family: var(--font-display);
-            font-size: 24px;
-            letter-spacing: 0.08em;
-        }
-        .acct-email {
-            font-size: 8px;
-            letter-spacing: 0.16em;
-            color: var(--g);
-        }
-        .acct-sec .sec-lbl {
-            font-size: 6px;
-            letter-spacing: 0.28em;
-            color: var(--c);
-            text-transform: uppercase;
-            margin-bottom: 8px;
-        }
-        .btn-out {
-            width: 100%;
-            padding: 10px;
-            background: transparent;
-            border: 1px solid var(--bd);
-            color: var(--g);
-            font-size: 7px;
-            letter-spacing: 0.26em;
-            text-transform: uppercase;
-            cursor: pointer;
-            font-family: var(--font-mono);
-            transition: all 0.16s;
-            margin-top: auto;
-        }
-        .btn-out:hover {
-            border-color: var(--rd);
-            color: var(--rd);
-        }
-
-        /* ── BACKDROP ── */
-        #backdrop {
-            position: fixed;
-            top: var(--nav-h);
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(6, 6, 8, 0.58);
-            z-index: 440;
-            display: none;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-        }
-        #backdrop.on {
-            display: block;
-        }
-
-        /* ── PRODUCT VIEWER ── */
-        #pv {
-            position: fixed;
-            top: var(--nav-h);
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 500;
-            background: var(--k);
-            display: none;
-            flex-direction: row;
-            overflow: hidden;
-        }
-        #pv.on {
-            display: flex;
-        }
-        .pv-l {
-            flex: 2;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-            position: relative;
-            height: 100%;
-        }
-        .pv-gallery {
-            flex: 1;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #0e0e16;
-        }
-        #pv3d {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-        .pv-imgs {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            display: none;
-        }
-        .pv-modes {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            display: flex;
-            gap: 2px;
-            z-index: 10;
-        }
-        .pvm {
-            font-size: 6px;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            padding: 5px 10px;
-            border: 1px solid var(--bd);
-            color: var(--g);
-            cursor: pointer;
-            transition: all 0.16s;
-            background: rgba(6, 6, 8, 0.8);
-        }
-        .pvm:hover,
-        .pvm.on {
-            border-color: var(--c);
-            color: var(--w);
-            background: var(--ca);
-        }
-        .pv-arr {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 10;
-            width: 36px;
-            height: 36px;
-            border: 1px solid var(--bd);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: var(--g);
-            font-size: 13px;
-            background: rgba(6, 6, 8, 0.8);
-            transition: all 0.16s;
-        }
-        .pv-arr:hover {
-            border-color: var(--c);
-            color: var(--w);
-        }
-        #pva-p {
-            left: 8px;
-        }
-        #pva-n {
-            right: 8px;
-        }
-        .pv-thumbs {
-            display: flex;
-            gap: 6px;
-            padding: 10px 14px;
-            border-top: 1px solid var(--bd);
-            overflow-x: auto;
-            scrollbar-width: none;
-            background: var(--s2);
-        }
-        .pv-thumbs::-webkit-scrollbar {
-            display: none;
-        }
-        .pvt {
-            width: 50px;
-            height: 50px;
-            flex-shrink: 0;
-            border: 1px solid var(--bd);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: border-color 0.16s;
-            background: var(--k);
-            overflow: hidden;
-            position: relative;
-        }
-        .pvt.on {
-            border-color: var(--c);
-        }
-        .pvt svg {
-            width: 84%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-        .pvt-lbl {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 5px;
-            letter-spacing: 0.15em;
-            color: var(--g);
-            background: rgba(0, 0, 0, 0.5);
-            padding: 2px 0;
-        }
-        .pv-r {
-            width: 380px;
-            flex-shrink: 0;
-            border-left: 1px solid var(--bd);
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: var(--bd) transparent;
-            background: var(--s);
-            height: 100%;
-        }
-        .pv-r::-webkit-scrollbar {
-            width: 2px;
-        }
-        .pv-r::-webkit-scrollbar-thumb {
-            background: var(--bd);
-        }
-        .pv-bar {
-            position: sticky;
-            top: 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 20px;
-            border-bottom: 1px solid var(--bd);
-            background: var(--s2);
-            z-index: 2;
-        }
-        .pv-back {
-            font-size: 7px;
-            letter-spacing: 0.26em;
-            color: var(--g);
-            cursor: pointer;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: color 0.16s;
-            background: transparent;
-            border: none;
-        }
-        .pv-back:hover {
-            color: var(--w);
-        }
-        .pv-bc {
-            font-size: 6.5px;
-            letter-spacing: 0.2em;
-            color: var(--g);
-            text-transform: uppercase;
-        }
-        .pv-info {
-            padding: 20px;
-        }
-        .pv-bgs {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-            margin-bottom: 12px;
-        }
-        .pvbg {
-            font-size: 5.5px;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            padding: 3px 7px;
-            border: 1px solid var(--c);
-            color: var(--c);
-        }
-        .pvbg.nb {
-            border-color: var(--gr);
-            color: var(--gr);
-        }
-        .pvbg.lo {
-            border-color: var(--or);
-            color: var(--or);
-        }
-        .pv-name {
-            font-family: var(--font-display);
-            font-size: 32px;
-            letter-spacing: 0.08em;
-            margin-bottom: 2px;
-        }
-        .pv-ref {
-            font-size: 6px;
-            letter-spacing: 0.24em;
-            color: var(--g);
-            margin-bottom: 14px;
-        }
-        .pv-price {
-            font-size: 26px;
-            font-family: var(--font-display);
-            margin-bottom: 14px;
-        }
-        .divr {
-            height: 1px;
-            background: var(--bd);
-            margin: 14px 0;
-        }
-        .lbl {
-            font-size: 6px;
-            letter-spacing: 0.28em;
-            color: var(--c);
-            text-transform: uppercase;
-            margin-bottom: 7px;
-        }
-        .pv-desc {
-            font-size: 10px;
-            color: rgba(240, 240, 240, 0.46);
-            line-height: 1.9;
-            margin-bottom: 14px;
-        }
-        .col-row {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 14px;
-            flex-wrap: wrap;
-        }
-        .csw {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: border-color 0.16s;
-        }
-        .csw.on {
-            border-color: var(--c);
-        }
-        .sz-grid {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-            margin-bottom: 6px;
-        }
-        .szb {
-            padding: 6px 11px;
-            border: 1px solid var(--bd);
-            font-size: 7.5px;
-            letter-spacing: 0.14em;
-            cursor: pointer;
-            color: var(--g);
-            transition: all 0.14s;
-            font-family: var(--font-mono);
-            background: transparent;
-        }
-        .szb:hover,
-        .szb.on {
-            border-color: var(--c);
-            color: var(--w);
-        }
-        .sz-guide {
-            font-size: 6px;
-            letter-spacing: 0.2em;
-            color: var(--c);
-            cursor: pointer;
-            margin-bottom: 14px;
-            display: inline-block;
-            background: transparent;
-            border: none;
-        }
-        .cr-row {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-        }
-        .qty-w {
-            display: flex;
-            border: 1px solid var(--bd);
-        }
-        .qty-w button {
-            width: 30px;
-            height: 40px;
-            background: transparent;
-            border: none;
-            color: var(--g);
-            font-size: 14px;
-            cursor: pointer;
-            transition: color 0.14s;
-        }
-        .qty-w button:hover {
-            color: var(--c);
-        }
-        .qty-w span {
-            width: 30px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            border-left: 1px solid var(--bd);
-            border-right: 1px solid var(--bd);
-        }
-        .btn-atc {
-            flex: 1;
-            padding: 0 16px;
-            height: 40px;
-            background: var(--c);
-            border: none;
-            color: var(--k);
-            font-size: 7px;
-            letter-spacing: 0.34em;
-            text-transform: uppercase;
-            cursor: pointer;
-            font-family: var(--font-mono);
-            transition: opacity 0.16s;
-        }
-        .btn-atc:hover {
-            opacity: 0.82;
-        }
-        .btn-wl {
-            width: 40px;
-            height: 40px;
-            border: 1px solid var(--bd);
-            background: transparent;
-            color: var(--g);
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.16s;
-        }
-        .btn-wl:hover {
-            border-color: var(--rd);
-            color: var(--rd);
-        }
-        .ship-note {
-            font-size: 9px;
-            color: var(--g);
-            line-height: 1.75;
-            margin-bottom: 14px;
-        }
-        .acc {
-            border-top: 1px solid var(--bd);
-        }
-        .acc-hd {
-            padding: 11px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            background: transparent;
-            border: none;
-            width: 100%;
-            text-align: left;
-        }
-        .acc-hd .acc-lbl {
-            font-size: 8.5px;
-            letter-spacing: 0.06em;
-            color: var(--w);
-            flex: 1;
-        }
-        .acc-hd .acc-ico {
-            color: var(--c);
-            font-size: 15px;
-            flex-shrink: 0;
-            transition: transform 0.2s;
-            display: inline-block;
-            line-height: 1;
-            width: 16px;
-            text-align: center;
-        }
-        .acc.open .acc-ico {
-            transform: rotate(45deg);
-        }
-        .acc-bd {
-            font-size: 9.5px;
-            color: var(--g);
-            line-height: 1.85;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease, padding 0.24s;
-        }
-        .acc.open .acc-bd {
-            max-height: 160px;
-            padding-bottom: 12px;
-        }
-
-        /* ── RESPONSIVE ── */
-        @media (max-width: 768px) {
-            #nav {
-                padding: 0 12px;
-                gap: 12px;
-            }
-            #nav-links {
-                display: none;
-            }
-            .nav-logo {
-                font-size: 15px;
-            }
-            .nav-cta {
-                font-size: 7px;
-                padding: 5px 10px;
-            }
-            .h-title {
-                font-size: clamp(38px, 12vw, 56px) !important;
-            }
-            #hero-txt {
-                padding: 18px 12px 50px;
-            }
-            .rail {
-                padding: 0 12px;
-                gap: 8px;
-                top: 96px;
-            }
-            .mc {
-                width: clamp(130px, 30vw, 160px) !important;
-            }
-            .col-hdr {
-                left: 12px;
-                right: 12px;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 4px;
-                top: 10px;
-            }
-            .ftabs {
-                left: 12px;
-                top: 60px;
-            }
-            .rcnt {
-                left: 12px;
-                bottom: 10px;
-            }
-            #pv {
-                flex-direction: column;
-            }
-            .pv-r {
-                width: 100% !important;
-                max-height: 50vh;
-                border-left: none;
-                border-top: 1px solid var(--bd);
-            }
-            .pv-l {
-                flex: 0 0 auto;
-                height: 50vh;
-            }
-            .pv-name {
-                font-size: 24px;
-            }
-            .pv-price {
-                font-size: 20px;
-            }
-            .w-grid {
-                flex-direction: column;
-                width: 94vw;
-                gap: 6px;
-            }
-            .wc {
-                min-height: 140px;
-                min-width: unset;
-            }
-            .wname {
-                font-size: 28px;
-            }
-            .d-grid {
-                flex-direction: column;
-                width: 94vw;
-                gap: 10px;
-                align-items: center;
-            }
-            .dc {
-                max-width: 340px;
-                width: 100%;
-            }
-            #s5 {
-                padding: var(--nav-h) 4vw 60px;
-            }
-            .faq-ttl {
-                font-size: 24px;
-            }
-            .ft-top {
-                grid-template-columns: 1fr;
-            }
-            .soc-row {
-                flex-wrap: wrap;
-            }
-            .soc {
-                flex: 1 1 40%;
-                min-width: 100px;
-            }
-            .ft-strip {
-                flex-direction: column;
-                gap: 8px;
-                text-align: center;
-            }
-            #cart-dr,
-            #auth-dr {
-                width: 100%;
-            }
-            .sl-arr,
-            .pv-arr {
-                width: 42px;
-                height: 42px;
-                font-size: 16px;
-            }
-            #sl-prev,
-            #pva-p {
-                left: 10px;
-            }
-            #sl-next,
-            #pva-n {
-                right: 10px;
-            }
-            .profile-header {
-                gap: 16px;
-            }
-            .profile-avatar {
-                width: 60px;
-                height: 60px;
-                font-size: 24px;
-            }
-            .profile-name {
-                font-size: 24px;
-            }
-            .profile-stats {
-                gap: 12px;
-            }
-            .profile-stat {
-                padding: 10px 14px;
-                min-width: 70px;
-            }
-            .profile-fav-grid {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            }
-        }
-        @media (max-width: 480px) {
-            #veil-logo {
-                font-size: 42px;
-            }
-            #veil-sub {
-                font-size: 7px;
-                letter-spacing: 0.4em;
-            }
-            .h-title {
-                font-size: 32px !important;
-            }
-            .h-sub {
-                font-size: 6px;
-                letter-spacing: 0.3em;
-            }
-            .mc {
-                width: 120px !important;
-            }
-            .mn {
-                font-size: 12px;
-            }
-            .mp {
-                font-size: 12px;
-            }
-            .pv-name {
-                font-size: 20px;
-            }
-            .pv-price {
-                font-size: 18px;
-            }
-            .pv-r {
-                max-height: 45vh;
-            }
-            .wc {
-                min-height: 110px;
-                padding: 18px 16px;
-            }
-            .wname {
-                font-size: 22px;
-            }
-            .d-ttl {
-                font-size: 32px;
-            }
-            .dn2 {
-                font-size: 12px;
-            }
-            .ftb {
-                padding: 16px 14px;
-            }
-            .ftb-ttl {
-                font-size: 16px;
-            }
-            .profile-avatar {
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-            }
-            .profile-name {
-                font-size: 20px;
-            }
-        }
-        @media (max-height: 500px) and (orientation: landscape) {
-            #veil-logo {
-                font-size: 36px;
-            }
-            #veil-sub {
-                font-size: 6px;
-            }
-            .h-title {
-                font-size: 28px !important;
-            }
-            #hero-txt {
-                padding: 10px 16px 30px;
-            }
-            .sc {
-                padding-top: 40px;
-            }
-            .h-enter {
-                margin-top: 18px;
-                padding: 6px 12px;
-                font-size: 6px;
-            }
-            #hscroll {
-                display: none;
-            }
-            .pv-l {
-                height: 60vh;
-            }
-            .pv-r {
-                max-height: 40vh;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- CURSOR -->
-    <div id="cur"></div>
-
-    <!-- VEIL -->
-    <div id="veil">
-        <div id="veil-logo">ABYSS</div>
-        <div id="veil-sub">Society &middot; Est. 2026</div>
-        <div id="veil-pct">Entering the void&hellip;</div>
-        <div id="veil-bar"><div id="veil-fill"></div></div>
-    </div>
-
-    <!-- NAV -->
-    <div id="nav">
-        <div class="nav-logo" onclick="goTo(0)">ABYSS<small>SOCIETY</small></div>
-        <ul id="nav-links">
-            <li><a onclick="goTo(1)">Collection</a></li>
-            <li><a onclick="goTo(2)">Hoods</a></li>
-            <li><a onclick="goTo(3)">Drop</a></li>
-            <li><a onclick="goTo(4)">Manifesto</a></li>
-            <li><a onclick="goTo(5)">FAQ</a></li>
-            <li><a onclick="goTo(6)">Contact</a></li>
-            <li><a onclick="goTo(7)">Profile</a></li>
-        </ul>
-        <div id="nav-r">
-            <div class="lg">
-                <button class="lb on" onclick="setLang('en')">EN</button>
-                <button class="lb" onclick="setLang('es')">ES</button>
-                <button class="lb" onclick="setLang('fr')">FR</button>
-                <button class="lb" onclick="setLang('de')">DE</button>
-            </div>
-            <div class="nic" onclick="toggleTheme()" title="Tema" id="theme-btn">☾</div>
-            <div class="nic" onclick="tAuth()" title="Account">&#9675;<span class="nbadge" id="auth-badge">&#10003;</span></div>
-            <div class="nic" onclick="tCart()" title="Cart">&#9783;<span class="nbadge on" id="cart-badge">0</span></div>
-            <div class="nav-cta" onclick="goTo(3)">FORGE01 &#8599;</div>
-        </div>
-    </div>
-
-    <!-- PROGRESS -->
-    <div id="prog">
-        <div class="pd on" onclick="goTo(0)"></div>
-        <div class="pd" onclick="goTo(1)"></div>
-        <div class="pd" onclick="goTo(2)"></div>
-        <div class="pd" onclick="goTo(3)"></div>
-        <div class="pd" onclick="goTo(4)"></div>
-        <div class="pd" onclick="goTo(5)"></div>
-        <div class="pd" onclick="goTo(6)"></div>
-        <div class="pd" onclick="goTo(7)"></div>
-    </div>
-
-    <!-- CART -->
-    <div id="cart-dr">
-        <div class="dr-hdr">
-            <div class="dr-title">Your Order</div>
-            <button class="dr-cls" onclick="tCart()">&#10005; <span>Close</span></button>
-        </div>
-        <div class="dr-items" id="dr-items">
-            <div class="dr-empty"><b>THE VOID IS EMPTY</b><span>Add pieces to your order</span></div>
-        </div>
-        <div class="dr-ft" id="dr-ft" style="display:none">
-            <div class="promo-row">
-                <input class="promo-inp" placeholder="PROMO CODE" id="promo-in">
-                <button class="promo-btn" onclick="applyP()">Apply</button>
-            </div>
-            <div class="subtotal-row"><span>Subtotal</span><span id="sub-val">&euro;0</span></div>
-            <div class="ship-txt">Shipping calculated at checkout</div>
-            <button class="btn-chk" onclick="doChk()">Proceed to Checkout</button>
-            <button class="btn-cs" onclick="tCart()">Continue Shopping</button>
-        </div>
-    </div>
-
-    <!-- AUTH -->
-    <div id="auth-dr">
-        <div class="dr-hdr">
-            <div class="dr-title">Account</div>
-            <button class="dr-cls" onclick="tAuth()">&#10005; <span>Close</span></button>
-        </div>
-        <div id="guest-view">
-            <div class="auth-tabs">
-                <button class="atab on" onclick="aTab('li',this)">Sign In</button>
-                <button class="atab" onclick="aTab('reg',this)">Register</button>
-            </div>
-            <div class="a-panel on" id="ap-li">
-                <div class="afield"><label>Email</label><input type="email" id="li-em" placeholder="void@example.com"></div>
-                <div class="afield"><label>Password</label><input type="password" id="li-pw" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"></div>
-                <button class="abtn" onclick="doLogin()">Enter the Society</button>
-                <div class="a-foot"><button class="atab" style="background:transparent;border:none;color:var(--c);cursor:pointer;" onclick="aTab('reg',document.querySelectorAll('.atab')[1])">No account? Register</button></div>
-                <div class="a-foot" style="margin-top:4px;font-size:7px;"><a onclick="alert('Recovery email sent')">Forgot password?</a></div>
-            </div>
-            <div class="a-panel" id="ap-reg">
-                <div class="afield"><label>Name</label><input type="text" id="rg-nm" placeholder="Your name"></div>
-                <div class="afield"><label>Email</label><input type="email" id="rg-em" placeholder="void@example.com"></div>
-                <div class="afield"><label>Password</label><input type="password" id="rg-pw" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"></div>
-                <div class="afield"><label>Confirm Password</label><input type="password" id="rg-pw2" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"></div>
-                <button class="abtn" onclick="doReg()">Join the Society</button>
-                <div class="a-foot">By joining you accept our <a onclick="alert('Terms & Privacy')">Terms &amp; Privacy</a></div>
-            </div>
-        </div>
-        <div id="acct-view">
-            <div style="padding:20px;display:flex;flex-direction:column;gap:16px;min-height:100%;">
-                <div class="acct-name" id="acct-nm"></div>
-                <div class="acct-email" id="acct-em"></div>
-                <div class="acct-sec"><div class="sec-lbl">Recent Orders</div><div id="ord-list"></div></div>
-                <div class="acct-sec"><div class="sec-lbl">Wishlist</div><div id="wishlist-list" style="font-size:9px;color:var(--g);">Nothing saved yet.</div></div>
-                <button class="btn-out" onclick="doOut()">Sign Out</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="backdrop" onclick="closeAll()"></div>
-
-    <!-- S0 HERO -->
-    <div class="sc on" id="s0">
-        <div id="slides-wrap">
-            <div class="slide on" data-lbl="IMAGEN 1"><div class="slide-content">IMAGEN 1 <small>Placeholder para foto principal</small></div></div>
-            <div class="slide" data-lbl="IMAGEN 2"><div class="slide-content">IMAGEN 2 <small>Placeholder para foto secundaria</small></div></div>
-            <div class="slide" data-lbl="IMAGEN 3"><div class="slide-content">IMAGEN 3 <small>Placeholder para foto de detalle</small></div></div>
-            <div class="slide" data-lbl="IMAGEN 4"><div class="slide-content">IMAGEN 4 <small>Placeholder para campaña</small></div></div>
-            <div class="slide" data-lbl="IMAGEN 5"><div class="slide-content">IMAGEN 5 <small>Placeholder para lookbook</small></div></div>
-            <button class="sl-arr" id="sl-prev" onclick="slGo(-1)">&#8592;</button>
-            <button class="sl-arr" id="sl-next" onclick="slGo(1)">&#8594;</button>
-            <div id="sl-dots"></div>
-            <div id="sl-tag"></div>
-        </div>
-        <div id="hero-txt">
-            <div class="h-title">ABYSS</div>
-            <div class="h-sub">Society &middot; Forge01 &middot; Est. 2026</div>
-            <div class="h-tag">We are not a brand. We are a society.</div>
-            <button class="h-enter" onclick="goTo(1)">Enter Below &#8595;</button>
-        </div>
-        <div id="hscroll"><span>Scroll</span><div class="sln"></div></div>
-    </div>
-
-    <!-- S1 COLLECTION -->
-    <div class="sc" id="s1">
-        <div class="col-hdr">
-            <div class="col-ttl">FORGE<span style="color:var(--c)">01</span></div>
-            <div class="col-meta"><b>Active Drop</b> &middot; 030 Units &middot; Limited Run</div>
-        </div>
-        <div class="ftabs">
-            <button class="ftab on" onclick="fCat('all',this)">All</button>
-            <button class="ftab" onclick="fCat('tee',this)">T-Shirts</button>
-            <button class="ftab" onclick="fCat('hoodie',this)">Hoodies</button>
-            <button class="ftab" onclick="fCat('acc',this)">Accessories</button>
-        </div>
-        <div class="rail" id="rail">
-            <!-- Producto 1 -->
-            <div class="mc" data-cat="tee" onclick="openPV(0)">
-                <div class="mb nb">New</div>
-                <div class="mv"><svg viewBox="0 0 200 240" fill="none"><path d="M28 44L0 74L28 84L28 220L172 220L172 84L200 74L172 44L134 22C122 38 100 38 100 38C78 38 66 22 66 22Z" fill="#0c0c0e" stroke="#252527" stroke-width="1.2"/><line x1="100" y1="65" x2="100" y2="158" stroke="#f0f0f0" stroke-width=".75" opacity=".52"/><line x1="74" y1="101" x2="126" y2="101" stroke="#f0f0f0" stroke-width=".75" opacity=".52"/><path d="M74 157 Q74 110 100 95 Q126 110 126 157" fill="none" stroke="#f0f0f0" stroke-width=".52" opacity=".26"/><text font-family="monospace" font-size="6" fill="#1a4fbf" text-anchor="middle" x="100" y="172" letter-spacing="3">THE OATH</text></svg></div>
-                <div class="mc-overlay"><span>THE OATH</span><small>FORGE01 · T01</small></div>
-                <div class="mi">
-                    <div class="mn">THE OATH</div>
-                    <div class="mr">FORGE01-T01 · 001/030</div>
-                    <div class="mf"><div><div class="mp">&euro;39</div><div class="mst">● In Stock</div></div><button class="madd" onclick="event.stopPropagation();qAdd(0)">+</button></div>
-                </div>
-            </div>
-            <!-- Producto 2 -->
-            <div class="mc" data-cat="tee" onclick="openPV(1)">
-                <div class="mb lb">Limited</div>
-                <div class="mv"><svg viewBox="0 0 200 240" fill="none"><path d="M28 44L0 74L28 84L28 220L172 220L172 84L200 74L172 44L134 22C122 38 100 38 100 38C78 38 66 22 66 22Z" fill="#0c0c0e" stroke="#252527" stroke-width="1.2"/><line x1="100" y1="56" x2="100" y2="160" stroke="#f0f0f0" stroke-width="1" opacity=".82"/><polygon points="100,48 93,66 107,66" fill="#f0f0f0" opacity=".78"/><circle cx="100" cy="112" r="9" fill="none" stroke="#1a4fbf" stroke-width=".52" opacity=".66"/><text font-family="monospace" font-size="5.5" fill="#f0f0f0" text-anchor="middle" x="100" y="174" letter-spacing="2.4">ENTER BELOW</text></svg></div>
-                <div class="mc-overlay"><span>CATHEDRAL</span><small>FORGE01 · T02</small></div>
-                <div class="mi">
-                    <div class="mn">CATHEDRAL</div>
-                    <div class="mr">FORGE01-T02 · 001/030</div>
-                    <div class="mf"><div><div class="mp">&euro;45</div><div class="mst lo">● 8 Left</div></div><button class="madd" onclick="event.stopPropagation();qAdd(1)">+</button></div>
-                </div>
-            </div>
-            <!-- Producto 3 -->
-            <div class="mc" data-cat="tee" onclick="openPV(2)">
-                <div class="mb lb">Limited</div>
-                <div class="mv"><svg viewBox="0 0 200 240" fill="none"><path d="M28 44L0 74L28 84L28 220L172 220L172 84L200 74L172 44L134 22C122 38 100 38 100 38C78 38 66 22 66 22Z" fill="#0c0c0e" stroke="#252527" stroke-width="1.2"/><circle cx="100" cy="76" r="8" fill="none" stroke="#f0f0f0" stroke-width="1"/><ellipse cx="100" cy="154" rx="27" ry="8" fill="none" stroke="#1a4fbf" stroke-width=".46" stroke-dasharray="3,3" opacity=".6"/><text font-family="monospace" font-size="4.8" fill="#f0f0f0" text-anchor="middle" x="100" y="172" letter-spacing="2">THE VOID IS CALLING</text></svg></div>
-                <div class="mc-overlay"><span>THE FALL</span><small>FORGE01 · T03</small></div>
-                <div class="mi">
-                    <div class="mn">THE FALL</div>
-                    <div class="mr">FORGE01-T03 · 001/030</div>
-                    <div class="mf"><div><div class="mp">&euro;45</div><div class="mst lo">● Last Units</div></div><button class="madd" onclick="event.stopPropagation();qAdd(2)">+</button></div>
-                </div>
-            </div>
-            <!-- Producto 4 -->
-            <div class="mc" data-cat="hoodie" onclick="openPV(3)">
-                <div class="mb nb">New</div>
-                <div class="mv"><svg viewBox="0 0 200 250" fill="none"><path d="M28 52L0 84L26 94L26 228L174 228L174 94L200 84L172 52L148 30C136 50 100 52 100 52C64 50 52 30 52 30Z" fill="#0c0c0e" stroke="#252527" stroke-width="1.2"/><path d="M52 30Q100 8 148 30Q128 58 100 60Q72 58 52 30Z" fill="#0f0f11" stroke="#1c1c1e" stroke-width=".8"/><text font-family="monospace" font-size="9" fill="#f0f0f0" text-anchor="middle" x="100" y="122" letter-spacing="3" font-weight="700">ABYSS</text></svg></div>
-                <div class="mc-overlay"><span>IRON VOW</span><small>FORGE01 · H01</small></div>
-                <div class="mi">
-                    <div class="mn">IRON VOW</div>
-                    <div class="mr">FORGE01-H01 · 001/030</div>
-                    <div class="mf"><div><div class="mp">&euro;85</div><div class="mst">● In Stock</div></div><button class="madd" onclick="event.stopPropagation();qAdd(3)">+</button></div>
-                </div>
-            </div>
-            <!-- Producto 5 -->
-            <div class="mc" data-cat="hoodie" onclick="openPV(4)">
-                <div class="mb lb">Limited</div>
-                <div class="mv"><svg viewBox="0 0 200 250" fill="none"><path d="M28 52L0 84L26 94L26 228L174 228L174 94L200 84L172 52L148 30C136 50 100 52 100 52C64 50 52 30 52 30Z" fill="#0c0c0e" stroke="#252527" stroke-width="1.2"/><path d="M52 30Q100 8 148 30Q128 58 100 60Q72 58 52 30Z" fill="#0f0f11" stroke="#1c1c1e" stroke-width=".8"/><circle cx="66" cy="110" r="13" fill="none" stroke="#f0f0f0" stroke-width=".58" opacity=".66"/><text font-family="monospace" font-size="4.5" fill="#1a4fbf" text-anchor="middle" x="66" y="113" letter-spacing="1">ABYSS</text></svg></div>
-                <div class="mc-overlay"><span>SHADOW ZIP</span><small>FORGE01 · Z01</small></div>
-                <div class="mi">
-                    <div class="mn">SHADOW ZIP</div>
-                    <div class="mr">FORGE01-Z01 · 001/030</div>
-                    <div class="mf"><div><div class="mp">&euro;95</div><div class="mst lo">● 12 Left</div></div><button class="madd" onclick="event.stopPropagation();qAdd(4)">+</button></div>
-                </div>
-            </div>
-            <!-- Producto 6 -->
-            <div class="mc" data-cat="acc" onclick="openPV(5)">
-                <div class="mb lb">Limited</div>
-                <div class="mv"><svg viewBox="0 0 200 200" fill="none"><path d="M30 110 Q30 50 100 40 Q170 50 170 110Z" fill="#0c0c0e" stroke="#252527" stroke-width="1.2"/><text font-family="monospace" font-size="7" fill="#f0f0f0" text-anchor="middle" x="100" y="79" letter-spacing="1.5" font-weight="700">ABY</text></svg></div>
-                <div class="mc-overlay"><span>VOID CAP</span><small>FORGE01 · A01</small></div>
-                <div class="mi">
-                    <div class="mn">VOID CAP</div>
-                    <div class="mr">FORGE01-A01 · ACC</div>
-                    <div class="mf"><div><div class="mp">&euro;32</div><div class="mst">● In Stock</div></div><button class="madd" onclick="event.stopPropagation();qAdd(5)">+</button></div>
-                </div>
-            </div>
-            <!-- Producto 7 -->
-            <div class="mc" data-cat="acc" onclick="openPV(6)">
-                <div class="mb nb">New</div>
-                <div class="mv"><svg viewBox="0 0 200 200" fill="none"><path d="M50 130 Q48 70 100 55 Q152 70 150 130Z" fill="#0c0c0e" stroke="#252527" stroke-width="1.2"/><text font-family="monospace" font-size="9" fill="#f0f0f0" text-anchor="middle" x="100" y="101" letter-spacing="2" font-weight="700">ABYSS</text></svg></div>
-                <div class="mc-overlay"><span>FORGE BEANIE</span><small>FORGE01 · A02</small></div>
-                <div class="mi">
-                    <div class="mn">FORGE BEANIE</div>
-                    <div class="mr">FORGE01-A02 · ACC</div>
-                    <div class="mf"><div><div class="mp">&euro;28</div><div class="mst">● In Stock</div></div><button class="madd" onclick="event.stopPropagation();qAdd(6)">+</button></div>
-                </div>
-            </div>
-            <!-- Producto 8 -->
-            <div class="mc" data-cat="acc" onclick="openPV(7)">
-                <div class="mb lb">Limited</div>
-                <div class="mv"><svg viewBox="0 0 200 220" fill="none"><rect x="30" y="70" width="140" height="140" rx="2" fill="#0c0c0e" stroke="#252527" stroke-width="1.2"/><text font-family="monospace" font-size="13" fill="#f0f0f0" text-anchor="middle" x="100" y="124" letter-spacing="2" font-weight="700">ABYSS</text></svg></div>
-                <div class="mc-overlay"><span>VOID TOTE</span><small>FORGE01 · A03</small></div>
-                <div class="mi">
-                    <div class="mn">VOID TOTE</div>
-                    <div class="mr">FORGE01-A03 · ACC</div>
-                    <div class="mf"><div><div class="mp">&euro;22</div><div class="mst">● In Stock</div></div><button class="madd" onclick="event.stopPropagation();qAdd(7)">+</button></div>
-                </div>
-            </div>
-        </div>
-        <div class="rcnt"><b id="rcnt-n">8</b> <span>pieces &middot; FORGE01</span></div>
-    </div>
-
-    <!-- S2 HOODS -->
-    <div class="sc" id="s2">
-        <div class="w-eyebrow">Three Hoods &middot; One Society</div>
-        <div class="w-title">Enter if you belong here</div>
-        <div class="w-grid">
-            <div class="wc" data-n="01" onclick="goTo(3)"><div class="wbg">F</div><div class="wcon"><div class="wtag">Hood 01 &middot; Active</div><div class="wname">FORGE</div><div class="wdesc">Gothic medieval. Iron and faith. Anonymous knights. Cathedral architecture. The first chapter.</div></div></div>
-            <div class="wc" data-n="02"><div class="wbg">D</div><div class="wcon"><div class="wtag">Hood 02 &middot; Coming</div><div class="wname">DUSK</div><div class="wdesc">Dark cowboy. Nameless riders. Night deserts. Dust and legend. The second chapter.</div></div></div>
-            <div class="wc" data-n="03"><div class="wbg">G</div><div class="wcon"><div class="wtag">Hood 03 &middot; Coming</div><div class="wname">GHOST</div><div class="wdesc">Urban. Crews. The invisible forces that move the city. Pure underground.</div></div></div>
-        </div>
-    </div>
-
-    <!-- S3 DROP -->
-    <div class="sc" id="s3">
-        <div class="drop-intro" id="drop-intro">
-            <div class="drop-intro-content"><div class="big">FORGE01</div><div class="sub">Drop Context &middot; Limited Edition</div></div>
-        </div>
-        <div class="drop-main" id="drop-main">
-            <div class="d-eye">Active Drop &middot; Limited Run &middot; 030 Units</div>
-            <div class="d-ttl">FORGE01</div>
-            <div class="d-sub">Sworn in darkness. Built to last.</div>
-            <div class="d-grid">
-                <div class="dc" onclick="openPV(0)"><div class="dv2"><svg viewBox="0 0 200 240" fill="none"><path d="M28 44L0 74L28 84L28 220L172 220L172 84L200 74L172 44L134 22C122 38 100 38 100 38C78 38 66 22 66 22Z" fill="#0c0c0e" stroke="#252527" stroke-width="1.2"/><text font-family="monospace" font-size="6" fill="#1a4fbf" text-anchor="middle" x="100" y="170" letter-spacing="3">THE OATH</text></svg></div><div class="dn2">THE OATH</div><div class="dr2">FORGE01-T01 &middot; €39</div><div class="df2"><div class="dst">● In Stock</div><button class="dadd" onclick="event.stopPropagation();qAdd(0)">+</button></div></div>
-                <div class="dc" onclick="openPV(1)"><div class="dv2"><svg viewBox="0 0 200 240" fill="none"><path d="M28 44L0 74L28 84L28 220L172 220L172 84L200 74L172 44L134 22C122 38 100 38 100 38C78 38 66 22 66 22Z" fill="#0c0c0e" stroke="#252527" stroke-width="1.2"/><text font-family="monospace" font-size="6" fill="#1a4fbf" text-anchor="middle" x="100" y="170" letter-spacing="3">CATHEDRAL</text></svg></div><div class="dn2">CATHEDRAL</div><div class="dr2">FORGE01-T02 &middot; €45</div><div class="df2"><div class="dst lo">● 8 Left</div><button class="dadd" onclick="event.stopPropagation();qAdd(1)">+</button></div></div>
-                <div class="dc" onclick="openPV(2)"><div class="dv2"><svg viewBox="0 0 200 240" fill="none"><path d="M28 44L0 74L28 84L28 220L172 220L172 84L200 74L172 44L134 22C122 38 100 38 100 38C78 38 66 22 66 22Z" fill="#0c0c0e" stroke="#252527" stroke-width="1.2"/><text font-family="monospace" font-size="5.5" fill="#1a4fbf" text-anchor="middle" x="100" y="170" letter-spacing="2.5">THE FALL</text></svg></div><div class="dn2">THE FALL</div><div class="dr2">FORGE01-T03 &middot; €45</div><div class="df2"><div class="dst lo">● Last Units</div><button class="dadd" onclick="event.stopPropagation();qAdd(2)">+</button></div></div>
-                <div class="dc" onclick="openPV(3)"><div class="dv2"><svg viewBox="0 0 200 250" fill="none"><path d="M28 52L0 84L26 94L26 228L174 228L174 94L200 84L172 52L148 30C136 50 100 52 100 52C64 50 52 30 52 30Z" fill="#0c0c0e" stroke="#252527" stroke-width="1.2"/><text font-family="monospace" font-size="8" fill="#f0f0f0" text-anchor="middle" x="100" y="122" letter-spacing="3" font-weight="700">ABYSS</text></svg></div><div class="dn2">IRON VOW</div><div class="dr2">FORGE01-H01 &middot; €85</div><div class="df2"><div class="dst">● In Stock</div><button class="dadd" onclick="event.stopPropagation();qAdd(3)">+</button></div></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- S4 MANIFESTO -->
-    <div class="sc" id="s4">
-        <div class="man-t">
-            <strong>We are not a brand.</strong><br>
-            We are a society.<br>
-            A collective of people who found beauty in forgotten places,<br>
-            strength in the underground.<br><br>
-            We don't follow trends.<br>
-            We create context.<br><br>
-            Every piece is a symbol of membership.<br>
-            Every drop is a chapter.<br>
-            Every collection is a masterpiece.
-        </div>
-        <div class="man-sig">ABYSS SOCIETY · EST. 2026 · SWORN IN DARKNESS</div>
-    </div>
-
-    <!-- S5 FAQ -->
-    <div class="sc" id="s5">
-        <div class="faq-eye">Questions</div>
-        <div class="faq-ttl">FAQ</div>
-        <div class="faq-grid">
-            <div class="fi"><button class="fi-q" onclick="tFi(this.parentElement)"><span class="fi-qt">How do drops work?</span><span class="fi-ic">+</span></button><div class="fi-a">Each drop is capped at 030 units. Once the window closes or stock runs out, it's gone forever. No restocks, no exceptions.</div></div>
-            <div class="fi"><button class="fi-q" onclick="tFi(this.parentElement)"><span class="fi-qt">What is the numbering 018/030?</span><span class="fi-ic">+</span></button><div class="fi-a">Every piece is hand-numbered. 018/030 = you have unit 18 of 30 total. It's on your inner label. It's real.</div></div>
-            <div class="fi"><button class="fi-q" onclick="tFi(this.parentElement)"><span class="fi-qt">What sizes?</span><span class="fi-ic">+</span></button><div class="fi-a">Tees and hoodies: XS S M L XL XXL. Accessories: one size. Fit runs slightly oversized — intentional.</div></div>
-            <div class="fi"><button class="fi-q" onclick="tFi(this.parentElement)"><span class="fi-qt">Do you ship internationally?</span><span class="fi-ic">+</span></button><div class="fi-a">Yes. EU 5–8 business days. International 8–14 days. Customs duties may apply outside EU.</div></div>
-            <div class="fi"><button class="fi-q" onclick="tFi(this.parentElement)"><span class="fi-qt">Returns?</span><span class="fi-ic">+</span></button><div class="fi-a">Unworn and unwashed within 30 days. Limited numbered drops are non-returnable once you've worn them.</div></div>
-            <div class="fi"><button class="fi-q" onclick="tFi(this.parentElement)"><span class="fi-qt">Materials?</span><span class="fi-ic">+</span></button><div class="fi-a">240–320gsm heavyweight cotton for tees. 420gsm for hoodies. DTG or screen print only. No fast fashion, ever.</div></div>
-        </div>
-    </div>
-
-    <!-- S6 CONTACT / FOOTER -->
-    <div class="sc" id="s6">
-        <div class="ft-inner">
-            <div class="ft-top">
-                <div class="ftb"><div class="ftb-lbl">Contact</div><div class="ftb-ttl">Tell us.</div><div class="ftb-txt">Collabs, press, wholesale, general inquiries — we read everything. We reply in 48h.</div><a class="ftb-lnk" href="mailto:hello@abysssociety.com">hello@abysssociety.com &#8599;</a></div>
-                <div class="ftb"><div class="ftb-lbl">Shipping &amp; Returns</div><div class="ftb-ttl">Worldwide</div><div class="ftb-txt">EU 5–8 days. International 8–14 days. Free returns within 30 days on unworn pieces.</div><a class="ftb-lnk">Full policy &#8599;</a></div>
-            </div>
-            <div class="soc-row">
-                <a class="soc" href="#"><span class="soc-ico">●</span><span class="soc-nm">Instagram</span><span class="soc-hdl">@abyss</span></a>
-                <a class="soc" href="#"><span class="soc-ico">●</span><span class="soc-nm">Discord</span><span class="soc-hdl">/abyss</span></a>
-                <a class="soc" href="#"><span class="soc-ico">●</span><span class="soc-nm">TikTok</span><span class="soc-hdl">@abyss</span></a>
-            </div>
-        </div>
-        <div class="ft-strip">
-            <div class="ft-copy">ABYSS SOCIETY &middot; EST. 2026</div>
-            <div class="ft-lnks"><a>Terms</a><a>Privacy</a><a>Cookies</a></div>
-            <div class="ft-num">✕</div>
-        </div>
-    </div>
-
-    <!-- S7 PROFILE -->
-    <div class="sc" id="s7">
-        <div id="profile-scene" class="on">
-            <div class="profile-header">
-                <div class="profile-avatar">A</div>
-                <div><div class="profile-name">Alex Void</div><div class="profile-email">alex@abysssociety.com</div></div>
-            </div>
-            <div class="profile-stats">
-                <div class="profile-stat"><span class="num">5</span><span class="label">Orders</span></div>
-                <div class="profile-stat"><span class="num">3</span><span class="label">Favorites</span></div>
-                <div class="profile-stat"><span class="num">1</span><span class="label">Active Drop</span></div>
-            </div>
-            <div class="profile-section-title">Recent Orders</div>
-            <div class="profile-order"><span class="id">#ABY-001</span><span class="date">12 Jun 2026</span><span class="status delivered">Delivered</span></div>
-            <div class="profile-order"><span class="id">#ABY-002</span><span class="date">08 Jun 2026</span><span class="status shipped">Shipped</span></div>
-            <div class="profile-section-title">Wishlist</div>
-            <div class="profile-fav-grid">
-                <div class="profile-fav-item"><div style="font-size:28px;">👕</div><div class="name">THE OATH</div><div class="price">€39</div></div>
-                <div class="profile-fav-item"><div style="font-size:28px;">🧥</div><div class="name">IRON VOW</div><div class="price">€85</div></div>
-                <div class="profile-fav-item"><div style="font-size:28px;">🧢</div><div class="name">VOID CAP</div><div class="price">€32</div></div>
-            </div>
-            <div class="profile-section-title">Settings</div>
-            <div class="profile-actions">
-                <button onclick="alert('Edit profile')">Edit Profile</button>
-                <button onclick="alert('Change password')">Change Password</button>
-                <button onclick="alert('Address book')">Address Book</button>
-                <button class="danger" onclick="alert('Logout')">Logout</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- TOAST -->
-    <div id="toast"></div>
-
-    <!-- PRODUCT VIEWER (oculto) -->
-    <div id="pv">
-        <div class="pv-l">
-            <div class="pv-gallery">
-                <canvas id="pv3d"></canvas>
-                <div class="pv-modes">
-                    <div class="pvm on" onclick="pvMode('3d',this)">3D</div>
-                    <div class="pvm" onclick="pvMode('img',this)">Images</div>
-                </div>
-                <div class="pv-arr" id="pva-p" onclick="pvSlide(-1)">&#8592;</div>
-                <div class="pv-arr" id="pva-n" onclick="pvSlide(1)">&#8594;</div>
-                <div id="drag-hint">Drag to rotate</div>
-            </div>
-            <div class="pv-thumbs" id="pv-thumbs"></div>
-        </div>
-        <div class="pv-r">
-            <div class="pv-bar">
-                <button class="pv-back" onclick="closePV()">&#8592; <span>Back</span> <span style="opacity:.4;font-size:6px;margin-left:4px">ESC</span></button>
-                <div class="pv-bc" id="pv-bc">FORGE01</div>
-            </div>
-            <div class="pv-info">
-                <div class="pv-bgs" id="pv-bgs"></div>
-                <div class="pv-name" id="pv-nm"></div>
-                <div class="pv-ref" id="pv-rf"></div>
-                <div class="pv-price" id="pv-pr"></div>
-                <div class="divr"></div>
-                <div class="lbl">Colour</div>
-                <div class="col-row">
-                    <div class="csw on" style="background:#0c0c0e;border-color:var(--w);" title="Black"></div>
-                    <div class="csw" style="background:#1a1a2e;" title="Midnight"></div>
-                    <div class="csw" style="background:#2a1a0e;" title="Earth"></div>
-                </div>
-                <div class="lbl">Size</div>
-                <div class="sz-grid" id="pv-szs"></div>
-                <button class="sz-guide">Size guide &#8599;</button>
-                <div class="lbl">About this piece</div>
-                <div class="pv-desc" id="pv-dc"></div>
-                <div class="cr-row">
-                    <div class="qty-w">
-                        <button onclick="pvQ(-1)">&#8722;</button>
-                        <span id="pv-qn">1</span>
-                        <button onclick="pvQ(1)">&#43;</button>
-                    </div>
-                    <button class="btn-atc" onclick="pvAdd()">Add to Order</button>
-                    <button class="btn-wl" onclick="toggleWishlist(this)" title="Wishlist">&#9825;</button>
-                </div>
-                <div class="ship-note">&#9873; Free EU shipping over &euro;120 &middot; Returns within 30 days</div>
-                <div class="divr"></div>
-                <div class="acc">
-                    <button class="acc-hd" onclick="tAcc(this.parentElement)">
-                        <span class="acc-lbl">Material &amp; Construction</span>
-                        <span class="acc-ico">+</span>
-                    </button>
-                    <div class="acc-bd" id="pv-mat"></div>
-                </div>
-                <div class="acc">
-                    <button class="acc-hd" onclick="tAcc(this.parentElement)">
-                        <span class="acc-lbl">Care Instructions</span>
-                        <span class="acc-ico">+</span>
-                    </button>
-                    <div class="acc-bd">Wash inside out 30&deg;C &middot; No tumble dry &middot; No iron on print &middot; Store flat or hanging</div>
-                </div>
-                <div class="acc">
-                    <button class="acc-hd" onclick="tAcc(this.parentElement)">
-                        <span class="acc-lbl">Shipping &amp; Returns</span>
-                        <span class="acc-ico">+</span>
-                    </button>
-                    <div class="acc-bd">EU 5&ndash;8 days &middot; International 8&ndash;14 days &middot; Free returns within 30 days on unworn items</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // ── FUNCIONES DE NAVEGACIÓN ──
-        function goTo(n) {
-            document.querySelectorAll('.sc').forEach((el, i) => { el.classList.toggle('on', i === n); });
-            document.querySelectorAll('.pd').forEach((el, i) => { el.classList.toggle('on', i === n); });
-            closeAll();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            if (n === 3) showDropIntro();
-        }
-
-        // ── INTERFAZ ──
-        function openPV(i) { document.getElementById('pv').classList.add('on'); }
-
-        function closePV() { document.getElementById('pv').classList.remove('on'); }
-
-        function tCart() { document.getElementById('cart-dr').classList.toggle('on');
-            document.getElementById('backdrop').classList.toggle('on'); }
-
-        function tAuth() { document.getElementById('auth-dr').classList.toggle('on');
-            document.getElementById('backdrop').classList.toggle('on'); }
-
-        function closeAll() { document.getElementById('cart-dr').classList.remove('on');
-            document.getElementById('auth-dr').classList.remove('on');
-            document.getElementById('backdrop').classList.remove('on');
-            closePV(); }
-
-        function setLang(l) { document.querySelectorAll('.lb').forEach(b => b.classList.remove('on'));
-            document.querySelector(`.lb[onclick="setLang('${l}')"]`)?.classList.add('on'); }
-
-        function pvSlide(d) { console.log('Slide ' + d); }
-
-        function pvMode(m, el) { document.querySelectorAll('.pvm').forEach(b => b.classList.remove('on'));
-            el.classList.add('on'); }
-
-        function pvQ(d) { let q = parseInt(document.getElementById('pv-qn').textContent) + d; if (q < 1) q = 1;
-            document.getElementById('pv-qn').textContent = q; }
-
-        function pvAdd() { showToast('Added to cart!'); }
-
-        function tAcc(el) { el.classList.toggle('open'); }
-
-        function tFi(el) { el.classList.toggle('open'); }
-
-        function doLogin() {
-            const email = document.getElementById('li-em').value;
-            if (!email) { showToast('Please enter email'); return; }
-            showToast('Welcome back, ' + email.split('@')[0] + '!');
-            document.getElementById('acct-view').classList.add('on');
-            document.getElementById('guest-view').style.display = 'none';
-        }
-
-        function doReg() {
-            const name = document.getElementById('rg-nm').value;
-            const pw = document.getElementById('rg-pw').value;
-            const pw2 = document.getElementById('rg-pw2').value;
-            if (!name || !pw) { showToast('Please fill all fields'); return; }
-            if (pw !== pw2) { showToast('Passwords do not match'); return; }
-            showToast('Welcome to the Society, ' + name + '!');
-            document.getElementById('acct-view').classList.add('on');
-            document.getElementById('guest-view').style.display = 'none';
-        }
-
-        function doOut() {
-            showToast('Signed out');
-            document.getElementById('acct-view').classList.remove('on');
-            document.getElementById('guest-view').style.display = 'block';
-        }
-
-        function applyP() { showToast('Promo code applied!'); }
-
-        function doChk() { showToast('Proceeding to checkout...'); }
-
-        function qAdd(i) { showToast('Added product ' + (i + 1) + ' to cart!'); }
-
-        function toggleWishlist(el) {
-            el.classList.toggle('active');
-            if (el.classList.contains('active')) {
-                el.innerHTML = '&#9829;';
-                el.style.color = 'var(--rd)';
-                showToast('Added to wishlist!');
-            } else {
-                el.innerHTML = '&#9825;';
-                el.style.color = '';
-                showToast('Removed from wishlist');
-            }
-        }
-
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.classList.add('on');
-            clearTimeout(t._timeout);
-            t._timeout = setTimeout(() => t.classList.remove('on'), 2500);
-        }
-
-        function aTab(tab, el) {
-            document.querySelectorAll('.atab').forEach(b => b.classList.remove('on'));
-            el.classList.add('on');
-            document.querySelectorAll('.a-panel').forEach(p => p.classList.remove('on'));
-            document.getElementById('ap-' + tab).classList.add('on');
-        }
-
-        function fCat(cat, el) {
-            document.querySelectorAll('.ftab').forEach(b => b.classList.remove('on'));
-            el.classList.add('on');
-            document.querySelectorAll('.mc').forEach(m => { m.style.display = (cat === 'all' || m.dataset.cat === cat) ? '' :
-                    'none'; });
-        }
-
-        // ── SLIDESHOW ──
-        let slideIdx = 0;
-        const slides = document.querySelectorAll('.slide');
-        const dots = document.getElementById('sl-dots');
-        const tag = document.getElementById('sl-tag');
-
-        if (dots && slides.length > 0) {
-            slides.forEach((s, i) => {
-                const dot = document.createElement('div');
-                dot.className = 'sldot' + (i === 0 ? ' on' : '');
-                dot.onclick = () => goSlide(i);
-                dots.appendChild(dot);
-            });
-            if (tag) tag.textContent = slides[0]?.dataset.lbl || '';
-        }
-
-        function goSlide(i) {
-            slides.forEach((s, idx) => s.classList.toggle('on', idx === i));
-            document.querySelectorAll('.sldot').forEach((d, idx) => d.classList.toggle('on', idx === i));
-            if (tag) tag.textContent = slides[i]?.dataset.lbl || '';
-            slideIdx = i;
-        }
-
-        function slGo(d) { let i = (slideIdx + d + slides.length) % slides.length;
-            goSlide(i); }
-        window.slGo = slGo;
-
-        // ── DROP INTRO ──
-        let dropIntroShown = false;
-
-        function showDropIntro() {
-            if (dropIntroShown) return;
-            const intro = document.getElementById('drop-intro');
-            const main = document.getElementById('drop-main');
-            if (!intro) return;
-            intro.classList.add('active');
-            setTimeout(() => {
-                intro.classList.add('exit');
-                main.classList.add('visible');
-                setTimeout(() => {
-                    intro.classList.remove('active', 'exit');
-                    dropIntroShown = true;
-                }, 800);
-            }, 1200);
-        }
-
-        // ── TEMA CLARO/OSCURO ──
-        function toggleTheme() {
-            document.body.classList.toggle('light');
-            const icon = document.getElementById('theme-btn');
-            if (icon) icon.textContent = document.body.classList.contains('light') ? '☀' : '☾';
-            localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
-        }
-
-        // ── CURSOR ──
-        document.addEventListener('DOMContentLoaded', function() {
-            const cursor = document.getElementById('cur');
-            let mouseX = 0,
-                mouseY = 0,
-                cursorX = 0,
-                cursorY = 0,
-                lastMove = 0;
-            const trail = [];
-            for (let i = 0; i < 10; i++) {
-                const p = document.createElement('div');
-                p.className = 'trail';
-                p.style.width = (2 + Math.random() * 3) + 'px';
-                p.style.height = p.style.width;
-                document.body.appendChild(p);
-                trail.push(p);
-            }
-            let ti = 0;
-
-            function updateTrail(x, y) {
-                const p = trail[ti % trail.length];
-                p.style.left = x + 'px';
-                p.style.top = y + 'px';
-                p.style.opacity = 0.2 + Math.random() * 0.3;
-                setTimeout(() => { p.style.opacity = 0; }, 80);
-                ti++;
-            }
-            document.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-                lastMove = Date.now();
-                cursor.style.opacity = 1;
-                updateTrail(e.clientX, e.clientY);
-            });
-            setInterval(() => {
-                if (Date.now() - lastMove > 2000) cursor.style.opacity = 0;
-            }, 500);
-
-            function anim() {
-                cursorX += (mouseX - cursorX) * 0.15;
-                cursorY += (mouseY - cursorY) * 0.15;
-                cursor.style.left = cursorX + 'px';
-                cursor.style.top = cursorY + 'px';
-                requestAnimationFrame(anim);
-            }
-            anim();
-        });
-
-        // ── INICIO ──
-        window.onload = function() {
-            const saved = localStorage.getItem('theme');
-            const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const icon = document.getElementById('theme-btn');
-            if (saved === 'light' || (!saved && !dark)) { document.body.classList.add('light'); if (icon) icon.textContent =
-                    '☀'; } else { if (icon) icon.textContent = '☾'; }
-
-            const veil = document.getElementById('veil');
-            const fill = document.getElementById('veil-fill');
-            if (veil && fill) {
-                let p = 0;
-                const int = setInterval(() => {
-                    p += Math.random() * 4 + 2;
-                    if (p >= 100) {
-                        p = 100;
-                        clearInterval(int);
-                        setTimeout(() => { veil.style.opacity = '0';
-                            setTimeout(() => veil.style.display = 'none', 700); }, 300);
-                    }
-                    fill.style.width = p + '%';
-                }, 80);
-            }
-            document.querySelectorAll('.sc').forEach((el, i) => { el.classList.toggle('on', i === 0); });
-            showDropIntro();
-        };
-    </script>
-
-    <!-- Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
-    </script>
-</body>
-</html>
+            background: var(--k
