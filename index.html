@@ -383,11 +383,45 @@ body:has(a:hover,button:hover,[onclick]:hover) #cur-ring{width:38px;height:38px;
   cursor:pointer;transition:all .28s;}
 .pd.on{background:var(--c);transform:scale(2.2);}
 
-/* ── SCENE BASE ── */
-.sc{position:relative;top:0;left:0;right:0;bottom:0;min-height:100vh;padding-top:var(--nav-h);z-index:10;
-  display:flex;align-items:center;justify-content:center;flex-direction:column;
-  opacity:1;pointer-events:all;transition:opacity .6s ease;}
-#s0{position:fixed;top:0;left:0;right:0;bottom:0;padding-top:0;}
+/* ══════════════════════════════
+   CORRECCIÓN DE SECCIONES (el fix)
+══════════════════════════════ */
+.sc {
+  position: fixed !important;
+  top: var(--nav-h);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+  overflow-y: auto;
+  padding: 20px;
+}
+.sc.on {
+  opacity: 1;
+  pointer-events: all;
+}
+#s0 {
+  top: 0;
+  padding: 0;
+}
+@media (max-width: 768px) {
+  .sc {
+    padding: 10px;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  #s0 {
+    padding: 0;
+    justify-content: center;
+  }
+}
 
 /* ══════════════════════════════
    S0 — HERO WITH SLIDESHOW
@@ -1371,7 +1405,9 @@ body:has(a:hover,button:hover,[onclick]:hover) #cur-ring{width:38px;height:38px;
 <div id="mov"><div id="mbox"><button id="mcls" onclick="closeM()">✕</button><div id="m-ttl"></div><div id="m-body"></div></div></div>
 
 <script>
-// ── FUNCIONES BÁSICAS PARA EVITAR ERRORES ──
+// ── FUNCIONES UNIFICADAS (TODAS LAS QUE NECESITAS) ──
+
+// Navegación
 function goTo(n) { 
   document.querySelectorAll('.sc').forEach((el,i) => {
     el.classList.toggle('on', i === n);
@@ -1379,8 +1415,11 @@ function goTo(n) {
   document.querySelectorAll('.pd').forEach((el,i) => {
     el.classList.toggle('on', i === n);
   });
+  closeAll();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// Interfaz
 function openPV(i) { document.getElementById('pv').classList.add('on'); }
 function closePV() { document.getElementById('pv').classList.remove('on'); }
 function tCart() { 
@@ -1397,9 +1436,11 @@ function closeAll() {
   document.getElementById('backdrop').classList.remove('on');
   closePV();
 }
+
+// Productos y carrito
 function setLang(l) { 
   document.querySelectorAll('.lb').forEach(b => b.classList.remove('on'));
-  document.querySelector(`.lb[onclick="setLang('${l}')"]`).classList.add('on');
+  document.querySelector(`.lb[onclick="setLang('${l}')"]`)?.classList.add('on');
 }
 function pvSlide(d) { console.log('Slide '+d); }
 function pvMode(m,el) { 
@@ -1411,15 +1452,15 @@ function pvQ(d) {
   if(q < 1) q = 1;
   document.getElementById('pv-qn').textContent = q;
 }
-function pvAdd() { alert('Added to order!'); }
+function pvAdd() { alert('Añadido al carrito!'); }
 function tAcc(el) { el.classList.toggle('open'); }
 function tFi(el) { el.classList.toggle('open'); }
 function doLogin() { alert('Login demo'); }
-function doReg() { alert('Register demo'); }
-function doOut() { alert('Sign out'); }
-function applyP() { alert('Promo applied'); }
+function doReg() { alert('Registro demo'); }
+function doOut() { alert('Cerrando sesión'); }
+function applyP() { alert('Código aplicado'); }
 function doChk() { alert('Checkout'); }
-function qAdd(i) { alert('Added product '+i); }
+function qAdd(i) { alert('Producto '+i+' añadido'); }
 function closeM() { document.getElementById('mov').classList.remove('on'); }
 
 function aTab(tab, el) {
@@ -1443,18 +1484,20 @@ const slides = document.querySelectorAll('.slide');
 const dots = document.getElementById('sl-dots');
 const tag = document.getElementById('sl-tag');
 
-slides.forEach((s,i) => {
-  const dot = document.createElement('div');
-  dot.className = 'sldot' + (i === 0 ? ' on' : '');
-  dot.onclick = () => goSlide(i);
-  dots.appendChild(dot);
-});
-tag.textContent = slides[0].dataset.lbl || '';
+if (dots && slides.length > 0) {
+  slides.forEach((s,i) => {
+    const dot = document.createElement('div');
+    dot.className = 'sldot' + (i === 0 ? ' on' : '');
+    dot.onclick = () => goSlide(i);
+    dots.appendChild(dot);
+  });
+  if (tag) tag.textContent = slides[0]?.dataset.lbl || '';
+}
 
 function goSlide(i) {
   slides.forEach((s,idx) => s.classList.toggle('on', idx === i));
   document.querySelectorAll('.sldot').forEach((d,idx) => d.classList.toggle('on', idx === i));
-  tag.textContent = slides[i].dataset.lbl || '';
+  if (tag) tag.textContent = slides[i]?.dataset.lbl || '';
   slideIdx = i;
 }
 function slGo(d) {
@@ -1467,10 +1510,11 @@ window.slGo = slGo;
 function toggleTheme() {
   document.body.classList.toggle('light');
   const icon = document.getElementById('theme-btn');
-  icon.textContent = document.body.classList.contains('light') ? '☀' : '☾';
+  if (icon) icon.textContent = document.body.classList.contains('light') ? '☀' : '☾';
   localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
 }
 
+// ── INICIALIZACIÓN ──
 window.onload = function() {
   // Recuperar tema
   const savedTheme = localStorage.getItem('theme');
@@ -1478,20 +1522,34 @@ window.onload = function() {
   const icon = document.getElementById('theme-btn');
   if (savedTheme === 'light' || (!savedTheme && !prefersDark)) {
     document.body.classList.add('light');
-    icon.textContent = '☀';
+    if (icon) icon.textContent = '☀';
   } else {
-    icon.textContent = '☾';
+    if (icon) icon.textContent = '☾';
   }
   
-  // Veil
+  // Veil (pantalla de carga)
   const veil = document.getElementById('veil');
   const fill = document.getElementById('veil-fill');
-  let p = 0;
-  const int = setInterval(() => {
-    p += Math.random() * 4 + 2;
-    if(p >= 100) { p = 100; clearInterval(int); setTimeout(() => { veil.style.opacity = '0'; setTimeout(() => veil.style.display = 'none', 700); }, 300); }
-    fill.style.width = p + '%';
-  }, 80);
+  if (veil && fill) {
+    let p = 0;
+    const int = setInterval(() => {
+      p += Math.random() * 4 + 2;
+      if(p >= 100) { 
+        p = 100; 
+        clearInterval(int); 
+        setTimeout(() => { 
+          veil.style.opacity = '0'; 
+          setTimeout(() => veil.style.display = 'none', 700); 
+        }, 300); 
+      }
+      fill.style.width = p + '%';
+    }, 80);
+  }
+  
+  // Asegurar primera sección visible
+  document.querySelectorAll('.sc').forEach((el, i) => {
+    el.classList.toggle('on', i === 0);
+  });
 };
 </script>
 
