@@ -3,6 +3,581 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ABYSS SOCIETY — ARCHIVE SYSTEM v2.06</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <style>
+        /* ── VARIABLES CORE (Alta Costura Avanzada / Minimalismo Táctico) ── */
+        :root {
+            --c: #1a4fbf;         /* Azul Abisal */
+            --w: #f5f5f7;         /* Blanco Alpino */
+            --k: #0e0e11;         /* Negro Puro de Absorción */
+            --s: #16161f;         /* Gris de Superficie Industrial */
+            --bd: #252533;        /* Bordes de Ensamblaje */
+            --g: #8e8e9f;         /* Gris de Datos */
+            --or: #ff7a00;        /* Limited Drop */
+            --rd: #ff3b30;        /* Sold Out */
+            --nav-h: 115px;       
+            --font-display: 'Impact', 'Arial Narrow', sans-serif;
+            --font-mono: 'Courier New', Courier, monospace;
+        }
+
+        .light-mode {
+            --w: #0e0e11; --k: #f5f5f7; --s: #ffffff; --bd: #d1d1d6; --g: #505060;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
+        
+        html { scroll-behavior: smooth; overflow-y: auto; height: 100%; }
+        body {
+            background: var(--k); color: var(--w); font-family: var(--font-mono);
+            font-size: 15px; line-height: 1.6; padding-top: var(--nav-h);
+            transition: background 0.4s, color 0.4s; min-height: 100%;
+        }
+
+        /* ── INTRODUCCIÓN CON INTERPOLACIÓN (ENTERING VOID) ── */
+        #intro-void {
+            position: fixed; top:0; left:0; width:100%; height:100%; background: #000;
+            z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 1s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .void-bar-container { width: 250px; height: 2px; background: rgba(255,255,255,0.1); margin-top: 20px; position: relative; overflow: hidden; }
+        .void-bar-progress { width: 0%; height: 100%; background: var(--c); transition: width 0.1s ease; }
+
+        /* ── MICRO-PUNTERO INTELIGENTE ── */
+        #cursor-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 99999; }
+        #custom-pointer {
+            position: fixed; width: 5px; height: 5px; background: var(--w); border-radius: 50%;
+            pointer-events: none; z-index: 100000; transform: translate(-50%, -50%); transition: opacity 0.3s; opacity: 0;
+        }
+
+        /* ── TRANSLATION INTERFACE AD (DROP CONTEXT) ── */
+        #drop-ad-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--k);
+            z-index: 1500; display: flex; align-items: center; justify-content: center;
+            transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        #drop-ad-screen.active { transform: translateY(0); }
+        #drop-ad-screen.slide-up { transform: translateY(-100%); }
+
+        /* ── GLOBAL STRUCTURAL HEADER ── */
+        #nav {
+            position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+            z-index: 900; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 50px; background: rgba(14, 14, 17, 0.96); border-bottom: 2px solid var(--bd); backdrop-filter: blur(25px);
+        }
+        .light-mode #nav { background: rgba(245, 245, 247, 0.96); }
+        .nav-logo { font-family: var(--font-display); font-size: 34px; letter-spacing: 0.08em; }
+        .nav-logo small { display: block; font-size: 11px; letter-spacing: 0.38em; color: var(--c); font-family: var(--font-mono); margin-top: 2px; }
+
+        .nav-center { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        #nav-links { display: flex; gap: 30px; list-style: none; }
+        #nav-links a { font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--g); text-decoration: none; font-weight: bold; }
+        #nav-links a:hover { color: var(--w); }
+        
+        .lang-selector { display: flex; gap: 10px; font-size: 11px; color: var(--g); }
+        .lang-btn { background: transparent; border: none; color: inherit; font-family: inherit; font-weight: bold; }
+        .lang-btn.active { color: var(--c); }
+
+        .nav-actions { display: flex; align-items: center; gap: 15px; }
+
+        /* ── COMPONENTES GENERALES DE SECCIÓN ── */
+        .sc { padding: 120px 50px; border-bottom: 2px solid var(--bd); }
+        .sec-title { font-family: var(--font-display); font-size: 45px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 40px; text-align: center; }
+
+        /* ── SECCIÓN 1: HERO ADAPTADO (SLIDESHOW EQUILIBRADO) ── */
+        #s0 { position: relative; height: calc(100vh - var(--nav-h)); overflow: hidden; display: flex; align-items: center; justify-content: center; background: #050508; }
+        .slide-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center; opacity: 0;
+            transition: opacity 1.2s ease-in-out; z-index: 1; filter: brightness(0.35);
+        }
+        .slide-bg.on { opacity: 1; }
+        .sl-arrow {
+            position: absolute; top: 50%; transform: translateY(-50%); z-index: 15;
+            background: transparent; border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.4);
+            width: 50px; height: 80px; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: 0.3s;
+        }
+        .sl-arrow:hover { border-color: var(--c); color: var(--w); background: rgba(26,79,191,0.05); }
+        #sl-prev { left: 0; border-left: none; } #sl-next { right: 0; border-right: none; }
+
+        /* ── SECCIÓN 2: GRILLA DE PRODUCTOS Y FILTROS TÁCTICOS ── */
+        .filter-container { display: flex; justify-content: center; gap: 15px; margin-bottom: 60px; }
+        .filter-btn {
+            background: var(--s); border: 1px solid var(--bd); color: var(--g); padding: 16px 32px;
+            font-size: 13px; text-transform: uppercase; font-family: inherit; font-weight: bold;
+            position: relative; overflow: hidden; transition: all 0.3s ease;
+        }
+        .filter-btn.on { border-color: var(--c); color: var(--w); background: rgba(26,79,191,0.06); }
+
+        .products-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; max-width: 1400px; margin: 0 auto; }
+        .product-card { background: var(--s); border: 1px solid var(--bd); width: 380px; overflow: hidden; display: flex; flex-direction: column; }
+        .product-visual { width: 100%; height: 420px; background: #111116; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .product-visual img { width: 85%; height: 85%; object-fit: contain; }
+        
+        .product-hover-layer {
+            position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(14, 14, 17, 0.94);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;
+        }
+        .product-card:hover .product-hover-layer { opacity: 1; }
+
+        .product-info { padding: 30px; border-top: 1px solid var(--bd); display: flex; flex-direction: column; gap: 10px; }
+        .product-title { font-family: var(--font-display); font-size: 25px; text-transform: uppercase; }
+        .product-desc { font-size: 13px; color: var(--g); min-height: 40px; }
+        .product-footer { display: flex; justify-content: space-between; align-items: center; }
+        .product-price { font-family: var(--font-display); font-size: 24px; }
+
+        /* ── SECCIÓN 3: COMPACT COMPOSITE PRODUCT VIEWER ── */
+        .viewer-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; max-width: 1200px; margin: 0 auto; align-items: center; }
+        .viewer-display { background: #111116; border: 1px solid var(--bd); height: 500px; display: flex; align-items: center; justify-content: center; position: relative; }
+        .viewer-display img { max-width: 80%; max-height: 80%; object-fit: contain; }
+        .size-selector { display: flex; gap: 10px; margin: 20px 0; }
+        .size-box { border: 1px solid var(--bd); padding: 10px 20px; font-size: 12px; font-weight: bold; background: var(--s); }
+        .size-box.active { border-color: var(--c); color: var(--c); }
+
+        /* Accordion */
+        .acc-item { border-bottom: 1px solid var(--bd); }
+        .acc-trigger { width: 100%; background: transparent; border: none; color: var(--w); text-align: left; padding: 15px 0; font-family: inherit; font-weight: bold; display: flex; justify-content: space-between; }
+        .acc-content { max-height: 0; overflow: hidden; transition: max-height 0.2s ease; color: var(--g); font-size: 13px; }
+
+        /* ── SECCIÓN 4: DROP SPACE COMPACTO ── */
+        .compact-drop-zone { background: var(--s); border: 1px solid var(--bd); max-width: 1000px; margin: 0 auto; padding: 40px; display: grid; grid-template-columns: 1fr 2fr; gap: 30px; align-items: center; }
+
+        /* ── SECCIÓN 5: MANIFIESTO CONCEPTUAL RESPONSIVE ── */
+        .manifesto-bg { background-size: cover; background-position: center; position: relative; padding: 100px 40px; border-bottom: 2px solid var(--bd); }
+        .manifesto-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(14,14,17,0.85); z-index: 1; }
+        .manifesto-content { position: relative; z-index: 2; max-width: 800px; margin: 0 auto; text-align: center; }
+        .manifesto-text { font-size: 22px; letter-spacing: 0.05em; line-height: 1.8; text-transform: uppercase; font-weight: bold; }
+
+        /* ── SECCIÓN 6: FAQ CENTRALIZADO CON FORMULARIO INTEGRADO ── */
+        .faq-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 50px; max-width: 1200px; margin: 0 auto; }
+        .faq-wrapper { width: 100%; }
+        .faq-item { border: 1px solid var(--bd); background: var(--s); margin-bottom: 15px; }
+        .faq-trigger { width: 100%; padding: 25px; background: transparent; border: none; color: var(--w); font-family: inherit; font-size: 16px; font-weight: bold; text-align: left; display: flex; justify-content: space-between; }
+        .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 25px; color: var(--g); }
+        .faq-item.open .faq-content { max-height: 150px; padding-bottom: 25px; }
+
+        /* ── SECCIÓN 8: LAB RATIO VISOR 3D CENTRALIZADO ── */
+        #canvas-container { width: 100%; max-width: 1200px; height: 500px; background: #09090d; border: 1px solid var(--bd); margin: 0 auto; }
+
+        /* ── DRAWERS LATERALES (Z-INDEX PROTEGIDO) ── */
+        .sidebar-drawer {
+            position: fixed; top: 0; right: 0; width: 100%; max-width: 480px; height: 100%;
+            background: var(--s); border-left: 2px solid var(--bd); z-index: 5000;
+            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 40px; display: flex; flex-direction: column;
+        }
+        .sidebar-drawer.open { transform: translateX(0); }
+        .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid var(--bd); padding-bottom: 15px; }
+        .drawer-tabs { display: flex; gap: 10px; margin-bottom: 25px; }
+        .drawer-tab-btn { background: transparent; border: 1px solid var(--bd); color: var(--g); padding: 10px 15px; font-size: 12px; text-transform: uppercase; font-family: inherit; font-weight: bold; }
+        .drawer-tab-btn.active { border-color: var(--c); color: var(--w); background: rgba(26,79,191,0.1); }
+        .profile-view { display: none; } .profile-view.active { display: block; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 11px; color: var(--g); margin-bottom: 6px; text-transform: uppercase; font-weight: bold; }
+        .form-control { width: 100%; background: var(--k); border: 1px solid var(--bd); padding: 14px; color: var(--w); font-family: inherit; }
+        .btn-submit { width: 100%; background: var(--c); color: #fff; border: none; padding: 16px; text-transform: uppercase; font-weight: bold; font-family: inherit; }
+        .item-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--bd); }
+
+        /* MODAL DE PRIVACIDAD / TÉRMINOS PRESENTACIÓN IMPECABLE */
+        #product-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(14,14,17,0.98); z-index: 6000; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .modal-body { background: var(--s); border: 1px solid var(--bd); width: 100%; max-width: 900px; display: grid; grid-template-columns: 1fr 1fr; position: relative; }
+        .modal-close { position: absolute; top: 20px; right: 20px; background: transparent; border: none; color: var(--w); font-size: 28px; z-index: 10; }
+
+        @media (max-width: 900px) {
+            .viewer-layout, .faq-grid, .modal-body { grid-template-columns: 1fr; }
+            #nav { padding: 0 20px; }
+            .nav-center { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="intro-void">
+        <h1 style="font-family: var(--font-display); font-size: 35px; letter-spacing: 0.15em;">ENTERING ABYSS</h1>
+        <div class="void-bar-container">
+            <div class="void-bar-progress" id="void-progress"></div>
+        </div>
+    </div>
+
+    <canvas id="cursor-canvas"></canvas>
+    <div id="custom-pointer"></div>
+
+    <div id="drop-ad-screen">
+        <div style="font-family: var(--font-display); font-size: 3vw; color: var(--c); text-transform: uppercase;">LOADING ARCHIVE SUB-LAYER</div>
+    </div>
+
+    <header id="nav">
+        <div class="nav-logo" onclick="window.scrollTo(0,0)">
+            ABYSS SOCIETY
+            <small>DESIGN STUDIO & CORE</small>
+        </div>
+        <div class="nav-center">
+            <nav id="nav-links">
+                <a href="#s0" data-key="nav-home">Home</a>
+                <a href="#s1" data-key="nav-drop">Drop</a>
+                <a href="#s2" data-key="nav-viewer">Viewer</a>
+                <a href="#s5" data-key="nav-faq">System</a>
+            </nav>
+            <div class="lang-selector">
+                <button class="lang-btn active" onclick="switchLang('es')">ES</button>|
+                <button class="lang-btn" onclick="switchLang('en')">EN</button>|
+                <button class="lang-btn" onclick="switchLang('fr')">FR</button>|
+                <button class="lang-btn" onclick="switchLang('de')">DE</button>
+            </div>
+        </div>
+        <div class="nav-actions">
+            <button class="action-btn" id="theme-toggle">🌗</button>
+            <button class="action-btn" id="profile-toggle">👤</button>
+            <button class="action-btn" id="cart-toggle">🛒 (<span id="cart-count">0</span>)</button>
+        </div>
+    </header>
+
+    <main>
+        <section id="s0">
+            <div class="slide-bg on" style="background-image: url('https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200&auto=format&fit=crop')"></div>
+            <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=1200&auto=format&fit=crop')"></div>
+            <button class="sl-arrow" id="sl-prev">←</button>
+            <button class="sl-arrow" id="sl-next">→</button>
+            <div style="position: relative; z-index: 10; text-align: center;">
+                <h2 class="sec-title" data-key="hero-title" style="margin-bottom:10px;">LABORATORY EXPERIMENTAL APPAREL</h2>
+                <p style="color:var(--c); font-weight:bold; letter-spacing:0.3em; font-size:12px;">SYSTEM ARCHITECTURE</p>
+            </div>
+        </section>
+
+        <section id="s1" class="sc">
+            <h2 class="sec-title" data-key="drop-active-title">ACTIVE DROP // FORGE01</h2>
+            <div class="filter-container">
+                <button class="filter-btn on" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="hoodies">Hoodies</button>
+                <button class="filter-btn" data-filter="tees">Tees</button>
+            </div>
+
+            <div class="products-grid">
+                <div class="product-card" data-cat="hoodies" data-id="1">
+                    <div class="product-visual">
+                        <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=600&auto=format&fit=crop" alt="Prenda" />
+                        <div class="product-hover-layer">
+                            <span style="color: var(--c); font-weight: bold; font-size: 13px; letter-spacing: 0.2em; margin-bottom: 10px;">FORGE01 ARCHIVE</span>
+                            <span style="border-bottom: 1px solid #fff; font-size: 14px; text-transform: uppercase;">Inspect Matrix</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <span class="product-price" style="font-size:12px; color:var(--or);">NEW LIMIT</span>
+                        <h3 class="product-title">Abyss Alpha Hoodie</h3>
+                        <p class="product-desc">450GSM technical loopback weave structural build.</p>
+                        <div class="product-footer">
+                            <span class="product-price">110.00 €</span>
+                            <div class="card-actions">
+                                <button class="btn-icon fav-btn">♥</button>
+                                <button class="btn-icon add-cart-btn">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="s2" class="sc">
+            <div class="viewer-layout">
+                <div class="viewer-display">
+                    <img id="main-view-img" src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=600&auto=format&fit=crop" alt="Viewer Blueprint" />
+                </div>
+                <div>
+                    <h2 class="product-title" style="font-size: 38px;" id="view-title">Abyss Alpha Hoodie</h2>
+                    <p style="color: var(--g); margin: 15px 0;" id="view-desc">Premium experimental high-neck framework core cut.</p>
+                    
+                    <label style="font-size:11px; font-weight:bold; color:var(--g); text-transform:uppercase;">Select Size Matrix</label>
+                    <div class="size-selector">
+                        <div class="size-box active">S</div>
+                        <div class="size-box">M</div>
+                        <div class="size-box">L</div>
+                        <div class="size-box">XL</div>
+                    </div>
+
+                    <div class="acc-item">
+                        <button class="acc-trigger"><span>COMPOSITION & SPECIFICATIONS</span> <span>↓</span></button>
+                        <div class="acc-content"><p style="padding: 15px 0;">100% Organic Heavyweight Cotton Graphene Alloy Coating. Wash Cold.</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="sc">
+            <div class="compact-drop-zone">
+                <h3 class="product-title" style="color:var(--or);">NEXT GENERATION METADATA</h3>
+                <p style="color:var(--g); font-size:14px;">El espacio estructurado optimiza los recursos de red del servidor remoto. Próxima actualización asíncrona inminente.</p>
+            </div>
+        </section>
+
+        <section class="manifesto-bg" style="background-image: url('https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=1200&auto=format&fit=crop')">
+            <div class="manifesto-overlay"></div>
+            <div class="manifesto-content">
+                <p class="manifesto-text" data-key="manifesto-body">"EVERY PIECE CONSTITUTES A MASTERPIECE. DESIGNED TO CONCEAL IDENTITY AND ACCESS SECURITY ARCHITECTURE."</p>
+            </div>
+        </section>
+
+        <section id="s5" class="sc">
+            <div class="faq-grid">
+                <div class="faq-wrapper">
+                    <div class="faq-item">
+                        <button class="faq-trigger"><span>Logística de Distribución Táctica</span> <span>+</span></button>
+                        <div class="faq-content"><p>Tránsito blindado internacional completado mediante protocolos automatizados en 48 horas.</p></div>
+                    </div>
+                </div>
+                <div style="background: var(--s); border:1px solid var(--bd); padding: 30px;">
+                    <h4 class="product-title" style="font-size:18px; margin-bottom:15px;">Encrypted Enquiry</h4>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Message Vector Core...">
+                    </div>
+                    <button class="btn-submit" onclick="alert('Mensaje enviado.')">Send Input</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="sc" style="text-align: center;">
+            <h2 class="sec-title">3D Lab Model View</h2>
+            <div id="canvas-container"></div>
+        </section>
+    </main>
+
+    <div class="sidebar-drawer" id="profile-drawer">
+        <div class="drawer-header">
+            <h2 class="drawer-title">Identity Network</h2>
+            <button class="btn-icon" id="close-profile">✕</button>
+        </div>
+        <div class="drawer-tabs">
+            <button class="drawer-tab-btn active" data-tab="tab-auth">Auth</button>
+            <button class="drawer-tab-btn" data-tab="tab-orders">Orders</button>
+            <button class="drawer-tab-btn" data-tab="tab-favs">Favs (<span id="favs-count">0</span>)</button>
+        </div>
+        <div class="profile-view active" id="tab-auth">
+            <div class="form-group"><label>Security Identity User</label><input type="email" class="form-control" placeholder="root@abyss.com"></div>
+            <div class="form-group"><label>Passkey Matrix</label><input type="password" class="form-control" placeholder="••••••••"></div>
+            <button class="btn-submit" onclick="alert('Access Key Accepted')">Verify Node</button>
+        </div>
+        <div class="profile-view" id="tab-orders">
+            <div class="item-row"><span>#FORGE-992A</span> <span style="color:var(--c);">Processing</span></div>
+        </div>
+        <div class="profile-view" id="tab-favs">
+            <div id="favs-container"><p style="color:var(--g); font-size:13px; text-align:center; padding-top:30px;">Memoria Vacía.</p></div>
+        </div>
+    </div>
+
+    <div class="sidebar-drawer" id="cart-drawer">
+        <div class="drawer-header">
+            <h2 class="drawer-title">Your Bag</h2>
+            <button class="btn-icon" id="close-cart">✕</button>
+        </div>
+        <div style="flex:1; overflow-y:auto;" id="cart-wrapper">
+            <p style="color:var(--g); text-align:center; padding-top:40px;">No items built.</p>
+        </div>
+        <button class="btn-submit">Execute Extraction</button>
+    </div>
+
+    <div id="product-modal">
+        <div class="modal-body">
+            <button class="modal-close" id="close-modal">✕</button>
+            <div style="background:#111; display:flex; align-items:center; justify-content:center; padding:40px;"><img id="modal-img" src="" style="max-width:100%; object-fit:contain;"/></div>
+            <div style="padding:40px; display:flex; flex-direction:column; justify-content:center; gap:20px;">
+                <h3 class="product-title" id="modal-title">Specs</h3>
+                <p id="modal-desc" style="color:var(--g);"></p>
+                <button class="btn-submit" id="modal-add-btn">Append Build</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // TRANSLATION SYSTEM MATRIX DE IDIOMAS REALES
+        const langData = {
+            es: { "nav-home": "Inicio", "nav-drop": "Colección", "nav-viewer": "Visor", "nav-faq": "Sistema", "hero-title": "ROPA EXPERIMENTAL DE LABORATORIO", "manifesto-body": "CADA PRENDA CONSTITUYE UNA OBRA MAESTRA. DISEÑADA PARA PROTEGER LA IDENTIDAD INTEGRAL." },
+            en: { "nav-home": "Home", "nav-drop": "Drop", "nav-viewer": "Viewer", "nav-faq": "System", "hero-title": "LABORATORY EXPERIMENTAL APPAREL", "manifesto-body": "EVERY PIECE CONSTITUTES A MASTERPIECE. DESIGNED TO CONCEAL IDENTITY AND ACCESS SECURITY ARCHITECTURE." },
+            fr: { "nav-home": "Maison", "nav-drop": "Collection", "nav-viewer": "Viseur", "nav-faq": "Système", "hero-title": "VÊTEMENTS EXPÉRIMENTAUX DE LABORATOIRE", "manifesto-body": "CHAQUE PIÈCE CONSTITUE UN CHEF-D'ŒUVRE. CONÇU POUR DISSIMULER L'IDENTITÉ." },
+            de: { "nav-home": "Start", "nav-drop": "Kollektion", "nav-viewer": "Anzeige", "nav-faq": "System", "hero-title": "EXPERIMENTELLE LABORALBEKLEIDUNG", "manifesto-body": "JEDES STÜCK IST EIN MEISTERWERK. ENTWICKELT, UM DIE IDENTITÄT ZU VERBERGEN." }
+        };
+
+        function switchLang(lang) {
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            Object.keys(langData[lang]).forEach(key => {
+                const el = document.querySelector(`[data-key="${key}"]`);
+                if(el) el.innerText = langData[lang][key];
+            });
+        }
+
+        // CONTROL DE CARGA DEL VOID INTRO
+        let progress = 0;
+        const progBar = document.getElementById('void-progress');
+        const introVoid = document.getElementById('intro-void');
+        const interval = setInterval(() => {
+            progress += 5;
+            progBar.style.width = progress + '%';
+            if(progress >= 100) {
+                clearInterval(interval);
+                introVoid.style.opacity = '0';
+                setTimeout(() => introVoid.style.display = 'none', 1000);
+            }
+        }, 100);
+
+        // MOTOR DEL CURSOR INTELIGENTE
+        const canvas = document.getElementById('cursor-canvas');
+        const ctx = canvas.getContext('2d');
+        const pointer = document.getElementById('custom-pointer');
+        let particles = [];
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+
+        document.addEventListener('mousemove', (e) => {
+            pointer.style.opacity = '1'; pointer.style.left = e.clientX + 'px'; pointer.style.top = e.clientY + 'px';
+            particles.push({ x: e.clientX, y: e.clientY, alpha: 1, size: 2, vx: (Math.random()-0.5)*1, vy: (Math.random()-0.5)*1 });
+        });
+
+        function animParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, i) => {
+                p.x += p.vx; p.y += p.vy; p.alpha -= 0.03;
+                if(p.alpha <= 0) particles.splice(i, 1);
+                ctx.fillStyle = `rgba(26,79,191,${p.alpha})`;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(animParticles);
+        }
+        animParticles();
+
+        // CONTROL INTERFACES GLOBALES
+        document.getElementById('theme-toggle').addEventListener('click', () => document.body.classList.toggle('light-mode'));
+        
+        // Carrusel
+        const slides = document.querySelectorAll('.slide-bg'); let curSlide = 0;
+        function showSlide(idx) { slides[curSlide].classList.remove('on'); curSlide = (idx+slides.length)%slides.length; slides[curSlide].classList.add('on'); }
+        document.getElementById('sl-next').addEventListener('click', () => showSlide(curSlide+1));
+        document.getElementById('sl-prev').addEventListener('click', () => showSlide(curSlide-1));
+
+        // Transición de Menús Coords
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const cards = document.querySelectorAll('.product-card');
+        const adScreen = document.getElementById('drop-ad-screen');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('on')); btn.classList.add('on');
+                adScreen.classList.add('active');
+                setTimeout(() => {
+                    cards.forEach(c => c.style.display = (btn.dataset.filter === 'all' || c.dataset.cat === btn.dataset.filter)? 'flex':'none');
+                    adScreen.classList.add('slide-up');
+                }, 600);
+                setTimeout(() => adScreen.className = '', 1100);
+            });
+        });
+
+        // Cajones Laterales Abiertos/Cerrados
+        const profD = document.getElementById('profile-drawer'); const cartD = document.getElementById('cart-drawer');
+        document.getElementById('profile-toggle').addEventListener('click', () => profD.classList.add('open'));
+        document.getElementById('close-profile').addEventListener('click', () => profD.classList.remove('open'));
+        document.getElementById('cart-toggle').addEventListener('click', () => cartD.classList.add('open'));
+        document.getElementById('close-cart').addEventListener('click', () => cartD.classList.remove('open'));
+
+        // Control de Pestañas del Perfil
+        document.querySelectorAll('.drawer-tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.drawer-tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.profile-view').forEach(v => v.classList.remove('active'));
+                btn.classList.add('active'); document.getElementById(btn.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Gestión Simulada de Datos
+        let favorites = []; let cart = [];
+        const productsData = {
+            "1": { title: "Abyss Alpha Hoodie", desc: "450GSM technical loopback weave structural build.", price: "110.00 €", img: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=600&auto=format&fit=crop" }
+        };
+
+        cards.forEach(c => {
+            c.addEventListener('click', (e) => {
+                if(e.target.closest('.card-actions')) return;
+                const d = productsData[c.dataset.id];
+                document.getElementById('modal-img').src = d.img;
+                document.getElementById('modal-title').innerText = d.title;
+                document.getElementById('modal-desc').innerText = d.desc;
+                document.getElementById('product-modal').style.display = 'flex';
+            });
+        });
+        document.getElementById('close-modal').addEventListener('click', () => document.getElementById('product-modal').style.display='none');
+
+        document.querySelectorAll('.fav-btn').forEach(b => {
+            b.addEventListener('click', (e) => {
+                const id = e.target.closest('.product-card').dataset.id;
+                if(!favorites.includes(id)) { favorites.push(id); b.style.color = 'var(--rd)'; document.getElementById('favs-count').innerText = favorites.length; renderFavs(); }
+            });
+        });
+
+        function renderFavs() {
+            const container = document.getElementById('favs-container'); container.innerHTML = '';
+            favorites.forEach(id => { container.innerHTML += `<div class="item-row"><span>${productsData[id].title}</span> <span>${productsData[id].price}</span></div>`; });
+        }
+
+        document.querySelectorAll('.add-cart-btn').forEach(b => {
+            b.addEventListener('click', (e) => {
+                cart.push(e.target.closest('.product-card').dataset.id);
+                document.getElementById('cart-count').innerText = cart.length; renderCart();
+            });
+        });
+
+        function renderCart() {
+            const wrapper = document.getElementById('cart-wrapper'); wrapper.innerHTML = '';
+            cart.forEach(id => { wrapper.innerHTML += `<div class="item-row"><span>${productsData[id].title}</span> <span>${productsData[id].price}</span></div>`; });
+        }
+
+        // Accordion
+        document.querySelectorAll('.acc-trigger').forEach(t => {
+            t.addEventListener('click', () => {
+                const content = t.nextElementSibling;
+                content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + "px";
+            });
+        });
+
+        document.querySelectorAll('.faq-trigger').forEach(t => {
+            t.addEventListener('click', () => {
+                const p = t.parentElement; p.classList.toggle('open');
+                const content = t.nextElementSibling; content.style.maxHeight = p.classList.contains('open') ? content.scrollHeight + "px" : null;
+            });
+        });
+
+        // MOTOR TRIDIMENSIONAL ESTABLE THREE.JS (PÁGINA 8)
+        const container3d = document.getElementById('canvas-container');
+        if (container3d && typeof THREE !== 'undefined') {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, container3d.clientWidth / container3d.clientHeight, 0.1, 100);
+            camera.position.set(0, 0, 5);
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container3d.clientWidth, container3d.clientHeight);
+            container3d.appendChild(renderer.domElement);
+
+            const geometry = new THREE.IcosahedronGeometry(1.6, 1);
+            const material = new THREE.MeshBasicMaterial({ color: 0x1a4fbf, wireframe: true });
+            const coreMesh = new THREE.Mesh(geometry, material);
+            scene.add(coreMesh);
+
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true; controls.dampingFactor = 0.05; controls.enablePan = false;
+            controls.minDistance = 3; controls.maxDistance = 7;
+
+            function renderLoop() {
+                requestAnimationFrame(renderLoop);
+                coreMesh.rotation.y += 0.003;
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            renderLoop();
+        }
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ABYSS SOCIETY — SYSTEM INTEGRATED</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
