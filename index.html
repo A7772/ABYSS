@@ -68,6 +68,13 @@
             color: var(--w);
             flex-shrink: 0;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .nav-logo img {
+            height: 30px;
+            width: auto;
+            display: block;
         }
         .nav-logo small {
             font-size: 9px;
@@ -179,6 +186,12 @@
             animation: glitch 0.08s infinite alternate;
             text-shadow: 0 0 40px rgba(26, 79, 191, 0.3);
         }
+        #veil-logo img {
+            max-width: clamp(60px, 15vw, 140px);
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
         @keyframes glitch {
             0% {
                 text-shadow: 3px 0 var(--c), -3px 0 var(--rd);
@@ -256,6 +269,12 @@
             letter-spacing: 0.06em;
             line-height: 0.87;
             animation: hfloat 6s ease-in-out infinite;
+        }
+        .h-title img {
+            max-width: clamp(200px, 60vw, 600px);
+            height: auto;
+            display: block;
+            margin: 0 auto;
         }
         @keyframes hfloat {
             0%,
@@ -1557,6 +1576,9 @@
             .nav-logo {
                 font-size: 18px;
             }
+            .nav-logo img {
+                height: 24px;
+            }
             .nav-cta {
                 font-size: 9px;
                 padding: 6px 12px;
@@ -1572,6 +1594,9 @@
             }
             .h-title {
                 font-size: clamp(44px, 14vw, 64px);
+            }
+            .h-title img {
+                max-width: 150px;
             }
             .rail {
                 gap: 12px;
@@ -1652,6 +1677,12 @@
             .dn2 {
                 font-size: 13px;
             }
+            #veil-logo img {
+                max-width: 120px;
+            }
+            .h-title img {
+                max-width: 120px;
+            }
         }
     </style>
 </head>
@@ -1659,7 +1690,9 @@
 
     <!-- VEIL: PANTALLA DE APERTURA CON GLITCH -->
     <div id="veil">
-        <div id="veil-logo">ABYSS</div>
+        <div id="veil-logo">
+            <img src="img/logo-abyss.svg" alt="ABYSS SOCIETY">
+        </div>
         <div id="veil-sub">Society · Est. 2026</div>
         <div id="veil-pct">Entering the void…</div>
         <div id="veil-bar"><div id="veil-fill"></div></div>
@@ -1670,7 +1703,9 @@
 
     <!-- NAV -->
     <div id="nav">
-        <div class="nav-logo" onclick="goTo('s0')">ABYSS<small>SOCIETY</small></div>
+        <div class="nav-logo" onclick="goTo('s0')">
+            <img src="img/logo-abyss.svg" alt="ABYSS SOCIETY">
+        </div>
         <ul id="nav-links">
             <li><a onclick="goTo('s1')" data-i18n="nav-collection">Collection</a></li>
             <li><a onclick="goTo('s2')" data-i18n="nav-hoods">Hoods</a></li>
@@ -1706,7 +1741,9 @@
     <!-- S0: HERO -->
     <section id="s0">
         <div id="hero-txt">
-            <div class="h-title">ABYSS</div>
+            <div class="h-title">
+                <img src="img/logo-abyss.svg" alt="ABYSS SOCIETY">
+            </div>
             <div class="h-sub" data-i18n="hero-sub">Society · Forge01 · Est. 2026</div>
             <div class="h-tag" data-i18n="hero-tag">We are not a brand. We are a society.</div>
             <a href="#s1" class="h-enter" data-i18n="hero-enter">Enter Below ↓</a>
@@ -1727,7 +1764,7 @@
             <button class="ftab" data-filter="acc" onclick="filterProducts('acc',this)" data-i18n="filter-acc">Accessories</button>
         </div>
         <div class="rail" id="rail">
-            <!-- Producto 1 -->
+            <!-- Productos 1-8 (con overlay) -->
             <div class="mc" data-cat="tee" onclick="openProductViewer(0)">
                 <div class="mv"><div class="placeholder">T-SHIRT<br>THE OATH</div></div>
                 <div class="mc-overlay"><span>THE OATH</span><small>FORGE01 · T01</small></div>
@@ -1737,7 +1774,6 @@
                     <div class="mf"><div><span class="mp">€39</span><span class="mst" data-i18n="stock">● In Stock</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 2 -->
             <div class="mc" data-cat="tee" onclick="openProductViewer(1)">
                 <div class="mv"><div class="placeholder">T-SHIRT<br>CATHEDRAL</div></div>
                 <div class="mc-overlay"><span>CATHEDRAL</span><small>FORGE01 · T02</small></div>
@@ -1747,7 +1783,6 @@
                     <div class="mf"><div><span class="mp">€45</span><span class="mst lo" data-i18n="stock-8">● 8 Left</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 3 -->
             <div class="mc" data-cat="tee" onclick="openProductViewer(2)">
                 <div class="mv"><div class="placeholder">T-SHIRT<br>THE FALL</div></div>
                 <div class="mc-overlay"><span>THE FALL</span><small>FORGE01 · T03</small></div>
@@ -1757,7 +1792,6 @@
                     <div class="mf"><div><span class="mp">€45</span><span class="mst lo" data-i18n="stock-last">● Last Units</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 4 -->
             <div class="mc" data-cat="hoodie" onclick="openProductViewer(3)">
                 <div class="mv"><div class="placeholder">HOODIE<br>IRON VOW</div></div>
                 <div class="mc-overlay"><span>IRON VOW</span><small>FORGE01 · H01</small></div>
@@ -1767,7 +1801,6 @@
                     <div class="mf"><div><span class="mp">€85</span><span class="mst" data-i18n="stock">● In Stock</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 5 -->
             <div class="mc" data-cat="hoodie" onclick="openProductViewer(4)">
                 <div class="mv"><div class="placeholder">HOODIE<br>SHADOW ZIP</div></div>
                 <div class="mc-overlay"><span>SHADOW ZIP</span><small>FORGE01 · Z01</small></div>
@@ -1777,7 +1810,6 @@
                     <div class="mf"><div><span class="mp">€95</span><span class="mst lo" data-i18n="stock-12">● 12 Left</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 6 -->
             <div class="mc" data-cat="acc" onclick="openProductViewer(5)">
                 <div class="mv"><div class="placeholder">CAP<br>VOID CAP</div></div>
                 <div class="mc-overlay"><span>VOID CAP</span><small>FORGE01 · A01</small></div>
@@ -1787,7 +1819,6 @@
                     <div class="mf"><div><span class="mp">€32</span><span class="mst" data-i18n="stock">● In Stock</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 7 -->
             <div class="mc" data-cat="acc" onclick="openProductViewer(6)">
                 <div class="mv"><div class="placeholder">BEANIE<br>FORGE BEANIE</div></div>
                 <div class="mc-overlay"><span>FORGE BEANIE</span><small>FORGE01 · A02</small></div>
@@ -1797,7 +1828,6 @@
                     <div class="mf"><div><span class="mp">€28</span><span class="mst" data-i18n="stock">● In Stock</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 8 -->
             <div class="mc" data-cat="acc" onclick="openProductViewer(7)">
                 <div class="mv"><div class="placeholder">TOTE BAG<br>VOID TOTE</div></div>
                 <div class="mc-overlay"><span>VOID TOTE</span><small>FORGE01 · A03</small></div>
