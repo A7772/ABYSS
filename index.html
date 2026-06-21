@@ -162,7 +162,7 @@
             color: var(--k);
         }
 
-        /* ── VEIL (pantalla de carga con glitch y logo) ── */
+        /* ── VEIL (pantalla de carga con niebla y glitch) ── */
         #veil {
             position: fixed;
             top: 0;
@@ -177,9 +177,35 @@
             flex-direction: column;
             gap: 20px;
             transition: opacity 0.8s ease;
-            background-image: radial-gradient(ellipse at center, rgba(26, 79, 191, 0.15) 0%, transparent 70%);
+            overflow: hidden;
+        }
+        /* Fondo con niebla (fog) */
+        #veil::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(ellipse at 30% 40%, rgba(26, 79, 191, 0.25) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 60%, rgba(26, 79, 191, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(26, 79, 191, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+            animation: fogAnim 20s ease-in-out infinite alternate;
+        }
+        @keyframes fogAnim {
+            0% {
+                transform: scale(1) rotate(0deg);
+            }
+            100% {
+                transform: scale(1.1) rotate(2deg);
+            }
         }
         #veil-logo {
+            position: relative;
+            z-index: 1;
             font-size: clamp(60px, 15vw, 140px);
             letter-spacing: 0.14em;
             animation: glitch 0.08s infinite alternate;
@@ -219,18 +245,24 @@
             }
         }
         #veil-sub {
+            position: relative;
+            z-index: 1;
             font-size: clamp(12px, 1.8vw, 16px);
             letter-spacing: 0.55em;
             color: var(--c);
             text-transform: uppercase;
         }
         #veil-pct {
+            position: relative;
+            z-index: 1;
             font-size: clamp(10px, 1.2vw, 13px);
             letter-spacing: 0.3em;
             color: var(--g);
             margin-top: 6px;
         }
         #veil-bar {
+            position: relative;
+            z-index: 1;
             width: clamp(180px, 30vw, 300px);
             height: 2px;
             background: #2a2a36;
@@ -1327,6 +1359,13 @@
         .profile-fav-item:hover {
             border-color: var(--c);
         }
+        .profile-fav-item .icon-silhouette {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 8px;
+            color: var(--g);
+            display: block;
+        }
         .profile-fav-item .name {
             font-family: var(--font-display);
             font-size: 15px;
@@ -1592,7 +1631,171 @@
             color: var(--g);
         }
 
-        /* ── VISOR DE PRODUCTO (con imágenes y 3D) ── */
+        /* ── PANEL DE AUTENTICACIÓN (drawer) ── */
+        #auth-dr {
+            position: fixed;
+            top: var(--nav-h);
+            right: 0;
+            bottom: 0;
+            width: 340px;
+            z-index: 450;
+            background: var(--s);
+            border-left: 1px solid var(--bd);
+            transform: translateX(100%);
+            transition: transform 0.34s ease;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+        #auth-dr.on {
+            transform: translateX(0);
+        }
+        #auth-dr::-webkit-scrollbar {
+            display: none;
+        }
+        .auth-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--bd);
+            flex-shrink: 0;
+        }
+        .atab {
+            flex: 1;
+            padding: 14px;
+            text-align: center;
+            font-size: 7px;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: var(--g);
+            border-bottom: 2px solid transparent;
+            transition: all 0.16s;
+            background: transparent;
+        }
+        .atab.on {
+            color: var(--w);
+            border-bottom-color: var(--c);
+        }
+        .a-panel {
+            display: none;
+            flex-direction: column;
+            gap: 11px;
+            padding: 20px;
+        }
+        .a-panel.on {
+            display: flex;
+        }
+        .afield label {
+            font-size: 6px;
+            letter-spacing: 0.26em;
+            color: var(--c);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .afield input {
+            width: 100%;
+            background: var(--k);
+            border: 1px solid var(--bd);
+            padding: 10px 11px;
+            color: var(--w);
+            font-size: 9px;
+            font-family: var(--font-mono);
+            outline: none;
+            transition: border-color 0.16s;
+        }
+        .afield input:focus {
+            border-color: var(--c);
+        }
+        .abtn {
+            width: 100%;
+            padding: 12px;
+            background: var(--c);
+            border: none;
+            color: var(--k);
+            font-size: 7px;
+            letter-spacing: 0.34em;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-family: var(--font-mono);
+            transition: opacity 0.16s;
+            margin-top: 2px;
+        }
+        .abtn:hover {
+            opacity: 0.82;
+        }
+        .a-foot {
+            font-size: 8.5px;
+            color: var(--g);
+            text-align: center;
+        }
+        .a-foot a {
+            color: var(--c);
+            cursor: pointer;
+        }
+        #acct-view {
+            display: none;
+            flex-direction: column;
+            padding: 20px;
+            gap: 16px;
+        }
+        #acct-view.on {
+            display: flex;
+        }
+        .acct-name {
+            font-family: var(--font-display);
+            font-size: 24px;
+            letter-spacing: 0.08em;
+        }
+        .acct-email {
+            font-size: 8px;
+            letter-spacing: 0.16em;
+            color: var(--g);
+        }
+        .acct-sec .sec-lbl {
+            font-size: 6px;
+            letter-spacing: 0.28em;
+            color: var(--c);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .btn-out {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: 1px solid var(--bd);
+            color: var(--g);
+            font-size: 7px;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-family: var(--font-mono);
+            transition: all 0.16s;
+            margin-top: auto;
+        }
+        .btn-out:hover {
+            border-color: var(--rd);
+            color: var(--rd);
+        }
+
+        /* ── BACKDROP ── */
+        #backdrop {
+            position: fixed;
+            top: var(--nav-h);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(6, 6, 8, 0.58);
+            z-index: 440;
+            display: none;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        #backdrop.on {
+            display: block;
+        }
+
+        /* ── VISOR DE PRODUCTO (rediseñado) ── */
         #product-viewer {
             display: none;
             position: fixed;
@@ -1638,10 +1841,22 @@
             background: #0a0a12;
             border: 1px solid var(--bd);
             position: relative;
+            border-radius: 4px;
         }
         #viewer-3d {
             width: 100%;
             height: 100%;
+        }
+        .viewer-3d-container .viewer-hint {
+            position: absolute;
+            bottom: 16px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            color: var(--g);
+            letter-spacing: 0.2em;
+            pointer-events: none;
         }
         .viewer-images {
             display: flex;
@@ -1650,13 +1865,14 @@
         }
         .viewer-images .main-image {
             width: 100%;
-            aspect-ratio: 1/1.2;
+            aspect-ratio: 1/1.1;
             background: #0a0a12;
             border: 1px solid var(--bd);
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 4px;
         }
         .viewer-images .main-image img {
             width: 100%;
@@ -1669,17 +1885,30 @@
             overflow-x: auto;
             padding-bottom: 8px;
         }
-        .viewer-images .thumbnails img {
+        .viewer-images .thumbnails .thumb-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+        .viewer-images .thumbnails .thumb-wrap img {
             width: 60px;
             height: 60px;
             object-fit: cover;
             border: 1px solid var(--bd);
-            cursor: pointer;
             transition: border-color 0.2s;
             flex-shrink: 0;
+            border-radius: 2px;
         }
-        .viewer-images .thumbnails img:hover {
+        .viewer-images .thumbnails .thumb-wrap img:hover {
             border-color: var(--c);
+        }
+        .viewer-images .thumbnails .thumb-wrap span {
+            font-size: 8px;
+            color: var(--g);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
         }
         .viewer-info {
             margin-top: 16px;
@@ -1713,6 +1942,7 @@
             letter-spacing: 0.2em;
             text-transform: uppercase;
             cursor: pointer;
+            border-radius: 2px;
         }
         .viewer-actions .close {
             background: transparent;
@@ -1730,13 +1960,6 @@
         }
         .viewer-actions .cart:hover {
             opacity: 0.85;
-        }
-        .viewer-hint {
-            font-size: 12px;
-            color: var(--g);
-            letter-spacing: 0.2em;
-            text-align: center;
-            margin-top: 12px;
         }
 
         /* ── MODO CLARO ── */
@@ -1827,6 +2050,162 @@
         body.light .lb.on {
             background: var(--c);
             color: var(--k);
+        }
+        body.light #auth-dr {
+            background: var(--s);
+            border-left-color: var(--bd);
+        }
+        body.light .dr-hdr {
+            border-bottom-color: var(--bd);
+        }
+        body.light .dr-title {
+            color: var(--w);
+        }
+        body.light .dr-cls {
+            color: var(--g);
+        }
+        body.light .dr-cls:hover {
+            color: var(--w);
+        }
+        body.light .dr-empty {
+            color: var(--g);
+        }
+        body.light .dr-empty b {
+            color: rgba(0, 0, 0, 0.14);
+        }
+        body.light .cit {
+            border-bottom-color: var(--bd);
+        }
+        body.light .cit-v {
+            background: var(--k);
+            border-color: var(--bd);
+        }
+        body.light .cit-n {
+            color: var(--w);
+        }
+        body.light .cit-m {
+            color: var(--g);
+        }
+        body.light .cit-p {
+            color: var(--w);
+        }
+        body.light .cit-qty button {
+            color: var(--g);
+        }
+        body.light .cit-qty button:hover {
+            color: var(--c);
+        }
+        body.light .cit-rm {
+            color: var(--g);
+        }
+        body.light .cit-rm:hover {
+            color: var(--rd);
+        }
+        body.light .dr-ft {
+            border-top-color: var(--bd);
+        }
+        body.light .promo-inp {
+            background: var(--k);
+            border-color: var(--bd);
+            color: var(--w);
+        }
+        body.light .promo-btn {
+            color: var(--g);
+            border-color: var(--bd);
+        }
+        body.light .promo-btn:hover {
+            border-color: var(--c);
+            color: var(--w);
+        }
+        body.light .subtotal-row span:first-child {
+            color: var(--g);
+        }
+        body.light .subtotal-row span:last-child {
+            color: var(--w);
+        }
+        body.light .ship-txt {
+            color: var(--g);
+        }
+        body.light .btn-chk {
+            background: var(--c);
+            color: var(--k);
+        }
+        body.light .btn-cs {
+            color: var(--g);
+            border-color: var(--bd);
+        }
+        body.light .btn-cs:hover {
+            border-color: var(--c);
+            color: var(--w);
+        }
+        body.light .auth-tabs {
+            border-bottom-color: var(--bd);
+        }
+        body.light .atab {
+            color: var(--g);
+        }
+        body.light .atab.on {
+            color: var(--w);
+            border-bottom-color: var(--c);
+        }
+        body.light .afield input {
+            background: var(--k);
+            border-color: var(--bd);
+            color: var(--w);
+        }
+        body.light .afield label {
+            color: var(--c);
+        }
+        body.light .abtn {
+            background: var(--c);
+            color: var(--k);
+        }
+        body.light .a-foot {
+            color: var(--g);
+        }
+        body.light .a-foot a {
+            color: var(--c);
+        }
+        body.light .acct-name {
+            color: var(--w);
+        }
+        body.light .acct-email {
+            color: var(--g);
+        }
+        body.light .acct-sec .sec-lbl {
+            color: var(--c);
+        }
+        body.light .ocard {
+            background: var(--k);
+            border-color: var(--bd);
+        }
+        body.light .oc-id {
+            color: var(--w);
+        }
+        body.light .oc-date {
+            color: var(--g);
+        }
+        body.light .oc-items {
+            color: var(--g);
+        }
+        body.light .oc-st {
+            border-color: var(--gr);
+            color: var(--gr);
+        }
+        body.light .oc-st.ship {
+            border-color: var(--c);
+            color: var(--c);
+        }
+        body.light .btn-out {
+            color: var(--g);
+            border-color: var(--bd);
+        }
+        body.light .btn-out:hover {
+            border-color: var(--rd);
+            color: var(--rd);
+        }
+        body.light #backdrop {
+            background: rgba(0, 0, 0, 0.58);
         }
 
         /* ── RESPONSIVE ── */
@@ -1938,6 +2317,9 @@
             #sl-next {
                 right: 12px;
             }
+            #auth-dr {
+                width: 100%;
+            }
         }
         @media (max-width: 480px) {
             .mc {
@@ -1972,13 +2354,13 @@
 </head>
 <body>
 
-    <!-- VEIL (pantalla de carga con glitch y logo) -->
+    <!-- VEIL (pantalla de carga con niebla y glitch) -->
     <div id="veil">
         <div id="veil-logo">
             <!-- CAMBIA LA RUTA POR TU LOGO: img/ABYSS_LOGUITO.svg -->
             <img src="img/ABYSS_LOGUITO.svg" alt="ABYSS SOCIETY">
         </div>
-        <div id="veil-sub">Society · Est. 2026</div>
+        <div id="veil-sub">EST. 2026</div>
         <div id="veil-pct">Entering the void…</div>
         <div id="veil-bar"><div id="veil-fill"></div></div>
     </div>
@@ -2010,11 +2392,51 @@
                 <button class="lb" data-lang="de" onclick="setLanguage('de')">DE</button>
             </div>
             <div class="nic" onclick="toggleTheme()" id="theme-btn">☾</div>
-            <div class="nic" onclick="alert('Account')">⏺</div>
+            <div class="nic" onclick="tAuth()" id="auth-btn">⏺</div>
             <div class="nic" onclick="alert('Cart')">☷</div>
             <a href="#s3" class="nav-cta">FORGE01 ↗</a>
         </div>
     </div>
+
+    <!-- PANEL DE AUTENTICACIÓN (drawer) -->
+    <div id="auth-dr">
+        <div class="dr-hdr">
+            <div class="dr-title">Account</div>
+            <button class="dr-cls" onclick="tAuth()">✕ <span>Close</span></button>
+        </div>
+        <div id="guest-view">
+            <div class="auth-tabs">
+                <button class="atab on" onclick="aTab('li',this)">Sign In</button>
+                <button class="atab" onclick="aTab('reg',this)">Register</button>
+            </div>
+            <div class="a-panel on" id="ap-li">
+                <div class="afield"><label>Email</label><input type="email" id="li-em" placeholder="void@example.com"></div>
+                <div class="afield"><label>Password</label><input type="password" id="li-pw" placeholder="••••••••"></div>
+                <button class="abtn" onclick="doLogin()">Enter the Society</button>
+                <div class="a-foot"><button class="atab" style="background:transparent;border:none;color:var(--c);cursor:pointer;" onclick="aTab('reg',document.querySelectorAll('.atab')[1])">No account? Register</button></div>
+                <div class="a-foot" style="margin-top:4px;font-size:7px;"><a onclick="alert('Recovery email sent')">Forgot password?</a></div>
+            </div>
+            <div class="a-panel" id="ap-reg">
+                <div class="afield"><label>Name</label><input type="text" id="rg-nm" placeholder="Your name"></div>
+                <div class="afield"><label>Email</label><input type="email" id="rg-em" placeholder="void@example.com"></div>
+                <div class="afield"><label>Password</label><input type="password" id="rg-pw" placeholder="••••••••"></div>
+                <div class="afield"><label>Confirm Password</label><input type="password" id="rg-pw2" placeholder="••••••••"></div>
+                <button class="abtn" onclick="doReg()">Join the Society</button>
+                <div class="a-foot">By joining you accept our <a onclick="alert('Terms & Privacy')">Terms &amp; Privacy</a></div>
+            </div>
+        </div>
+        <div id="acct-view">
+            <div style="padding:20px;display:flex;flex-direction:column;gap:16px;min-height:100%;">
+                <div class="acct-name" id="acct-nm"></div>
+                <div class="acct-email" id="acct-em"></div>
+                <div class="acct-sec"><div class="sec-lbl">Recent Orders</div><div id="ord-list"></div></div>
+                <div class="acct-sec"><div class="sec-lbl">Wishlist</div><div id="wishlist-list" style="font-size:9px;color:var(--g);">Nothing saved yet.</div></div>
+                <button class="btn-out" onclick="doOut()">Sign Out</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="backdrop" onclick="tAuth()"></div>
 
     <!-- PROGRESS -->
     <div id="prog">
@@ -2169,7 +2591,7 @@
         <div class="rcnt"><b>8</b> pieces · FORGE01</div>
     </div>
 
-    <!-- S2: HOODS -->
+    <!-- S2: HOODS (con botón "Enter to belong" que abre autenticación) -->
     <div class="sc" id="s2">
         <div class="w-eyebrow">Belong to the Abyss</div>
         <div class="w-title">Enter if you belong here</div>
@@ -2199,7 +2621,8 @@
                 </div>
             </div>
         </div>
-        <button class="enter-btn" onclick="openRegisterModal()">Enter to belong →</button>
+        <!-- Botón modificado: ahora abre el panel de autenticación -->
+        <button class="enter-btn" onclick="tAuth()">Enter to belong →</button>
     </div>
 
     <!-- S3: DROP CON APERTURA -->
@@ -2321,9 +2744,28 @@
         </div>
         <div class="profile-section-title">Wishlist</div>
         <div class="profile-fav-grid">
-            <div class="profile-fav-item" onclick="openProductViewer(0, 'THE OATH', '€39', 'FORGE01-T01', 'tee')"><div style="font-size:28px;">👕</div><div class="name">THE OATH</div><div class="price">€39</div></div>
-            <div class="profile-fav-item" onclick="openProductViewer(3, 'IRON VOW', '€85', 'FORGE01-H01', 'hoodie')"><div style="font-size:28px;">🧥</div><div class="name">IRON VOW</div><div class="price">€85</div></div>
-            <div class="profile-fav-item" onclick="openProductViewer(5, 'VOID CAP', '€32', 'FORGE01-A01', 'acc')"><div style="font-size:28px;">🧢</div><div class="name">VOID CAP</div><div class="price">€32</div></div>
+            <!-- Siluetas SVG en lugar de emojis -->
+            <div class="profile-fav-item" onclick="openProductViewer(0, 'THE OATH', '€39', 'FORGE01-T01', 'tee')">
+                <svg class="icon-silhouette" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-7 10h14c0-3.87-3.13-7-7-7s-7 3.13-7 7z"/>
+                </svg>
+                <div class="name">THE OATH</div>
+                <div class="price">€39</div>
+            </div>
+            <div class="profile-fav-item" onclick="openProductViewer(3, 'IRON VOW', '€85', 'FORGE01-H01', 'hoodie')">
+                <svg class="icon-silhouette" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-7 10h14c0-3.87-3.13-7-7-7s-7 3.13-7 7z"/>
+                </svg>
+                <div class="name">IRON VOW</div>
+                <div class="price">€85</div>
+            </div>
+            <div class="profile-fav-item" onclick="openProductViewer(5, 'VOID CAP', '€32', 'FORGE01-A01', 'acc')">
+                <svg class="icon-silhouette" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-7 10h14c0-3.87-3.13-7-7-7s-7 3.13-7 7z"/>
+                </svg>
+                <div class="name">VOID CAP</div>
+                <div class="price">€32</div>
+            </div>
         </div>
         <div class="profile-section-title">Returns &amp; Exchanges</div>
         <div class="returns-box">
@@ -2335,19 +2777,6 @@
     <!-- TOAST -->
     <div id="toast"></div>
 
-    <!-- MODAL DE REGISTRO -->
-    <div id="register-modal">
-        <div class="modal-box">
-            <button class="modal-close" onclick="closeRegisterModal()">✕</button>
-            <div class="modal-title">Join the Abyss</div>
-            <div class="modal-sub"><strong>15% OFF</strong> on your first order</div>
-            <input class="modal-input" type="email" placeholder="Enter your email" id="register-email">
-            <button class="modal-btn" onclick="registerUser()">Claim 15% Off</button>
-            <div class="modal-discount">⚡ Welcome discount: 15% OFF</div>
-            <div class="modal-foot">No spam. Unsubscribe anytime.</div>
-        </div>
-    </div>
-
     <!-- VISOR DE PRODUCTO (con imágenes y 3D) -->
     <div id="product-viewer">
         <button class="viewer-close" onclick="closeProductViewer()">✕</button>
@@ -2358,15 +2787,26 @@
             </div>
             <div class="viewer-images">
                 <div class="main-image" id="viewer-main-image">
-                    <!-- Aquí se mostrará la imagen seleccionada -->
                     <img src="img/front.jpg" alt="Front view" id="main-img">
                 </div>
                 <div class="thumbnails" id="viewer-thumbnails">
-                    <!-- Miniaturas: front, back, side, model -->
-                    <img src="img/front.jpg" alt="Front" data-img="img/front.jpg" onclick="changeProductImage('img/front.jpg')">
-                    <img src="img/back.jpg" alt="Back" data-img="img/back.jpg" onclick="changeProductImage('img/back.jpg')">
-                    <img src="img/side.jpg" alt="Side" data-img="img/side.jpg" onclick="changeProductImage('img/side.jpg')">
-                    <img src="img/model.jpg" alt="Model" data-img="img/model.jpg" onclick="changeProductImage('img/model.jpg')">
+                    <!-- Miniaturas con etiquetas -->
+                    <div class="thumb-wrap" onclick="changeProductImage('img/front.jpg')">
+                        <img src="img/front.jpg" alt="Front">
+                        <span>Front</span>
+                    </div>
+                    <div class="thumb-wrap" onclick="changeProductImage('img/back.jpg')">
+                        <img src="img/back.jpg" alt="Back">
+                        <span>Back</span>
+                    </div>
+                    <div class="thumb-wrap" onclick="changeProductImage('img/side.jpg')">
+                        <img src="img/side.jpg" alt="Side">
+                        <span>Side</span>
+                    </div>
+                    <div class="thumb-wrap" onclick="changeProductImage('img/model.jpg')">
+                        <img src="img/model.jpg" alt="Model">
+                        <span>Model</span>
+                    </div>
                 </div>
                 <div class="viewer-info">
                     <div class="name" id="viewer-name">THE OATH</div>
@@ -2382,6 +2822,46 @@
     </div>
 
     <script>
+        // ── FUNCIONES DE AUTENTICACIÓN (drawer) ──
+        function tAuth() {
+            document.getElementById('auth-dr').classList.toggle('on');
+            document.getElementById('backdrop').classList.toggle('on');
+        }
+
+        function aTab(tab, el) {
+            document.querySelectorAll('.atab').forEach(b => b.classList.remove('on'));
+            el.classList.add('on');
+            document.querySelectorAll('.a-panel').forEach(p => p.classList.remove('on'));
+            document.getElementById('ap-' + tab).classList.add('on');
+        }
+
+        function doLogin() {
+            const email = document.getElementById('li-em').value;
+            if (!email) { showToast('Please enter email'); return; }
+            showToast('Welcome back, ' + email.split('@')[0] + '!');
+            document.getElementById('acct-view').classList.add('on');
+            document.getElementById('guest-view').style.display = 'none';
+            tAuth(); // cerrar drawer
+        }
+
+        function doReg() {
+            const name = document.getElementById('rg-nm').value;
+            const pw = document.getElementById('rg-pw').value;
+            const pw2 = document.getElementById('rg-pw2').value;
+            if (!name || !pw) { showToast('Please fill all fields'); return; }
+            if (pw !== pw2) { showToast('Passwords do not match'); return; }
+            showToast('Welcome to the Society, ' + name + '!');
+            document.getElementById('acct-view').classList.add('on');
+            document.getElementById('guest-view').style.display = 'none';
+            tAuth();
+        }
+
+        function doOut() {
+            showToast('Signed out');
+            document.getElementById('acct-view').classList.remove('on');
+            document.getElementById('guest-view').style.display = 'block';
+        }
+
         // ── NAVEGACIÓN ──
         function goTo(n) {
             document.querySelectorAll('.sc').forEach((el, i) => {
@@ -2557,30 +3037,6 @@
             showToast('Slide ' + (index + 1));
         }
 
-        // ── MODAL DE REGISTRO ──
-        function openRegisterModal() {
-            document.getElementById('register-modal').classList.add('open');
-        }
-
-        function closeRegisterModal() {
-            document.getElementById('register-modal').classList.remove('open');
-        }
-
-        function registerUser() {
-            const email = document.getElementById('register-email').value;
-            if (!email || !email.includes('@')) {
-                showToast('Please enter a valid email');
-                return;
-            }
-            showToast('Welcome! Check your email for 15% OFF.');
-            closeRegisterModal();
-            document.getElementById('register-email').value = '';
-        }
-
-        document.getElementById('register-modal').addEventListener('click', function(e) {
-            if (e.target === this) closeRegisterModal();
-        });
-
         // ── VISOR DE PRODUCTO CON 3D E IMÁGENES ──
         let currentViewer = null;
         let currentModel = null;
@@ -2596,14 +3052,13 @@
 
             // Cambiar imagen principal según el tipo (por defecto front)
             const mainImg = document.getElementById('main-img');
-            // Intentar cargar imagen específica para el producto, si no existe, usar placeholder
             const imgPath = 'img/' + ref + '_front.jpg';
             mainImg.src = imgPath;
             mainImg.onerror = function() {
                 this.src = 'img/front.jpg'; // fallback
             };
 
-            // Configurar miniaturas (puedes personalizar por producto)
+            // Configurar miniaturas
             const thumbs = document.getElementById('viewer-thumbnails');
             const images = [
                 { src: 'img/' + ref + '_front.jpg', label: 'Front' },
@@ -2613,19 +3068,23 @@
             ];
             thumbs.innerHTML = '';
             images.forEach(img => {
+                const wrap = document.createElement('div');
+                wrap.className = 'thumb-wrap';
                 const thumb = document.createElement('img');
                 thumb.src = img.src;
                 thumb.alt = img.label;
-                thumb.title = img.label;
                 thumb.onerror = function() {
-                    // Si no existe la imagen, usar placeholder genérico
                     this.src = 'img/' + (img.label === 'Front' ? 'front' : img.label === 'Back' ? 'back' : img.label ===
                         'Side' ? 'side' : 'model') + '.jpg';
                 };
                 thumb.onclick = function() {
                     document.getElementById('main-img').src = this.src;
                 };
-                thumbs.appendChild(thumb);
+                const label = document.createElement('span');
+                label.textContent = img.label;
+                wrap.appendChild(thumb);
+                wrap.appendChild(label);
+                thumbs.appendChild(wrap);
             });
 
             // Inicializar 3D
