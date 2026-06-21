@@ -67,11 +67,21 @@
             color: var(--w);
             flex-shrink: 0;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .nav-logo img {
             height: 36px;
             width: auto;
             display: block;
+        }
+        .nav-logo small {
+            font-size: 9px;
+            letter-spacing: 0.48em;
+            color: var(--c);
+            display: block;
+            margin-top: -2px;
         }
         #nav-links {
             display: flex;
@@ -152,7 +162,7 @@
             color: var(--k);
         }
 
-        /* ── VEIL ── */
+        /* ── VEIL (pantalla de carga con glitch y logo) ── */
         #veil {
             position: fixed;
             top: 0;
@@ -170,39 +180,42 @@
             background-image: radial-gradient(ellipse at center, rgba(26, 79, 191, 0.15) 0%, transparent 70%);
         }
         #veil-logo {
-            font-family: var(--font-display);
             font-size: clamp(60px, 15vw, 140px);
             letter-spacing: 0.14em;
             animation: glitch 0.08s infinite alternate;
             text-shadow: 0 0 40px rgba(26, 79, 191, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         #veil-logo img {
-            max-width: clamp(60px, 15vw, 140px);
+            max-width: clamp(80px, 18vw, 160px);
             height: auto;
             display: block;
             margin: 0 auto;
+            filter: drop-shadow(0 0 30px rgba(26, 79, 191, 0.3));
         }
         @keyframes glitch {
             0% {
-                text-shadow: 3px 0 var(--c), -3px 0 var(--rd);
                 transform: skew(0deg);
+                filter: drop-shadow(3px 0 var(--c));
             }
             20% {
                 transform: skew(2deg);
             }
             40% {
-                text-shadow: -3px 0 var(--c), 3px 0 var(--rd);
                 transform: skew(-2deg);
+                filter: drop-shadow(-3px 0 var(--rd));
             }
             60% {
                 transform: skew(0deg);
             }
             80% {
-                text-shadow: 3px 0 var(--c), -3px 0 var(--rd);
+                filter: drop-shadow(3px 0 var(--c));
             }
             100% {
-                text-shadow: -3px 0 var(--c), 3px 0 var(--rd);
                 transform: skew(0deg);
+                filter: drop-shadow(-3px 0 var(--c));
             }
         }
         #veil-sub {
@@ -389,6 +402,9 @@
             letter-spacing: 0.06em;
             line-height: 0.87;
             animation: hfloat 6s ease-in-out infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .h-title img {
             max-width: clamp(200px, 60vw, 600px);
@@ -1576,7 +1592,7 @@
             color: var(--g);
         }
 
-        /* ── VISOR 3D ── */
+        /* ── VISOR DE PRODUCTO (con imágenes y 3D) ── */
         #product-viewer {
             display: none;
             position: fixed;
@@ -1590,16 +1606,10 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            overflow-y: auto;
         }
         #product-viewer.open {
             display: flex;
-        }
-        #viewer-3d {
-            width: 100%;
-            height: 70%;
-            max-width: 650px;
-            background: #0a0a12;
-            border: 1px solid var(--bd);
         }
         .viewer-close {
             position: absolute;
@@ -1610,23 +1620,91 @@
             background: transparent;
             border: none;
             cursor: pointer;
+            z-index: 10;
         }
         .viewer-close:hover {
             color: var(--w);
         }
-        .viewer-hint {
-            margin-top: 24px;
-            text-align: center;
+        .viewer-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 20px;
+        }
+        .viewer-3d-container {
+            height: 500px;
+            background: #0a0a12;
+            border: 1px solid var(--bd);
+            position: relative;
+        }
+        #viewer-3d {
+            width: 100%;
+            height: 100%;
+        }
+        .viewer-images {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .viewer-images .main-image {
+            width: 100%;
+            aspect-ratio: 1/1.2;
+            background: #0a0a12;
+            border: 1px solid var(--bd);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .viewer-images .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .viewer-images .thumbnails {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+        .viewer-images .thumbnails img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border: 1px solid var(--bd);
+            cursor: pointer;
+            transition: border-color 0.2s;
+            flex-shrink: 0;
+        }
+        .viewer-images .thumbnails img:hover {
+            border-color: var(--c);
+        }
+        .viewer-info {
+            margin-top: 16px;
+            text-align: left;
+        }
+        .viewer-info .name {
+            font-family: var(--font-display);
+            font-size: 28px;
+            letter-spacing: 0.08em;
+        }
+        .viewer-info .price {
+            font-size: 22px;
+            color: var(--c);
+            margin: 8px 0;
+        }
+        .viewer-info .desc {
+            font-size: 14px;
             color: var(--g);
-            font-size: 13px;
-            letter-spacing: 0.2em;
+            line-height: 1.6;
         }
         .viewer-actions {
-            margin-top: 16px;
+            margin-top: 20px;
             display: flex;
             gap: 16px;
             flex-wrap: wrap;
-            justify-content: center;
         }
         .viewer-actions button {
             padding: 12px 28px;
@@ -1652,6 +1730,13 @@
         }
         .viewer-actions .cart:hover {
             opacity: 0.85;
+        }
+        .viewer-hint {
+            font-size: 12px;
+            color: var(--g);
+            letter-spacing: 0.2em;
+            text-align: center;
+            margin-top: 12px;
         }
 
         /* ── MODO CLARO ── */
@@ -1681,7 +1766,9 @@
         }
         body.light .mv,
         body.light .dv2,
-        body.light #viewer-3d {
+        body.light #viewer-3d,
+        body.light .viewer-3d-container,
+        body.light .viewer-images .main-image {
             background: #e8e8ee;
         }
         body.light .mc-overlay {
@@ -1830,11 +1917,15 @@
             .modal-box {
                 padding: 32px 24px;
             }
+            .viewer-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .viewer-3d-container {
+                height: 300px;
+            }
             #product-viewer {
                 padding: 16px;
-            }
-            #viewer-3d {
-                height: 50%;
             }
             .sl-arr {
                 width: 34px;
@@ -1881,12 +1972,11 @@
 </head>
 <body>
 
-    <!-- VEIL -->
+    <!-- VEIL (pantalla de carga con glitch y logo) -->
     <div id="veil">
         <div id="veil-logo">
-            <!-- Cambia la ruta por tu logo real -->
-            ABYSS
-            <!-- <img src="img/logo-abyss.svg" alt="ABYSS SOCIETY"> -->
+            <!-- CAMBIA LA RUTA POR TU LOGO: img/ABYSS_LOGUITO.svg -->
+            <img src="img/ABYSS_LOGUITO.svg" alt="ABYSS SOCIETY">
         </div>
         <div id="veil-sub">Society · Est. 2026</div>
         <div id="veil-pct">Entering the void…</div>
@@ -1899,9 +1989,9 @@
     <!-- NAV -->
     <div id="nav">
         <div class="nav-logo" onclick="goTo(0)">
-            <!-- Cambia la ruta por tu logo real -->
-            ABYSS
-            <!-- <img src="img/logo-abyss.svg" alt="ABYSS SOCIETY"> -->
+            <!-- CAMBIA LA RUTA POR TU LOGO -->
+            <img src="img/ABYSS_LOGUITO.svg" alt="ABYSS SOCIETY">
+            <small>SOCIETY</small>
         </div>
         <ul id="nav-links">
             <li><a onclick="goTo(1)">Collection</a></li>
@@ -1972,9 +2062,8 @@
         </div>
         <div id="hero-txt">
             <div class="h-title">
-                <!-- Cambia la ruta por tu logo real -->
-                ABYSS
-                <!-- <img src="img/logo-abyss.svg" alt="ABYSS SOCIETY"> -->
+                <!-- CAMBIA LA RUTA POR TU LOGO -->
+                <img src="img/ABYSS_LOGUITO.svg" alt="ABYSS SOCIETY">
             </div>
             <div class="h-sub">Society · Forge01 · Est. 2026</div>
             <div class="h-tag">We are not a brand. We are a society.</div>
@@ -1996,8 +2085,8 @@
             <button class="ftab" data-filter="acc" onclick="filterProducts('acc',this)">Accessories</button>
         </div>
         <div class="rail" id="rail">
-            <!-- Producto 1: Camiseta -->
-            <div class="mc" data-cat="tee" onclick="openProductViewer(0)">
+            <!-- Producto 1: THE OATH (Tee) -->
+            <div class="mc" data-cat="tee" onclick="openProductViewer(0, 'THE OATH', '€39', 'FORGE01-T01', 'tee')">
                 <div class="mv"><div class="product-icon">👕</div></div>
                 <div class="mc-overlay"><span>THE OATH</span><small>FORGE01 · T01</small></div>
                 <div class="mi">
@@ -2006,8 +2095,8 @@
                     <div class="mf"><div><span class="mp">€39</span><span class="mst">● In Stock</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 2: Camiseta -->
-            <div class="mc" data-cat="tee" onclick="openProductViewer(1)">
+            <!-- Producto 2: CATHEDRAL (Tee) -->
+            <div class="mc" data-cat="tee" onclick="openProductViewer(1, 'CATHEDRAL', '€45', 'FORGE01-T02', 'tee')">
                 <div class="mv"><div class="product-icon">👕</div></div>
                 <div class="mc-overlay"><span>CATHEDRAL</span><small>FORGE01 · T02</small></div>
                 <div class="mi">
@@ -2016,8 +2105,8 @@
                     <div class="mf"><div><span class="mp">€45</span><span class="mst lo">● 8 Left</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 3: Camiseta -->
-            <div class="mc" data-cat="tee" onclick="openProductViewer(2)">
+            <!-- Producto 3: THE FALL (Tee) -->
+            <div class="mc" data-cat="tee" onclick="openProductViewer(2, 'THE FALL', '€45', 'FORGE01-T03', 'tee')">
                 <div class="mv"><div class="product-icon">👕</div></div>
                 <div class="mc-overlay"><span>THE FALL</span><small>FORGE01 · T03</small></div>
                 <div class="mi">
@@ -2026,8 +2115,8 @@
                     <div class="mf"><div><span class="mp">€45</span><span class="mst lo">● Last Units</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 4: Hoodie -->
-            <div class="mc" data-cat="hoodie" onclick="openProductViewer(3)">
+            <!-- Producto 4: IRON VOW (Hoodie) -->
+            <div class="mc" data-cat="hoodie" onclick="openProductViewer(3, 'IRON VOW', '€85', 'FORGE01-H01', 'hoodie')">
                 <div class="mv"><div class="product-icon">🧥</div></div>
                 <div class="mc-overlay"><span>IRON VOW</span><small>FORGE01 · H01</small></div>
                 <div class="mi">
@@ -2036,8 +2125,8 @@
                     <div class="mf"><div><span class="mp">€85</span><span class="mst">● In Stock</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 5: Hoodie -->
-            <div class="mc" data-cat="hoodie" onclick="openProductViewer(4)">
+            <!-- Producto 5: SHADOW ZIP (Hoodie) -->
+            <div class="mc" data-cat="hoodie" onclick="openProductViewer(4, 'SHADOW ZIP', '€95', 'FORGE01-Z01', 'hoodie')">
                 <div class="mv"><div class="product-icon">🧥</div></div>
                 <div class="mc-overlay"><span>SHADOW ZIP</span><small>FORGE01 · Z01</small></div>
                 <div class="mi">
@@ -2046,8 +2135,8 @@
                     <div class="mf"><div><span class="mp">€95</span><span class="mst lo">● 12 Left</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 6: Gorra -->
-            <div class="mc" data-cat="acc" onclick="openProductViewer(5)">
+            <!-- Producto 6: VOID CAP (Accesorio) -->
+            <div class="mc" data-cat="acc" onclick="openProductViewer(5, 'VOID CAP', '€32', 'FORGE01-A01', 'acc')">
                 <div class="mv"><div class="product-icon">🧢</div></div>
                 <div class="mc-overlay"><span>VOID CAP</span><small>FORGE01 · A01</small></div>
                 <div class="mi">
@@ -2056,8 +2145,8 @@
                     <div class="mf"><div><span class="mp">€32</span><span class="mst">● In Stock</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 7: Beanie -->
-            <div class="mc" data-cat="acc" onclick="openProductViewer(6)">
+            <!-- Producto 7: FORGE BEANIE (Accesorio) -->
+            <div class="mc" data-cat="acc" onclick="openProductViewer(6, 'FORGE BEANIE', '€28', 'FORGE01-A02', 'acc')">
                 <div class="mv"><div class="product-icon">🧶</div></div>
                 <div class="mc-overlay"><span>FORGE BEANIE</span><small>FORGE01 · A02</small></div>
                 <div class="mi">
@@ -2066,8 +2155,8 @@
                     <div class="mf"><div><span class="mp">€28</span><span class="mst">● In Stock</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 8: Tote Bag -->
-            <div class="mc" data-cat="acc" onclick="openProductViewer(7)">
+            <!-- Producto 8: VOID TOTE (Accesorio) -->
+            <div class="mc" data-cat="acc" onclick="openProductViewer(7, 'VOID TOTE', '€22', 'FORGE01-A03', 'acc')">
                 <div class="mv"><div class="product-icon">👜</div></div>
                 <div class="mc-overlay"><span>VOID TOTE</span><small>FORGE01 · A03</small></div>
                 <div class="mi">
@@ -2085,7 +2174,7 @@
         <div class="w-eyebrow">Belong to the Abyss</div>
         <div class="w-title">Enter if you belong here</div>
         <div class="w-grid">
-            <div class="wc" data-n="01" onclick="openProductViewer(0)">
+            <div class="wc" data-n="01" onclick="openProductViewer(0, 'FORGE', '€39', 'FORGE01-T01', 'tee')">
                 <div class="wbg">F</div>
                 <div class="wcon">
                     <div class="wtag">Hood 01 · Active</div>
@@ -2093,7 +2182,7 @@
                     <div class="wdesc">Gothic medieval. Iron and faith. Anonymous knights. Cathedral architecture. The first chapter.</div>
                 </div>
             </div>
-            <div class="wc" data-n="02" onclick="openProductViewer(3)">
+            <div class="wc" data-n="02" onclick="openProductViewer(3, 'DUSK', '€85', 'FORGE01-H01', 'hoodie')">
                 <div class="wbg">D</div>
                 <div class="wcon">
                     <div class="wtag">Hood 02 · Coming</div>
@@ -2101,7 +2190,7 @@
                     <div class="wdesc">Dark cowboy. Nameless riders. Night deserts. Dust and legend. The second chapter.</div>
                 </div>
             </div>
-            <div class="wc" data-n="03" onclick="openProductViewer(5)">
+            <div class="wc" data-n="03" onclick="openProductViewer(5, 'GHOST', '€32', 'FORGE01-A01', 'acc')">
                 <div class="wbg">G</div>
                 <div class="wcon">
                     <div class="wtag">Hood 03 · Coming</div>
@@ -2126,25 +2215,25 @@
             <div class="d-ttl">FORGE01</div>
             <div class="d-sub">Sworn in darkness. Built to last.</div>
             <div class="d-grid">
-                <div class="dc" onclick="openProductViewer(0)">
+                <div class="dc" onclick="openProductViewer(0, 'THE OATH', '€39', 'FORGE01-T01', 'tee')">
                     <div class="dv2"><div class="product-icon">👕</div></div>
                     <div class="dn2">THE OATH</div>
                     <div class="dr2">FORGE01-T01 · €39</div>
                     <div class="df2"><span class="dst">● In Stock</span><button class="dadd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
-                <div class="dc" onclick="openProductViewer(1)">
+                <div class="dc" onclick="openProductViewer(1, 'CATHEDRAL', '€45', 'FORGE01-T02', 'tee')">
                     <div class="dv2"><div class="product-icon">👕</div></div>
                     <div class="dn2">CATHEDRAL</div>
                     <div class="dr2">FORGE01-T02 · €45</div>
                     <div class="df2"><span class="dst lo">● 8 Left</span><button class="dadd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
-                <div class="dc" onclick="openProductViewer(2)">
+                <div class="dc" onclick="openProductViewer(2, 'THE FALL', '€45', 'FORGE01-T03', 'tee')">
                     <div class="dv2"><div class="product-icon">👕</div></div>
                     <div class="dn2">THE FALL</div>
                     <div class="dr2">FORGE01-T03 · €45</div>
                     <div class="df2"><span class="dst lo">● Last Units</span><button class="dadd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
-                <div class="dc" onclick="openProductViewer(3)">
+                <div class="dc" onclick="openProductViewer(3, 'IRON VOW', '€85', 'FORGE01-H01', 'hoodie')">
                     <div class="dv2"><div class="product-icon">🧥</div></div>
                     <div class="dn2">IRON VOW</div>
                     <div class="dr2">FORGE01-H01 · €85</div>
@@ -2232,9 +2321,9 @@
         </div>
         <div class="profile-section-title">Wishlist</div>
         <div class="profile-fav-grid">
-            <div class="profile-fav-item" onclick="openProductViewer(0)"><div style="font-size:28px;">👕</div><div class="name">THE OATH</div><div class="price">€39</div></div>
-            <div class="profile-fav-item" onclick="openProductViewer(3)"><div style="font-size:28px;">🧥</div><div class="name">IRON VOW</div><div class="price">€85</div></div>
-            <div class="profile-fav-item" onclick="openProductViewer(5)"><div style="font-size:28px;">🧢</div><div class="name">VOID CAP</div><div class="price">€32</div></div>
+            <div class="profile-fav-item" onclick="openProductViewer(0, 'THE OATH', '€39', 'FORGE01-T01', 'tee')"><div style="font-size:28px;">👕</div><div class="name">THE OATH</div><div class="price">€39</div></div>
+            <div class="profile-fav-item" onclick="openProductViewer(3, 'IRON VOW', '€85', 'FORGE01-H01', 'hoodie')"><div style="font-size:28px;">🧥</div><div class="name">IRON VOW</div><div class="price">€85</div></div>
+            <div class="profile-fav-item" onclick="openProductViewer(5, 'VOID CAP', '€32', 'FORGE01-A01', 'acc')"><div style="font-size:28px;">🧢</div><div class="name">VOID CAP</div><div class="price">€32</div></div>
         </div>
         <div class="profile-section-title">Returns &amp; Exchanges</div>
         <div class="returns-box">
@@ -2259,14 +2348,36 @@
         </div>
     </div>
 
-    <!-- VISOR 3D -->
+    <!-- VISOR DE PRODUCTO (con imágenes y 3D) -->
     <div id="product-viewer">
         <button class="viewer-close" onclick="closeProductViewer()">✕</button>
-        <div id="viewer-3d"></div>
-        <div class="viewer-hint">Drag to rotate · Scroll to zoom</div>
-        <div class="viewer-actions">
-            <button class="close" onclick="closeProductViewer()">Close</button>
-            <button class="cart" onclick="addToCart()">Add to Cart</button>
+        <div class="viewer-grid">
+            <div class="viewer-3d-container">
+                <div id="viewer-3d"></div>
+                <div class="viewer-hint">Drag to rotate · 360° view</div>
+            </div>
+            <div class="viewer-images">
+                <div class="main-image" id="viewer-main-image">
+                    <!-- Aquí se mostrará la imagen seleccionada -->
+                    <img src="img/front.jpg" alt="Front view" id="main-img">
+                </div>
+                <div class="thumbnails" id="viewer-thumbnails">
+                    <!-- Miniaturas: front, back, side, model -->
+                    <img src="img/front.jpg" alt="Front" data-img="img/front.jpg" onclick="changeProductImage('img/front.jpg')">
+                    <img src="img/back.jpg" alt="Back" data-img="img/back.jpg" onclick="changeProductImage('img/back.jpg')">
+                    <img src="img/side.jpg" alt="Side" data-img="img/side.jpg" onclick="changeProductImage('img/side.jpg')">
+                    <img src="img/model.jpg" alt="Model" data-img="img/model.jpg" onclick="changeProductImage('img/model.jpg')">
+                </div>
+                <div class="viewer-info">
+                    <div class="name" id="viewer-name">THE OATH</div>
+                    <div class="price" id="viewer-price">€39</div>
+                    <div class="desc" id="viewer-desc">FORGE01-T01 · 001/030 · Limited run</div>
+                </div>
+                <div class="viewer-actions">
+                    <button class="close" onclick="closeProductViewer()">Close</button>
+                    <button class="cart" onclick="addToCart()">Add to Cart</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -2470,14 +2581,55 @@
             if (e.target === this) closeRegisterModal();
         });
 
-        // ── VISOR 3D ──
+        // ── VISOR DE PRODUCTO CON 3D E IMÁGENES ──
         let currentViewer = null;
+        let currentModel = null;
 
-        function openProductViewer(productIndex) {
+        function openProductViewer(index, name, price, ref, type) {
             const viewer = document.getElementById('product-viewer');
             viewer.classList.add('open');
-            const container = document.getElementById('viewer-3d');
 
+            // Actualizar info
+            document.getElementById('viewer-name').textContent = name;
+            document.getElementById('viewer-price').textContent = price;
+            document.getElementById('viewer-desc').textContent = ref + ' · Limited run';
+
+            // Cambiar imagen principal según el tipo (por defecto front)
+            const mainImg = document.getElementById('main-img');
+            // Intentar cargar imagen específica para el producto, si no existe, usar placeholder
+            const imgPath = 'img/' + ref + '_front.jpg';
+            mainImg.src = imgPath;
+            mainImg.onerror = function() {
+                this.src = 'img/front.jpg'; // fallback
+            };
+
+            // Configurar miniaturas (puedes personalizar por producto)
+            const thumbs = document.getElementById('viewer-thumbnails');
+            const images = [
+                { src: 'img/' + ref + '_front.jpg', label: 'Front' },
+                { src: 'img/' + ref + '_back.jpg', label: 'Back' },
+                { src: 'img/' + ref + '_side.jpg', label: 'Side' },
+                { src: 'img/' + ref + '_model.jpg', label: 'Model' }
+            ];
+            thumbs.innerHTML = '';
+            images.forEach(img => {
+                const thumb = document.createElement('img');
+                thumb.src = img.src;
+                thumb.alt = img.label;
+                thumb.title = img.label;
+                thumb.onerror = function() {
+                    // Si no existe la imagen, usar placeholder genérico
+                    this.src = 'img/' + (img.label === 'Front' ? 'front' : img.label === 'Back' ? 'back' : img.label ===
+                        'Side' ? 'side' : 'model') + '.jpg';
+                };
+                thumb.onclick = function() {
+                    document.getElementById('main-img').src = this.src;
+                };
+                thumbs.appendChild(thumb);
+            });
+
+            // Inicializar 3D
+            const container = document.getElementById('viewer-3d');
             while (container.firstChild) container.removeChild(container.firstChild);
 
             const scene = new THREE.Scene();
@@ -2500,13 +2652,9 @@
             backLight.position.set(-1, 0, -1);
             scene.add(backLight);
 
+            // Geometría según tipo
             let geometry;
             let material;
-
-            let type = 'tee';
-            if (productIndex >= 3 && productIndex <= 4) type = 'hoodie';
-            else if (productIndex >= 5 && productIndex <= 7) type = 'acc';
-
             if (type === 'tee') {
                 geometry = new THREE.BoxGeometry(1.2, 1.6, 0.15);
                 material = new THREE.MeshStandardMaterial({ color: 0x1a4fbf, roughness: 0.4, metalness: 0.1 });
@@ -2514,13 +2662,14 @@
                 geometry = new THREE.BoxGeometry(1.4, 1.8, 0.25);
                 material = new THREE.MeshStandardMaterial({ color: 0x2a2a3a, roughness: 0.6, metalness: 0.05 });
             } else {
-                if (productIndex === 5) {
+                // accesorio
+                if (index === 5) { // gorra
                     geometry = new THREE.CylinderGeometry(0.6, 0.6, 0.3, 16);
                     material = new THREE.MeshStandardMaterial({ color: 0x1a1a2a, roughness: 0.5 });
-                } else if (productIndex === 6) {
+                } else if (index === 6) { // beanie
                     geometry = new THREE.SphereGeometry(0.5, 16, 16);
                     material = new THREE.MeshStandardMaterial({ color: 0x2a2a3a, roughness: 0.7 });
-                } else {
+                } else { // tote bag
                     geometry = new THREE.BoxGeometry(0.8, 1.0, 0.1);
                     material = new THREE.MeshStandardMaterial({ color: 0x1a1a2a, roughness: 0.5 });
                 }
@@ -2549,10 +2698,8 @@
             window.addEventListener('mousemove', (e) => {
                 if (!isDragging || !model) return;
                 const dx = e.clientX - prevMouse.x;
-                const dy = e.clientY - prevMouse.y;
+                // Solo rotación en Y (horizontal)
                 model.rotation.y += dx * 0.01;
-                model.rotation.x += dy * 0.01;
-                model.rotation.x = Math.max(-1, Math.min(1, model.rotation.x));
                 prevMouse = { x: e.clientX, y: e.clientY };
             });
             window.addEventListener('mouseup', () => {
@@ -2560,6 +2707,7 @@
                 setTimeout(() => { autoRotate = true; }, 3000);
             });
 
+            // Touch
             let touchStart = { x: 0, y: 0 };
             canvas.addEventListener('touchstart', (e) => {
                 const t = e.touches[0];
@@ -2571,10 +2719,7 @@
                 if (!isDragging || !model) return;
                 const t = e.touches[0];
                 const dx = t.clientX - touchStart.x;
-                const dy = t.clientY - touchStart.y;
                 model.rotation.y += dx * 0.01;
-                model.rotation.x += dy * 0.01;
-                model.rotation.x = Math.max(-1, Math.min(1, model.rotation.x));
                 touchStart = { x: t.clientX, y: t.clientY };
             }, { passive: true });
             canvas.addEventListener('touchend', () => {
@@ -2601,6 +2746,7 @@
             animate();
 
             currentViewer = { scene, camera, renderer, model, container, resize };
+            currentModel = model;
         }
 
         function closeProductViewer() {
@@ -2610,7 +2756,12 @@
                 const container = currentViewer.container;
                 while (container.firstChild) container.removeChild(container.firstChild);
                 currentViewer = null;
+                currentModel = null;
             }
+        }
+
+        function changeProductImage(src) {
+            document.getElementById('main-img').src = src;
         }
 
         // ── SCROLL SUAVE ──
