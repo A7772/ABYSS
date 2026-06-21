@@ -26,7 +26,6 @@
             --or: #e67e22;
             --gr: #2ecc71;
             --nav-h: 80px;
-            /* Aumentada */
         }
         html {
             scroll-behavior: smooth;
@@ -38,7 +37,6 @@
             overflow-x: hidden;
             padding-top: var(--nav-h);
             font-size: 16px;
-            /* Base más grande */
         }
 
         /* ── NAV (más grande) ── */
@@ -61,7 +59,6 @@
         .nav-logo {
             font-family: 'Impact', 'Arial Narrow', sans-serif;
             font-size: 22px;
-            /* Más grande */
             letter-spacing: 0.26em;
             color: var(--w);
             flex-shrink: 0;
@@ -82,12 +79,12 @@
         }
         #nav-links a {
             font-size: 11px;
-            /* Más grande */
             letter-spacing: 0.26em;
             text-transform: uppercase;
             color: var(--g);
             text-decoration: none;
             transition: color 0.18s;
+            cursor: pointer;
         }
         #nav-links a:hover {
             color: var(--w);
@@ -413,23 +410,14 @@
             position: relative;
             overflow: hidden;
         }
-        .mv img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .mv svg {
-            width: 70%;
-            max-height: 80%;
-        }
-        /* Placeholder visual para productos sin imagen */
         .mv .placeholder {
-            font-size: 11px;
+            font-size: 12px;
             color: var(--g);
             letter-spacing: 0.2em;
             text-transform: uppercase;
             text-align: center;
-            line-height: 1.6;
+            line-height: 1.8;
+            font-weight: 700;
         }
         .mi {
             padding: 14px 16px 16px;
@@ -661,14 +649,14 @@
             background: #09090b;
             position: relative;
         }
-        .dv2 img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .dv2 svg {
-            width: 70%;
-            max-height: 80%;
+        .dv2 .placeholder {
+            font-size: 12px;
+            color: var(--g);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            text-align: center;
+            line-height: 1.8;
+            font-weight: 700;
         }
         .dn2 {
             font-family: 'Impact', 'Arial Narrow', sans-serif;
@@ -1071,6 +1059,7 @@
             transition: all 0.28s;
             white-space: nowrap;
             border-radius: 2px;
+            font-family: 'Courier New', monospace;
         }
         #toast.on {
             transform: translateX(-50%) translateY(0);
@@ -1107,7 +1096,7 @@
             border-color: rgba(26, 79, 191, 0.7);
         }
 
-        /* ── CARRUSEL LATERAL DE PUBLICIDAD ── */
+        /* ── CARRUSEL LATERAL ── */
         #ad-side {
             position: fixed;
             right: 0;
@@ -1150,14 +1139,133 @@
         .ad-thumb:hover {
             border-color: var(--c);
         }
-        .ad-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
         .ad-thumb.active {
             border-color: var(--c);
             box-shadow: 0 0 15px rgba(26, 79, 191, 0.2);
+        }
+
+        /* ── MODAL DE REGISTRO ── */
+        #register-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 3000;
+            background: rgba(6, 6, 8, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.4s ease;
+        }
+        #register-modal.open {
+            display: flex;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .modal-box {
+            background: var(--s);
+            border: 1px solid var(--bd);
+            max-width: 480px;
+            width: 100%;
+            padding: 40px 36px;
+            position: relative;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            font-size: 22px;
+            color: var(--g);
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.2s;
+        }
+        .modal-close:hover {
+            color: var(--w);
+        }
+        .modal-title {
+            font-family: 'Impact', 'Arial Narrow', sans-serif;
+            font-size: 28px;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+        .modal-sub {
+            font-size: 12px;
+            color: var(--g);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+        .modal-sub strong {
+            color: var(--c);
+        }
+        .modal-input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--k);
+            border: 1px solid var(--bd);
+            color: var(--w);
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+            outline: none;
+            transition: border-color 0.2s;
+            margin-bottom: 16px;
+        }
+        .modal-input:focus {
+            border-color: var(--c);
+        }
+        .modal-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--c);
+            border: none;
+            color: var(--k);
+            font-size: 10px;
+            letter-spacing: 0.34em;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: opacity 0.2s;
+            font-weight: 700;
+        }
+        .modal-btn:hover {
+            opacity: 0.85;
+        }
+        .modal-discount {
+            display: inline-block;
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--or);
+            letter-spacing: 0.1em;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+        .modal-foot {
+            margin-top: 18px;
+            font-size: 9px;
+            color: var(--g);
         }
 
         /* ── RESPONSIVE ── */
@@ -1239,6 +1347,9 @@
             #ad-side {
                 display: none;
             }
+            .modal-box {
+                padding: 30px 20px;
+            }
         }
         @media (max-width: 480px) {
             .mc {
@@ -1279,221 +1390,199 @@
     <div id="nav">
         <div class="nav-logo" onclick="document.getElementById('s0').scrollIntoView({behavior:'smooth'})">ABYSS<small>SOCIETY</small></div>
         <ul id="nav-links">
-            <li><a href="#s1">Collection</a></li>
-            <li><a href="#s2">Hoods</a></li>
-            <li><a href="#s3">Drop</a></li>
-            <li><a href="#s4">Manifesto</a></li>
-            <li><a href="#s5">FAQ</a></li>
-            <li><a href="#s6">Contact</a></li>
-            <li><a href="#s7">Profile</a></li>
+            <li><a onclick="goTo('s1')" data-i18n="nav-collection">Collection</a></li>
+            <li><a onclick="goTo('s2')" data-i18n="nav-hoods">Hoods</a></li>
+            <li><a onclick="goTo('s3')" data-i18n="nav-drop">Drop</a></li>
+            <li><a onclick="goTo('s4')" data-i18n="nav-manifesto">Manifesto</a></li>
+            <li><a onclick="goTo('s5')" data-i18n="nav-faq">FAQ</a></li>
+            <li><a onclick="goTo('s6')" data-i18n="nav-contact">Contact</a></li>
+            <li><a onclick="goTo('s7')" data-i18n="nav-profile">Profile</a></li>
         </ul>
         <div id="nav-r">
             <div class="lg">
-                <button class="lb on" onclick="setLang('en')">EN</button>
-                <button class="lb" onclick="setLang('es')">ES</button>
-                <button class="lb" onclick="setLang('fr')">FR</button>
-                <button class="lb" onclick="setLang('de')">DE</button>
+                <button class="lb on" data-lang="en" onclick="setLanguage('en')">EN</button>
+                <button class="lb" data-lang="es" onclick="setLanguage('es')">ES</button>
+                <button class="lb" data-lang="fr" onclick="setLanguage('fr')">FR</button>
+                <button class="lb" data-lang="de" onclick="setLanguage('de')">DE</button>
             </div>
             <div class="nic" onclick="toggleTheme()" id="theme-btn">☾</div>
             <div class="nic" onclick="alert('Account')">⏺</div>
             <div class="nic" onclick="alert('Cart')">☷</div>
-            <a href="#s3" class="nav-cta">FORGE01 ↗</a>
+            <a href="#s3" class="nav-cta" data-i18n="nav-cta">FORGE01 ↗</a>
         </div>
     </div>
 
-    <!-- CARRUSEL LATERAL DE PUBLICIDAD -->
+    <!-- CARRUSEL LATERAL -->
     <div id="ad-side">
-        <div class="ad-thumb active" onclick="changeSlide(0)" title="Nueva Temporada">NUEVA<br>TEMP</div>
-        <div class="ad-thumb" onclick="changeSlide(1)" title="Drop Exclusivo">DROP<br>EXC</div>
-        <div class="ad-thumb" onclick="changeSlide(2)" title="Edición Limitada">ED. LIM</div>
-        <div class="ad-thumb" onclick="changeSlide(3)" title="Lookbook">LOOK<br>BOOK</div>
-        <div class="ad-thumb" onclick="changeSlide(4)" title="Próximamente">PRÓX</div>
+        <div class="ad-thumb active" onclick="changeSlide(0)">NUEVA<br>TEMP</div>
+        <div class="ad-thumb" onclick="changeSlide(1)">DROP<br>EXC</div>
+        <div class="ad-thumb" onclick="changeSlide(2)">ED. LIM</div>
+        <div class="ad-thumb" onclick="changeSlide(3)">LOOK<br>BOOK</div>
+        <div class="ad-thumb" onclick="changeSlide(4)">PRÓX</div>
     </div>
 
     <!-- S0 HERO -->
     <section id="s0">
         <div id="hero-txt">
             <div class="h-title">ABYSS</div>
-            <div class="h-sub">Society · Forge01 · Est. 2026</div>
-            <div class="h-tag">We are not a brand. We are a society.</div>
-            <a href="#s1" class="h-enter">Enter Below ↓</a>
+            <div class="h-sub" data-i18n="hero-sub">Society · Forge01 · Est. 2026</div>
+            <div class="h-tag" data-i18n="hero-tag">We are not a brand. We are a society.</div>
+            <a href="#s1" class="h-enter" data-i18n="hero-enter">Enter Below ↓</a>
         </div>
-        <div id="hscroll"><span>Scroll</span><div class="sln"></div></div>
+        <div id="hscroll"><span data-i18n="scroll">Scroll</span><div class="sln"></div></div>
     </section>
 
     <!-- S1 COLLECTION -->
     <section id="s1">
         <div class="col-hdr">
             <div class="col-ttl">FORGE<span style="color:var(--c)">01</span></div>
-            <div class="col-meta"><b>Active Drop</b> · 030 Units · Limited Run</div>
+            <div class="col-meta"><b data-i18n="col-meta-active">Active Drop</b> <span data-i18n="col-meta-units">· 030 Units · Limited Run</span></div>
         </div>
         <div class="ftabs">
-            <button class="ftab on" onclick="filterProducts('all',this)">All</button>
-            <button class="ftab" onclick="filterProducts('tee',this)">T-Shirts</button>
-            <button class="ftab" onclick="filterProducts('hoodie',this)">Hoodies</button>
-            <button class="ftab" onclick="filterProducts('acc',this)">Accessories</button>
+            <button class="ftab on" data-filter="all" onclick="filterProducts('all',this)" data-i18n="filter-all">All</button>
+            <button class="ftab" data-filter="tee" onclick="filterProducts('tee',this)" data-i18n="filter-tee">T-Shirts</button>
+            <button class="ftab" data-filter="hoodie" onclick="filterProducts('hoodie',this)" data-i18n="filter-hoodie">Hoodies</button>
+            <button class="ftab" data-filter="acc" onclick="filterProducts('acc',this)" data-i18n="filter-acc">Accessories</button>
         </div>
         <div class="rail" id="rail">
-            <!-- Producto 1: T-Shirt con placeholder visible -->
+            <!-- 8 productos (sin cambios en nombres) -->
             <div class="mc" data-cat="tee" onclick="openProductViewer(0)">
-                <div class="mv">
-                    <div class="placeholder">T-SHIRT<br>THE OATH</div>
-                </div>
+                <div class="mv"><div class="placeholder">T-SHIRT<br>THE OATH</div></div>
                 <div class="mi">
                     <div class="mn">THE OATH</div>
                     <div class="mr">FORGE01-T01 · 001/030</div>
-                    <div class="mf"><div><span class="mp">€39</span><span class="mst">● In Stock</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
+                    <div class="mf"><div><span class="mp">€39</span><span class="mst" data-i18n="stock">● In Stock</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 2 -->
             <div class="mc" data-cat="tee" onclick="openProductViewer(1)">
-                <div class="mv">
-                    <div class="placeholder">T-SHIRT<br>CATHEDRAL</div>
-                </div>
+                <div class="mv"><div class="placeholder">T-SHIRT<br>CATHEDRAL</div></div>
                 <div class="mi">
                     <div class="mn">CATHEDRAL</div>
                     <div class="mr">FORGE01-T02 · 001/030</div>
-                    <div class="mf"><div><span class="mp">€45</span><span class="mst lo">● 8 Left</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
+                    <div class="mf"><div><span class="mp">€45</span><span class="mst lo" data-i18n="stock-8">● 8 Left</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 3 -->
             <div class="mc" data-cat="tee" onclick="openProductViewer(2)">
-                <div class="mv">
-                    <div class="placeholder">T-SHIRT<br>THE FALL</div>
-                </div>
+                <div class="mv"><div class="placeholder">T-SHIRT<br>THE FALL</div></div>
                 <div class="mi">
                     <div class="mn">THE FALL</div>
                     <div class="mr">FORGE01-T03 · 001/030</div>
-                    <div class="mf"><div><span class="mp">€45</span><span class="mst lo">● Last Units</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
+                    <div class="mf"><div><span class="mp">€45</span><span class="mst lo" data-i18n="stock-last">● Last Units</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 4: Hoodie -->
             <div class="mc" data-cat="hoodie" onclick="openProductViewer(3)">
-                <div class="mv">
-                    <div class="placeholder">HOODIE<br>IRON VOW</div>
-                </div>
+                <div class="mv"><div class="placeholder">HOODIE<br>IRON VOW</div></div>
                 <div class="mi">
                     <div class="mn">IRON VOW</div>
                     <div class="mr">FORGE01-H01 · 001/030</div>
-                    <div class="mf"><div><span class="mp">€85</span><span class="mst">● In Stock</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
+                    <div class="mf"><div><span class="mp">€85</span><span class="mst" data-i18n="stock">● In Stock</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 5 -->
             <div class="mc" data-cat="hoodie" onclick="openProductViewer(4)">
-                <div class="mv">
-                    <div class="placeholder">HOODIE<br>SHADOW ZIP</div>
-                </div>
+                <div class="mv"><div class="placeholder">HOODIE<br>SHADOW ZIP</div></div>
                 <div class="mi">
                     <div class="mn">SHADOW ZIP</div>
                     <div class="mr">FORGE01-Z01 · 001/030</div>
-                    <div class="mf"><div><span class="mp">€95</span><span class="mst lo">● 12 Left</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
+                    <div class="mf"><div><span class="mp">€95</span><span class="mst lo" data-i18n="stock-12">● 12 Left</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 6: Accesorio -->
             <div class="mc" data-cat="acc" onclick="openProductViewer(5)">
-                <div class="mv">
-                    <div class="placeholder">CAP<br>VOID CAP</div>
-                </div>
+                <div class="mv"><div class="placeholder">CAP<br>VOID CAP</div></div>
                 <div class="mi">
                     <div class="mn">VOID CAP</div>
                     <div class="mr">FORGE01-A01 · ACC</div>
-                    <div class="mf"><div><span class="mp">€32</span><span class="mst">● In Stock</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
+                    <div class="mf"><div><span class="mp">€32</span><span class="mst" data-i18n="stock">● In Stock</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 7 -->
             <div class="mc" data-cat="acc" onclick="openProductViewer(6)">
-                <div class="mv">
-                    <div class="placeholder">BEANIE<br>FORGE BEANIE</div>
-                </div>
+                <div class="mv"><div class="placeholder">BEANIE<br>FORGE BEANIE</div></div>
                 <div class="mi">
                     <div class="mn">FORGE BEANIE</div>
                     <div class="mr">FORGE01-A02 · ACC</div>
-                    <div class="mf"><div><span class="mp">€28</span><span class="mst">● In Stock</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
+                    <div class="mf"><div><span class="mp">€28</span><span class="mst" data-i18n="stock">● In Stock</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
-            <!-- Producto 8 -->
             <div class="mc" data-cat="acc" onclick="openProductViewer(7)">
-                <div class="mv">
-                    <div class="placeholder">TOTE BAG<br>VOID TOTE</div>
-                </div>
+                <div class="mv"><div class="placeholder">TOTE BAG<br>VOID TOTE</div></div>
                 <div class="mi">
                     <div class="mn">VOID TOTE</div>
                     <div class="mr">FORGE01-A03 · ACC</div>
-                    <div class="mf"><div><span class="mp">€22</span><span class="mst">● In Stock</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
+                    <div class="mf"><div><span class="mp">€22</span><span class="mst" data-i18n="stock">● In Stock</span></div><button class="madd" onclick="event.stopPropagation();addToCart()">+</button></div>
                 </div>
             </div>
         </div>
-        <div class="rcnt"><b>8</b> pieces · FORGE01</div>
+        <div class="rcnt"><b>8</b> <span data-i18n="pieces">pieces · FORGE01</span></div>
     </section>
 
     <!-- S2 HOODS -->
     <section id="s2">
-        <div class="w-eyebrow">Belong to the Abyss</div>
-        <div class="w-title">Enter if you belong here</div>
+        <div class="w-eyebrow" data-i18n="hoods-eyebrow">Belong to the Abyss</div>
+        <div class="w-title" data-i18n="hoods-title">Enter if you belong here</div>
         <div class="w-grid">
             <div class="wc" data-n="01" onclick="openProductViewer(0)">
                 <div class="wbg">F</div>
                 <div class="wcon">
-                    <div class="wtag">Hood 01 · Active</div>
+                    <div class="wtag" data-i18n="hood-tag-1">Hood 01 · Active</div>
                     <div class="wname">FORGE</div>
-                    <div class="wdesc">Gothic medieval. Iron and faith. Anonymous knights. Cathedral architecture. The first chapter.</div>
+                    <div class="wdesc" data-i18n="hood-desc-1">Gothic medieval. Iron and faith. Anonymous knights. Cathedral architecture. The first chapter.</div>
                 </div>
             </div>
             <div class="wc" data-n="02" onclick="openProductViewer(3)">
                 <div class="wbg">D</div>
                 <div class="wcon">
-                    <div class="wtag">Hood 02 · Coming</div>
+                    <div class="wtag" data-i18n="hood-tag-2">Hood 02 · Coming</div>
                     <div class="wname">DUSK</div>
-                    <div class="wdesc">Dark cowboy. Nameless riders. Night deserts. Dust and legend. The second chapter.</div>
+                    <div class="wdesc" data-i18n="hood-desc-2">Dark cowboy. Nameless riders. Night deserts. Dust and legend. The second chapter.</div>
                 </div>
             </div>
             <div class="wc" data-n="03" onclick="openProductViewer(5)">
                 <div class="wbg">G</div>
                 <div class="wcon">
-                    <div class="wtag">Hood 03 · Coming</div>
+                    <div class="wtag" data-i18n="hood-tag-3">Hood 03 · Coming</div>
                     <div class="wname">GHOST</div>
-                    <div class="wdesc">Urban. Crews. The invisible forces that move the city. Pure underground.</div>
+                    <div class="wdesc" data-i18n="hood-desc-3">Urban. Crews. The invisible forces that move the city. Pure underground.</div>
                 </div>
             </div>
         </div>
+        <button onclick="openRegisterModal()" style="margin-top:50px;padding:14px 36px;background:transparent;border:1px solid var(--c);color:var(--c);font-size:10px;letter-spacing:0.3em;text-transform:uppercase;cursor:pointer;transition:all 0.22s;font-family:inherit;" data-i18n="enter-to-belong">Enter to belong →</button>
     </section>
 
     <!-- S3 DROP -->
     <section id="s3">
-        <div class="d-eye">Active Drop · Limited Run · 030 Units</div>
+        <div class="d-eye" data-i18n="drop-eye">Active Drop · Limited Run · 030 Units</div>
         <div class="d-ttl">FORGE01</div>
-        <div class="d-sub">Sworn in darkness. Built to last.</div>
+        <div class="d-sub" data-i18n="drop-sub">Sworn in darkness. Built to last.</div>
         <div class="d-grid">
             <div class="dc" onclick="openProductViewer(0)">
-                <div class="dv2"><div class="placeholder" style="font-size:10px;">T-SHIRT<br>THE OATH</div></div>
+                <div class="dv2"><div class="placeholder">T-SHIRT<br>THE OATH</div></div>
                 <div class="dn2">THE OATH</div>
                 <div class="dr2">FORGE01-T01 · €39</div>
-                <div class="df2"><span class="dst">● In Stock</span><button class="dadd" onclick="event.stopPropagation();addToCart()">+</button></div>
+                <div class="df2"><span class="dst" data-i18n="stock">● In Stock</span><button class="dadd" onclick="event.stopPropagation();addToCart()">+</button></div>
             </div>
             <div class="dc" onclick="openProductViewer(1)">
-                <div class="dv2"><div class="placeholder" style="font-size:10px;">T-SHIRT<br>CATHEDRAL</div></div>
+                <div class="dv2"><div class="placeholder">T-SHIRT<br>CATHEDRAL</div></div>
                 <div class="dn2">CATHEDRAL</div>
                 <div class="dr2">FORGE01-T02 · €45</div>
-                <div class="df2"><span class="dst lo">● 8 Left</span><button class="dadd" onclick="event.stopPropagation();addToCart()">+</button></div>
+                <div class="df2"><span class="dst lo" data-i18n="stock-8">● 8 Left</span><button class="dadd" onclick="event.stopPropagation();addToCart()">+</button></div>
             </div>
             <div class="dc" onclick="openProductViewer(2)">
-                <div class="dv2"><div class="placeholder" style="font-size:10px;">T-SHIRT<br>THE FALL</div></div>
+                <div class="dv2"><div class="placeholder">T-SHIRT<br>THE FALL</div></div>
                 <div class="dn2">THE FALL</div>
                 <div class="dr2">FORGE01-T03 · €45</div>
-                <div class="df2"><span class="dst lo">● Last Units</span><button class="dadd" onclick="event.stopPropagation();addToCart()">+</button></div>
+                <div class="df2"><span class="dst lo" data-i18n="stock-last">● Last Units</span><button class="dadd" onclick="event.stopPropagation();addToCart()">+</button></div>
             </div>
             <div class="dc" onclick="openProductViewer(3)">
-                <div class="dv2"><div class="placeholder" style="font-size:10px;">HOODIE<br>IRON VOW</div></div>
+                <div class="dv2"><div class="placeholder">HOODIE<br>IRON VOW</div></div>
                 <div class="dn2">IRON VOW</div>
                 <div class="dr2">FORGE01-H01 · €85</div>
-                <div class="df2"><span class="dst">● In Stock</span><button class="dadd" onclick="event.stopPropagation();addToCart()">+</button></div>
+                <div class="df2"><span class="dst" data-i18n="stock">● In Stock</span><button class="dadd" onclick="event.stopPropagation();addToCart()">+</button></div>
             </div>
         </div>
     </section>
 
     <!-- S4 MANIFESTO -->
     <section id="s4">
-        <div class="man-t">
+        <div class="man-t" data-i18n="manifesto-text">
             <strong>We are not a brand.</strong><br>
             We are a society.<br>
             A collective of people who found beauty in forgotten places,<br>
@@ -1504,20 +1593,20 @@
             Every drop is a chapter.<br>
             Every collection is a masterpiece.
         </div>
-        <div class="man-sig">ABYSS SOCIETY · EST. 2026 · SWORN IN DARKNESS</div>
+        <div class="man-sig" data-i18n="manifesto-sig">ABYSS SOCIETY · EST. 2026 · SWORN IN DARKNESS</div>
     </section>
 
     <!-- S5 FAQ -->
     <section id="s5">
-        <div class="faq-eye">Questions</div>
-        <div class="faq-ttl">FAQ</div>
+        <div class="faq-eye" data-i18n="faq-eye">Questions</div>
+        <div class="faq-ttl" data-i18n="faq-ttl">FAQ</div>
         <div class="faq-grid">
-            <div class="fi"><button class="fi-q" onclick="toggleFaq(this)"><span>How do drops work?</span><span class="fi-ic">+</span></button><div class="fi-a">Each drop is capped at 030 units. Once the window closes or stock runs out, it's gone forever. No restocks, no exceptions.</div></div>
-            <div class="fi"><button class="fi-q" onclick="toggleFaq(this)"><span>What is the numbering 018/030?</span><span class="fi-ic">+</span></button><div class="fi-a">Every piece is hand-numbered. 018/030 = you have unit 18 of 30 total. It's on your inner label. It's real.</div></div>
-            <div class="fi"><button class="fi-q" onclick="toggleFaq(this)"><span>What sizes?</span><span class="fi-ic">+</span></button><div class="fi-a">Tees and hoodies: XS S M L XL XXL. Accessories: one size. Fit runs slightly oversized — intentional.</div></div>
-            <div class="fi"><button class="fi-q" onclick="toggleFaq(this)"><span>Do you ship internationally?</span><span class="fi-ic">+</span></button><div class="fi-a">Yes. EU 5–8 business days. International 8–14 days. Customs duties may apply outside EU.</div></div>
-            <div class="fi"><button class="fi-q" onclick="toggleFaq(this)"><span>Returns?</span><span class="fi-ic">+</span></button><div class="fi-a">Unworn and unwashed within 30 days. Limited numbered drops are non-returnable once you've worn them.</div></div>
-            <div class="fi"><button class="fi-q" onclick="toggleFaq(this)"><span>Materials?</span><span class="fi-ic">+</span></button><div class="fi-a">240–320gsm heavyweight cotton for tees. 420gsm for hoodies. DTG or screen print only. No fast fashion, ever.</div></div>
+            <div class="fi"><button class="fi-q" onclick="toggleFaq(this)"><span data-i18n="faq-q1">How do drops work?</span><span class="fi-ic">+</span></button><div class="fi-a" data-i18n="faq-a1">Each drop is capped at 030 units. Once the window closes or stock runs out, it's gone forever. No restocks, no exceptions.</div></div>
+            <div class="fi"><button class="fi-q" onclick="toggleFaq(this)"><span data-i18n="faq-q2">What is the numbering 018/030?</span><span class="fi-ic">+</span></button><div class="fi-a" data-i18n="faq-a2">Every piece is hand-numbered. 018/030 = you have unit 18 of 30 total. It's on your inner label. It's real.</div></div>
+            <div class="fi"><button class="fi-q" onclick="toggleFaq(this)"><span data-i18n="faq-q3">What sizes?</span><span class="fi-ic">+</span></button><div class="fi-a" data-i18n="faq-a3">Tees and hoodies: XS S M L XL XXL. Accessories: one size. Fit runs slightly oversized — intentional.</div></div>
+            <div class="fi"><button class="fi-q" onclick="toggleFaq(this)"><span data-i18n="faq-q4">Do you ship internationally?</span><span class="fi-ic">+</span></button><div class="fi-a" data-i18n="faq-a4">Yes. EU 5–8 business days. International 8–14 days. Customs duties may apply outside EU.</div></div>
+            <div class="fi"><button class="fi-q" onclick="toggleFaq(this)"><span data-i18n="faq-q5">Returns?</span><span class="fi-ic">+</span></button><div class="fi-a" data-i18n="faq-a5">Unworn and unwashed within 30 days. Limited numbered drops are non-returnable once you've worn them.</div></div>
+            <div class="fi"><button class="fi-q" onclick="toggleFaq(this)"><span data-i18n="faq-q6">Materials?</span><span class="fi-ic">+</span></button><div class="fi-a" data-i18n="faq-a6">240–320gsm heavyweight cotton for tees. 420gsm for hoodies. DTG or screen print only. No fast fashion, ever.</div></div>
         </div>
     </section>
 
@@ -1525,8 +1614,8 @@
     <section id="s6">
         <div class="ft-inner">
             <div class="ft-top">
-                <div class="ftb"><div class="ftb-lbl">Contact</div><div class="ftb-ttl">Tell us.</div><div class="ftb-txt">Collabs, press, wholesale, general inquiries — we read everything. We reply in 48h.</div><a class="ftb-lnk" href="mailto:hello@abysssociety.com">hello@abysssociety.com ↗</a></div>
-                <div class="ftb"><div class="ftb-lbl">Shipping &amp; Returns</div><div class="ftb-ttl">Worldwide</div><div class="ftb-txt">EU 5–8 days. International 8–14 days. Free returns within 30 days on unworn pieces.</div><a class="ftb-lnk" onclick="alert('Full policy')">Full policy ↗</a></div>
+                <div class="ftb"><div class="ftb-lbl" data-i18n="contact-lbl">Contact</div><div class="ftb-ttl" data-i18n="contact-ttl">Tell us.</div><div class="ftb-txt" data-i18n="contact-txt">Collabs, press, wholesale, general inquiries — we read everything. We reply in 48h.</div><a class="ftb-lnk" href="mailto:hello@abysssociety.com" data-i18n="contact-email">hello@abysssociety.com ↗</a></div>
+                <div class="ftb"><div class="ftb-lbl" data-i18n="shipping-lbl">Shipping &amp; Returns</div><div class="ftb-ttl" data-i18n="shipping-ttl">Worldwide</div><div class="ftb-txt" data-i18n="shipping-txt">EU 5–8 days. International 8–14 days. Free returns within 30 days on unworn pieces.</div><a class="ftb-lnk" onclick="alert('Full policy')" data-i18n="shipping-link">Full policy ↗</a></div>
             </div>
             <div class="soc-row">
                 <a class="soc" href="#"><span style="font-size:16px;">●</span><span class="soc-nm">Instagram</span><span class="soc-hdl">@abyss</span></a>
@@ -1534,8 +1623,8 @@
                 <a class="soc" href="#"><span style="font-size:16px;">●</span><span class="soc-nm">TikTok</span><span class="soc-hdl">@abyss</span></a>
             </div>
             <div class="ft-strip">
-                <span class="ft-copy">ABYSS SOCIETY · EST. 2026</span>
-                <div style="display:flex;gap:18px;"><a style="font-size:9px;color:var(--g);text-decoration:none;cursor:pointer;">Terms</a><a style="font-size:9px;color:var(--g);text-decoration:none;cursor:pointer;">Privacy</a><a style="font-size:9px;color:var(--g);text-decoration:none;cursor:pointer;">Cookies</a></div>
+                <span class="ft-copy" data-i18n="footer-copy">ABYSS SOCIETY · EST. 2026</span>
+                <div style="display:flex;gap:18px;"><a style="font-size:9px;color:var(--g);text-decoration:none;cursor:pointer;" data-i18n="footer-terms">Terms</a><a style="font-size:9px;color:var(--g);text-decoration:none;cursor:pointer;" data-i18n="footer-privacy">Privacy</a><a style="font-size:9px;color:var(--g);text-decoration:none;cursor:pointer;" data-i18n="footer-cookies">Cookies</a></div>
             </div>
         </div>
     </section>
@@ -1544,58 +1633,468 @@
     <section id="s7">
         <div class="profile-header">
             <div class="profile-avatar">A</div>
-            <div><div class="profile-name">Alex Void</div><div class="profile-email">alex@abysssociety.com</div></div>
+            <div><div class="profile-name" data-i18n="profile-name">Alex Void</div><div class="profile-email" data-i18n="profile-email">alex@abysssociety.com</div></div>
         </div>
         <div class="profile-stats">
-            <div class="profile-stat"><span class="num">5</span><span class="label">Orders</span></div>
-            <div class="profile-stat"><span class="num">3</span><span class="label">Favorites</span></div>
-            <div class="profile-stat"><span class="num">1</span><span class="label">Active Drop</span></div>
+            <div class="profile-stat"><span class="num">5</span><span class="label" data-i18n="profile-orders">Orders</span></div>
+            <div class="profile-stat"><span class="num">3</span><span class="label" data-i18n="profile-favorites">Favorites</span></div>
+            <div class="profile-stat"><span class="num">1</span><span class="label" data-i18n="profile-drop">Active Drop</span></div>
         </div>
-        <div class="profile-section-title">Recent Orders</div>
+        <div class="profile-section-title" data-i18n="profile-recent">Recent Orders</div>
         <div class="profile-order" onclick="alert('Order #ABY-001 details')">
             <span class="id">#ABY-001</span>
             <span class="date">12 Jun 2026</span>
-            <span class="status delivered">Delivered</span>
+            <span class="status delivered" data-i18n="status-delivered">Delivered</span>
         </div>
         <div class="profile-order" onclick="alert('Order #ABY-002 details')">
             <span class="id">#ABY-002</span>
             <span class="date">08 Jun 2026</span>
-            <span class="status shipped">Shipped</span>
+            <span class="status shipped" data-i18n="status-shipped">Shipped</span>
         </div>
         <div class="profile-order" onclick="alert('Order #ABY-003 details')">
             <span class="id">#ABY-003</span>
             <span class="date">02 Jun 2026</span>
-            <span class="status return">Returned</span>
+            <span class="status return" data-i18n="status-return">Returned</span>
         </div>
-        <div class="profile-section-title">Wishlist</div>
+        <div class="profile-section-title" data-i18n="profile-wishlist">Wishlist</div>
         <div class="profile-fav-grid">
             <div class="profile-fav-item" onclick="openProductViewer(0)"><div style="font-size:28px;">👕</div><div class="name">THE OATH</div><div class="price">€39</div></div>
             <div class="profile-fav-item" onclick="openProductViewer(3)"><div style="font-size:28px;">🧥</div><div class="name">IRON VOW</div><div class="price">€85</div></div>
             <div class="profile-fav-item" onclick="openProductViewer(5)"><div style="font-size:28px;">🧢</div><div class="name">VOID CAP</div><div class="price">€32</div></div>
         </div>
-        <div class="profile-section-title">Returns &amp; Exchanges</div>
+        <div class="profile-section-title" data-i18n="profile-returns">Returns &amp; Exchanges</div>
         <div style="width:100%;max-width:760px;background:var(--s);border:1px solid var(--bd);padding:20px 24px;">
-            <p style="font-size:12px;color:var(--g);line-height:1.8;">You can request a return or exchange within 30 days of delivery. Items must be unworn, unwashed, and with original tags.</p>
-            <button style="margin-top:14px;padding:10px 24px;background:transparent;border:1px solid var(--c);color:var(--c);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;transition:all 0.16s;" onclick="alert('Return request form')">Request Return</button>
+            <p style="font-size:12px;color:var(--g);line-height:1.8;" data-i18n="returns-text">You can request a return or exchange within 30 days of delivery. Items must be unworn, unwashed, and with original tags.</p>
+            <button style="margin-top:14px;padding:10px 24px;background:transparent;border:1px solid var(--c);color:var(--c);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;transition:all 0.16s;" onclick="alert('Return request form')" data-i18n="returns-btn">Request Return</button>
         </div>
     </section>
 
     <!-- TOAST -->
     <div id="toast"></div>
 
-    <!-- VISOR 3D (superpuesto) -->
+    <!-- MODAL DE REGISTRO -->
+    <div id="register-modal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeRegisterModal()">✕</button>
+            <div class="modal-title" data-i18n="modal-title">Join the Abyss</div>
+            <div class="modal-sub" data-i18n="modal-sub"><strong>15% OFF</strong> on your first order</div>
+            <input class="modal-input" type="email" placeholder="Enter your email" id="register-email" data-i18n-placeholder="modal-placeholder">
+            <button class="modal-btn" onclick="registerUser()" data-i18n="modal-btn">Claim 15% Off</button>
+            <div class="modal-discount" data-i18n="modal-discount">⚡ Welcome discount: 15% OFF</div>
+            <div class="modal-foot" data-i18n="modal-foot">No spam. Unsubscribe anytime.</div>
+        </div>
+    </div>
+
+    <!-- VISOR 3D -->
     <div id="product-viewer" style="display:none;position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;z-index:500;background:var(--k);padding:20px;flex-direction:column;align-items:center;justify-content:center;">
         <button onclick="closeProductViewer()" style="position:absolute;top:20px;right:30px;font-size:24px;color:var(--g);background:transparent;border:none;cursor:pointer;">✕</button>
         <div id="viewer-3d" style="width:100%;height:70%;max-width:600px;background:#0e0e16;border:1px solid var(--bd);"></div>
-        <div style="margin-top:20px;text-align:center;color:var(--g);font-size:11px;letter-spacing:0.2em;">Drag to rotate · Scroll to zoom</div>
+        <div style="margin-top:20px;text-align:center;color:var(--g);font-size:11px;letter-spacing:0.2em;" data-i18n="viewer-hint">Drag to rotate · Scroll to zoom</div>
         <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
-            <button onclick="closeProductViewer()" style="padding:10px 24px;background:transparent;border:1px solid var(--bd);color:var(--g);cursor:pointer;font-family:inherit;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;">Close</button>
-            <button onclick="addToCart()" style="padding:10px 24px;background:var(--c);border:none;color:var(--k);cursor:pointer;font-family:inherit;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;">Add to Cart</button>
+            <button onclick="closeProductViewer()" style="padding:10px 24px;background:transparent;border:1px solid var(--bd);color:var(--g);cursor:pointer;font-family:inherit;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;" data-i18n="viewer-close">Close</button>
+            <button onclick="addToCart()" style="padding:10px 24px;background:var(--c);border:none;color:var(--k);cursor:pointer;font-family:inherit;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;" data-i18n="viewer-cart">Add to Cart</button>
         </div>
     </div>
 
     <script>
-        // ── VEIL (pantalla de apertura) ──
+        // ── SISTEMA DE TRADUCCIONES ──
+        const translations = {
+            en: {
+                'nav-collection': 'Collection',
+                'nav-hoods': 'Hoods',
+                'nav-drop': 'Drop',
+                'nav-manifesto': 'Manifesto',
+                'nav-faq': 'FAQ',
+                'nav-contact': 'Contact',
+                'nav-profile': 'Profile',
+                'nav-cta': 'FORGE01 ↗',
+                'hero-sub': 'Society · Forge01 · Est. 2026',
+                'hero-tag': 'We are not a brand. We are a society.',
+                'hero-enter': 'Enter Below ↓',
+                'scroll': 'Scroll',
+                'col-meta-active': 'Active Drop',
+                'col-meta-units': '· 030 Units · Limited Run',
+                'filter-all': 'All',
+                'filter-tee': 'T-Shirts',
+                'filter-hoodie': 'Hoodies',
+                'filter-acc': 'Accessories',
+                'stock': '● In Stock',
+                'stock-8': '● 8 Left',
+                'stock-12': '● 12 Left',
+                'stock-last': '● Last Units',
+                'pieces': 'pieces · FORGE01',
+                'hoods-eyebrow': 'Belong to the Abyss',
+                'hoods-title': 'Enter if you belong here',
+                'hood-tag-1': 'Hood 01 · Active',
+                'hood-desc-1': 'Gothic medieval. Iron and faith. Anonymous knights. Cathedral architecture. The first chapter.',
+                'hood-tag-2': 'Hood 02 · Coming',
+                'hood-desc-2': 'Dark cowboy. Nameless riders. Night deserts. Dust and legend. The second chapter.',
+                'hood-tag-3': 'Hood 03 · Coming',
+                'hood-desc-3': 'Urban. Crews. The invisible forces that move the city. Pure underground.',
+                'enter-to-belong': 'Enter to belong →',
+                'drop-eye': 'Active Drop · Limited Run · 030 Units',
+                'drop-sub': 'Sworn in darkness. Built to last.',
+                'manifesto-text': '<strong>We are not a brand.</strong><br>We are a society.<br>A collective of people who found beauty in forgotten places,<br>strength in the underground.<br><br>We don\'t follow trends.<br>We create context.<br><br>Every piece is a symbol of membership.<br>Every drop is a chapter.<br>Every collection is a masterpiece.',
+                'manifesto-sig': 'ABYSS SOCIETY · EST. 2026 · SWORN IN DARKNESS',
+                'faq-eye': 'Questions',
+                'faq-ttl': 'FAQ',
+                'faq-q1': 'How do drops work?',
+                'faq-a1': 'Each drop is capped at 030 units. Once the window closes or stock runs out, it\'s gone forever. No restocks, no exceptions.',
+                'faq-q2': 'What is the numbering 018/030?',
+                'faq-a2': 'Every piece is hand-numbered. 018/030 = you have unit 18 of 30 total. It\'s on your inner label. It\'s real.',
+                'faq-q3': 'What sizes?',
+                'faq-a3': 'Tees and hoodies: XS S M L XL XXL. Accessories: one size. Fit runs slightly oversized — intentional.',
+                'faq-q4': 'Do you ship internationally?',
+                'faq-a4': 'Yes. EU 5–8 business days. International 8–14 days. Customs duties may apply outside EU.',
+                'faq-q5': 'Returns?',
+                'faq-a5': 'Unworn and unwashed within 30 days. Limited numbered drops are non-returnable once you\'ve worn them.',
+                'faq-q6': 'Materials?',
+                'faq-a6': '240–320gsm heavyweight cotton for tees. 420gsm for hoodies. DTG or screen print only. No fast fashion, ever.',
+                'contact-lbl': 'Contact',
+                'contact-ttl': 'Tell us.',
+                'contact-txt': 'Collabs, press, wholesale, general inquiries — we read everything. We reply in 48h.',
+                'contact-email': 'hello@abysssociety.com ↗',
+                'shipping-lbl': 'Shipping & Returns',
+                'shipping-ttl': 'Worldwide',
+                'shipping-txt': 'EU 5–8 days. International 8–14 days. Free returns within 30 days on unworn pieces.',
+                'shipping-link': 'Full policy ↗',
+                'footer-copy': 'ABYSS SOCIETY · EST. 2026',
+                'footer-terms': 'Terms',
+                'footer-privacy': 'Privacy',
+                'footer-cookies': 'Cookies',
+                'profile-name': 'Alex Void',
+                'profile-email': 'alex@abysssociety.com',
+                'profile-orders': 'Orders',
+                'profile-favorites': 'Favorites',
+                'profile-drop': 'Active Drop',
+                'profile-recent': 'Recent Orders',
+                'status-delivered': 'Delivered',
+                'status-shipped': 'Shipped',
+                'status-return': 'Returned',
+                'profile-wishlist': 'Wishlist',
+                'profile-returns': 'Returns & Exchanges',
+                'returns-text': 'You can request a return or exchange within 30 days of delivery. Items must be unworn, unwashed, and with original tags.',
+                'returns-btn': 'Request Return',
+                'modal-title': 'Join the Abyss',
+                'modal-sub': '<strong>15% OFF</strong> on your first order',
+                'modal-placeholder': 'Enter your email',
+                'modal-btn': 'Claim 15% Off',
+                'modal-discount': '⚡ Welcome discount: 15% OFF',
+                'modal-foot': 'No spam. Unsubscribe anytime.',
+                'viewer-hint': 'Drag to rotate · Scroll to zoom',
+                'viewer-close': 'Close',
+                'viewer-cart': 'Add to Cart',
+                'toast-added': 'Added to cart!',
+                'toast-register': 'Welcome! Check your email for 15% OFF.',
+                'toast-lang': 'Language: '
+            },
+            es: {
+                'nav-collection': 'Colección',
+                'nav-hoods': 'Barrios',
+                'nav-drop': 'Drop',
+                'nav-manifesto': 'Manifiesto',
+                'nav-faq': 'Preguntas',
+                'nav-contact': 'Contacto',
+                'nav-profile': 'Perfil',
+                'nav-cta': 'FORGE01 ↗',
+                'hero-sub': 'Society · Forge01 · Est. 2026',
+                'hero-tag': 'No somos una marca. Somos una sociedad.',
+                'hero-enter': 'Entrar ↓',
+                'scroll': 'Desplázate',
+                'col-meta-active': 'Drop Activo',
+                'col-meta-units': '· 030 Unidades · Edición Limitada',
+                'filter-all': 'Todo',
+                'filter-tee': 'Camisetas',
+                'filter-hoodie': 'Hoodies',
+                'filter-acc': 'Accesorios',
+                'stock': '● En Stock',
+                'stock-8': '● 8 Disponibles',
+                'stock-12': '● 12 Disponibles',
+                'stock-last': '● Últimas Unidades',
+                'pieces': 'piezas · FORGE01',
+                'hoods-eyebrow': 'Pertenece al Abismo',
+                'hoods-title': 'Entra si perteneces aquí',
+                'hood-tag-1': 'Barrio 01 · Activo',
+                'hood-desc-1': 'Medieval gótico. Hierro y fe. Caballeros anónimos. Arquitectura catedralicia. El primer capítulo.',
+                'hood-tag-2': 'Barrio 02 · Próximo',
+                'hood-desc-2': 'Cowboy oscuro. Jinetes sin nombre. Desiertos nocturnos. Polvo y leyenda. El segundo capítulo.',
+                'hood-tag-3': 'Barrio 03 · Próximo',
+                'hood-desc-3': 'Urbano. Crews. Las fuerzas invisibles que mueven la ciudad. Underground puro.',
+                'enter-to-belong': 'Entra para pertenecer →',
+                'drop-eye': 'Drop Activo · Edición Limitada · 030 Unidades',
+                'drop-sub': 'Jurado en la oscuridad. Hecho para durar.',
+                'manifesto-text': '<strong>No somos una marca.</strong><br>Somos una sociedad.<br>Un colectivo de personas que encontraron belleza en lugares olvidados,<br>fuerza en el underground.<br><br>No seguimos tendencias.<br>Creemos contexto.<br><br>Cada pieza es un símbolo de pertenencia.<br>Cada drop es un capítulo.<br>Cada colección es una obra maestra.',
+                'manifesto-sig': 'ABYSS SOCIETY · EST. 2026 · JURADO EN OSCURIDAD',
+                'faq-eye': 'Preguntas',
+                'faq-ttl': 'Preguntas Frecuentes',
+                'faq-q1': '¿Cómo funcionan los drops?',
+                'faq-a1': 'Cada drop está limitado a 030 unidades. Cuando se cierra la ventana o se agota el stock, desaparece para siempre. Sin reposiciones, sin excepciones.',
+                'faq-q2': '¿Qué significa la numeración 018/030?',
+                'faq-a2': 'Cada pieza está numerada a mano. 018/030 = tienes la unidad 18 de 30 totales. Está en tu etiqueta interior. Es real.',
+                'faq-q3': '¿Qué tallas?',
+                'faq-a3': 'Camisetas y hoodies: XS S M L XL XXL. Accesorios: talla única. El fit es ligeramente oversize — intencionado.',
+                'faq-q4': '¿Hacen envíos internacionales?',
+                'faq-a4': 'Sí. UE 5–8 días laborables. Internacional 8–14 días. Pueden aplicar aranceles fuera de la UE.',
+                'faq-q5': '¿Devoluciones?',
+                'faq-a5': 'Sin usar y sin lavar en 30 días. Los drops numerados no son retornables una vez usados.',
+                'faq-q6': '¿Materiales?',
+                'faq-a6': 'Algodón heavyweight de 240–320gsm para camisetas. 420gsm para hoodies. DTG o serigrafía. Nada de fast fashion.',
+                'contact-lbl': 'Contacto',
+                'contact-ttl': 'Cuéntanos.',
+                'contact-txt': 'Colaboraciones, prensa, venta al por mayor, consultas generales — leemos todo. Respondemos en 48h.',
+                'contact-email': 'hello@abysssociety.com ↗',
+                'shipping-lbl': 'Envíos y Devoluciones',
+                'shipping-ttl': 'Envíos a todo el mundo',
+                'shipping-txt': 'UE 5–8 días. Internacional 8–14 días. Devoluciones gratis en 30 días en prendas sin usar.',
+                'shipping-link': 'Política completa ↗',
+                'footer-copy': 'ABYSS SOCIETY · EST. 2026',
+                'footer-terms': 'Términos',
+                'footer-privacy': 'Privacidad',
+                'footer-cookies': 'Cookies',
+                'profile-name': 'Alex Void',
+                'profile-email': 'alex@abysssociety.com',
+                'profile-orders': 'Pedidos',
+                'profile-favorites': 'Favoritos',
+                'profile-drop': 'Drop Activo',
+                'profile-recent': 'Pedidos Recientes',
+                'status-delivered': 'Entregado',
+                'status-shipped': 'Enviado',
+                'status-return': 'Devuelto',
+                'profile-wishlist': 'Lista de Deseos',
+                'profile-returns': 'Devoluciones y Cambios',
+                'returns-text': 'Puedes solicitar una devolución o cambio dentro de los 30 días posteriores a la entrega. Las prendas deben estar sin usar, sin lavar y con las etiquetas originales.',
+                'returns-btn': 'Solicitar Devolución',
+                'modal-title': 'Únete al Abismo',
+                'modal-sub': '<strong>15% DE DESCUENTO</strong> en tu primer pedido',
+                'modal-placeholder': 'Introduce tu email',
+                'modal-btn': 'Reclamar 15% Descuento',
+                'modal-discount': '⚡ Descuento de bienvenida: 15% OFF',
+                'modal-foot': 'Sin spam. Cancela cuando quieras.',
+                'viewer-hint': 'Arrastra para rotar · Desplaza para zoom',
+                'viewer-close': 'Cerrar',
+                'viewer-cart': 'Añadir al Carrito',
+                'toast-added': '¡Añadido al carrito!',
+                'toast-register': '¡Bienvenido! Revisa tu email para el 15% OFF.',
+                'toast-lang': 'Idioma: '
+            },
+            fr: {
+                'nav-collection': 'Collection',
+                'nav-hoods': 'Quartiers',
+                'nav-drop': 'Drop',
+                'nav-manifesto': 'Manifeste',
+                'nav-faq': 'FAQ',
+                'nav-contact': 'Contact',
+                'nav-profile': 'Profil',
+                'nav-cta': 'FORGE01 ↗',
+                'hero-sub': 'Society · Forge01 · Est. 2026',
+                'hero-tag': 'Nous ne sommes pas une marque. Nous sommes une société.',
+                'hero-enter': 'Entrer ↓',
+                'scroll': 'Défiler',
+                'col-meta-active': 'Drop Actif',
+                'col-meta-units': '· 030 Unités · Édition Limitée',
+                'filter-all': 'Tout',
+                'filter-tee': 'T-shirts',
+                'filter-hoodie': 'Hoodies',
+                'filter-acc': 'Accessoires',
+                'stock': '● En Stock',
+                'stock-8': '● 8 Restants',
+                'stock-12': '● 12 Restants',
+                'stock-last': '● Dernières Unités',
+                'pieces': 'pièces · FORGE01',
+                'hoods-eyebrow': 'Appartiens à l\'Abîme',
+                'hoods-title': 'Entre si tu appartiens ici',
+                'hood-tag-1': 'Quartier 01 · Actif',
+                'hood-desc-1': 'Gothique médiéval. Fer et foi. Chevaliers anonymes. Architecture cathédrale. Le premier chapitre.',
+                'hood-tag-2': 'Quartier 02 · À venir',
+                'hood-desc-2': 'Cowboy sombre. Cavaliers sans nom. Déserts nocturnes. Poussière et légende. Le deuxième chapitre.',
+                'hood-tag-3': 'Quartier 03 · À venir',
+                'hood-desc-3': 'Urbain. Crews. Les forces invisibles qui animent la ville. Underground pur.',
+                'enter-to-belong': 'Entre pour appartenir →',
+                'drop-eye': 'Drop Actif · Édition Limitée · 030 Unités',
+                'drop-sub': 'Juré dans l\'obscurité. Conçu pour durer.',
+                'manifesto-text': '<strong>Nous ne sommes pas une marque.</strong><br>Nous sommes une société.<br>Un collectif de personnes qui ont trouvé la beauté dans des lieux oubliés,<br>la force dans l\'underground.<br><br>Nous ne suivons pas les tendances.<br>Nous créons le contexte.<br><br>Chaque pièce est un symbole d\'appartenance.<br>Chaque drop est un chapitre.<br>Chaque collection est un chef-d\'œuvre.',
+                'manifesto-sig': 'ABYSS SOCIETY · EST. 2026 · JURÉ DANS L\'OBSCURITÉ',
+                'faq-eye': 'Questions',
+                'faq-ttl': 'FAQ',
+                'faq-q1': 'Comment fonctionnent les drops?',
+                'faq-a1': 'Chaque drop est limité à 030 unités. Une fois la fenêtre fermée ou le stock épuisé, c\'est fini. Pas de réassort, pas d\'exception.',
+                'faq-q2': 'Que signifie la numérotation 018/030?',
+                'faq-a2': 'Chaque pièce est numérotée à la main. 018/030 = vous avez l\'unité 18 sur 30. C\'est sur votre étiquette intérieure. C\'est réel.',
+                'faq-q3': 'Quelles tailles?',
+                'faq-a3': 'T-shirts et hoodies: XS S M L XL XXL. Accessoires: taille unique. La coupe est légèrement oversize — intentionnel.',
+                'faq-q4': 'Livrez-vous à l\'international?',
+                'faq-a4': 'Oui. UE 5–8 jours ouvrables. International 8–14 jours. Des droits de douane peuvent s\'appliquer hors UE.',
+                'faq-q5': 'Retours?',
+                'faq-a5': 'Non porté et non lavé dans les 30 jours. Les drops numérotés ne sont pas retournables une fois portés.',
+                'faq-q6': 'Matériaux?',
+                'faq-a6': 'Coton heavyweight 240–320gsm pour les t-shirts. 420gsm pour les hoodies. DTG ou sérigraphie. Pas de fast fashion.',
+                'contact-lbl': 'Contact',
+                'contact-ttl': 'Dites-nous.',
+                'contact-txt': 'Collabs, presse, gros, demandes générales — nous lisons tout. Nous répondons en 48h.',
+                'contact-email': 'hello@abysssociety.com ↗',
+                'shipping-lbl': 'Livraison & Retours',
+                'shipping-ttl': 'Dans le monde entier',
+                'shipping-txt': 'UE 5–8 jours. International 8–14 jours. Retours gratuits dans les 30 jours sur les pièces non portées.',
+                'shipping-link': 'Politique complète ↗',
+                'footer-copy': 'ABYSS SOCIETY · EST. 2026',
+                'footer-terms': 'Conditions',
+                'footer-privacy': 'Confidentialité',
+                'footer-cookies': 'Cookies',
+                'profile-name': 'Alex Void',
+                'profile-email': 'alex@abysssociety.com',
+                'profile-orders': 'Commandes',
+                'profile-favorites': 'Favoris',
+                'profile-drop': 'Drop Actif',
+                'profile-recent': 'Commandes Récentes',
+                'status-delivered': 'Livré',
+                'status-shipped': 'Expédié',
+                'status-return': 'Retourné',
+                'profile-wishlist': 'Liste de Souhaits',
+                'profile-returns': 'Retours & Échanges',
+                'returns-text': 'Vous pouvez demander un retour ou un échange dans les 30 jours suivant la livraison. Les articles doivent être non portés, non lavés et avec les étiquettes d\'origine.',
+                'returns-btn': 'Demander un Retour',
+                'modal-title': 'Rejoins l\'Abîme',
+                'modal-sub': '<strong>15% DE RÉDUCTION</strong> sur ta première commande',
+                'modal-placeholder': 'Entrez votre email',
+                'modal-btn': 'Obtenir 15% de réduction',
+                'modal-discount': '⚡ Réduction de bienvenue : 15% OFF',
+                'modal-foot': 'Pas de spam. Désabonnez-vous à tout moment.',
+                'viewer-hint': 'Faites glisser pour faire pivoter · Faites défiler pour zoomer',
+                'viewer-close': 'Fermer',
+                'viewer-cart': 'Ajouter au Panier',
+                'toast-added': 'Ajouté au panier !',
+                'toast-register': 'Bienvenue ! Vérifiez votre email pour 15% OFF.',
+                'toast-lang': 'Langue: '
+            },
+            de: {
+                'nav-collection': 'Kollektion',
+                'nav-hoods': 'Viertel',
+                'nav-drop': 'Drop',
+                'nav-manifesto': 'Manifest',
+                'nav-faq': 'FAQ',
+                'nav-contact': 'Kontakt',
+                'nav-profile': 'Profil',
+                'nav-cta': 'FORGE01 ↗',
+                'hero-sub': 'Society · Forge01 · Est. 2026',
+                'hero-tag': 'Wir sind keine Marke. Wir sind eine Gesellschaft.',
+                'hero-enter': 'Eintreten ↓',
+                'scroll': 'Scrollen',
+                'col-meta-active': 'Aktiver Drop',
+                'col-meta-units': '· 030 Einheiten · Limitierte Auflage',
+                'filter-all': 'Alle',
+                'filter-tee': 'T-Shirts',
+                'filter-hoodie': 'Hoodies',
+                'filter-acc': 'Accessoires',
+                'stock': '● Auf Lager',
+                'stock-8': '● 8 Verfügbar',
+                'stock-12': '● 12 Verfügbar',
+                'stock-last': '● Letzte Einheiten',
+                'pieces': 'Stücke · FORGE01',
+                'hoods-eyebrow': 'Gehöre zum Abgrund',
+                'hoods-title': 'Tritt ein, wenn du hierher gehörst',
+                'hood-tag-1': 'Viertel 01 · Aktiv',
+                'hood-desc-1': 'Gotisches Mittelalter. Eisen und Glaube. Anonyme Ritter. Kathedralarchitektur. Das erste Kapitel.',
+                'hood-tag-2': 'Viertel 02 · Demnächst',
+                'hood-desc-2': 'Dunkler Cowboy. Namenlose Reiter. Nachtwüsten. Staub und Legende. Das zweite Kapitel.',
+                'hood-tag-3': 'Viertel 03 · Demnächst',
+                'hood-desc-3': 'Urban. Crews. Die unsichtbaren Kräfte, die die Stadt bewegen. Purer Underground.',
+                'enter-to-belong': 'Eintreten, um dazuzugehören →',
+                'drop-eye': 'Aktiver Drop · Limitierte Auflage · 030 Einheiten',
+                'drop-sub': 'Geschworen in der Dunkelheit. Gebaut, um zu halten.',
+                'manifesto-text': '<strong>Wir sind keine Marke.</strong><br>Wir sind eine Gesellschaft.<br>Ein Kollektiv von Menschen, die Schönheit an vergessenen Orten fanden,<br>Kraft im Underground.<br><br>Wir folgen keinen Trends.<br>Wir schaffen Kontext.<br><br>Jedes Stück ist ein Symbol der Zugehörigkeit.<br>Jeder Drop ist ein Kapitel.<br>Jede Kollektion ist ein Meisterwerk.',
+                'manifesto-sig': 'ABYSS SOCIETY · EST. 2026 · GESCHWOREN IN DER DUNKELHEIT',
+                'faq-eye': 'Fragen',
+                'faq-ttl': 'FAQ',
+                'faq-q1': 'Wie funktionieren Drops?',
+                'faq-a1': 'Jeder Drop ist auf 030 Einheiten begrenzt. Sobald das Fenster schließt oder der Vorrat aufgebraucht ist, ist es für immer weg. Keine Nachlieferungen, keine Ausnahmen.',
+                'faq-q2': 'Was bedeutet die Nummerierung 018/030?',
+                'faq-a2': 'Jedes Stück ist handnummeriert. 018/030 = Sie haben Einheit 18 von 30 insgesamt. Es steht auf Ihrem inneren Etikett. Es ist echt.',
+                'faq-q3': 'Welche Größen?',
+                'faq-a3': 'T-Shirts und Hoodies: XS S M L XL XXL. Accessoires: Einheitsgröße. Die Passform ist leicht übergroß — beabsichtigt.',
+                'faq-q4': 'Versenden Sie international?',
+                'faq-a4': 'Ja. EU 5–8 Werktage. International 8–14 Tage. Zollgebühren können außerhalb der EU anfallen.',
+                'faq-q5': 'Retouren?',
+                'faq-a5': 'Ungetragen und ungewaschen innerhalb von 30 Tagen. Limitierte nummerierte Drops sind nach dem Tragen nicht zurücknehmbar.',
+                'faq-q6': 'Materialien?',
+                'faq-a6': '240–320gsm schweres Baumwolle für T-Shirts. 420gsm für Hoodies. DTG oder Siebdruck. Keine Fast Fashion.',
+                'contact-lbl': 'Kontakt',
+                'contact-ttl': 'Sagen Sie uns.',
+                'contact-txt': 'Kollaborationen, Presse, Großhandel, allgemeine Anfragen — wir lesen alles. Wir antworten in 48h.',
+                'contact-email': 'hello@abysssociety.com ↗',
+                'shipping-lbl': 'Versand & Retouren',
+                'shipping-ttl': 'Weltweit',
+                'shipping-txt': 'EU 5–8 Tage. International 8–14 Tage. Kostenlose Retouren innerhalb von 30 Tagen bei ungetragenen Stücken.',
+                'shipping-link': 'Vollständige Richtlinien ↗',
+                'footer-copy': 'ABYSS SOCIETY · EST. 2026',
+                'footer-terms': 'AGB',
+                'footer-privacy': 'Datenschutz',
+                'footer-cookies': 'Cookies',
+                'profile-name': 'Alex Void',
+                'profile-email': 'alex@abysssociety.com',
+                'profile-orders': 'Bestellungen',
+                'profile-favorites': 'Favoriten',
+                'profile-drop': 'Aktiver Drop',
+                'profile-recent': 'Letzte Bestellungen',
+                'status-delivered': 'Geliefert',
+                'status-shipped': 'Versendet',
+                'status-return': 'Zurückgegeben',
+                'profile-wishlist': 'Wunschliste',
+                'profile-returns': 'Retouren & Umtausch',
+                'returns-text': 'Sie können innerhalb von 30 Tagen nach der Lieferung eine Rückgabe oder einen Umtausch beantragen. Die Artikel müssen ungetragen, ungewaschen und mit den Originaletiketten versehen sein.',
+                'returns-btn': 'Retour anfordern',
+                'modal-title': 'Tritt dem Abgrund bei',
+                'modal-sub': '<strong>15% RABATT</strong> auf Ihre erste Bestellung',
+                'modal-placeholder': 'Geben Sie Ihre E-Mail ein',
+                'modal-btn': '15% Rabatt sichern',
+                'modal-discount': '⚡ Willkommensrabatt: 15% OFF',
+                'modal-foot': 'Kein Spam. Jederzeit abbestellbar.',
+                'viewer-hint': 'Ziehen zum Drehen · Scrollen zum Zoomen',
+                'viewer-close': 'Schließen',
+                'viewer-cart': 'In den Warenkorb',
+                'toast-added': 'In den Warenkorb gelegt!',
+                'toast-register': 'Willkommen! Überprüfen Sie Ihre E-Mail für 15% OFF.',
+                'toast-lang': 'Sprache: '
+            }
+        };
+
+        let currentLang = 'en';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lb').forEach(b => b.classList.remove('on'));
+            document.querySelector(`.lb[data-lang="${lang}"]`).classList.add('on');
+            applyTranslations(lang);
+            localStorage.setItem('lang', lang);
+            showToast(translations[lang]['toast-lang'] + lang.toUpperCase());
+        }
+
+        function applyTranslations(lang) {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    if (el.tagName === 'INPUT' && el.type === 'email') {
+                        el.placeholder = translations[lang][key] || '';
+                    } else {
+                        el.innerHTML = translations[lang][key] || el.innerHTML;
+                    }
+                }
+            });
+            // Traducir placeholders de inputs
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    el.placeholder = translations[lang][key];
+                }
+            });
+        }
+
+        // ── FUNCIONES DE NAVEGACIÓN ──
+        function goTo(id) {
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ── VEIL ──
         (function() {
             const veil = document.getElementById('veil');
             const fill = document.getElementById('veil-fill');
@@ -1619,11 +2118,8 @@
             document.querySelectorAll('.ftab').forEach(b => b.classList.remove('on'));
             btn.classList.add('on');
             document.querySelectorAll('.mc').forEach(mc => {
-                if (cat === 'all') {
-                    mc.style.display = 'block';
-                } else {
-                    mc.style.display = mc.dataset.cat === cat ? 'block' : 'none';
-                }
+                if (cat === 'all') mc.style.display = 'block';
+                else mc.style.display = mc.dataset.cat === cat ? 'block' : 'none';
             });
         }
 
@@ -1637,7 +2133,7 @@
 
         // ── TOAST ──
         function addToCart() {
-            showToast('Added to cart!');
+            showToast(translations[currentLang]['toast-added'] || 'Added to cart!');
         }
 
         function showToast(msg) {
@@ -1648,21 +2144,13 @@
             t._timeout = setTimeout(() => t.classList.remove('on'), 2500);
         }
 
-        // ── IDIOMAS ──
-        function setLang(lang) {
-            document.querySelectorAll('.lb').forEach(b => b.classList.remove('on'));
-            document.querySelector(`.lb[onclick="setLang('${lang}')"]`).classList.add('on');
-            showToast('Language: ' + lang.toUpperCase());
-        }
-
         // ── TEMA CLARO/OSCURO ──
         function toggleTheme() {
             const body = document.body;
             const isLight = body.style.backgroundColor === 'rgb(245, 245, 245)';
             body.style.backgroundColor = isLight ? '#060608' : '#f5f5f5';
             body.style.color = isLight ? '#f0f0f0' : '#1a1a1a';
-            // Forzar actualización de variables CSS para elementos que usan var()
-            document.querySelectorAll('.mc, .ftb, .fi, .wc, .dc, .profile-stat, .profile-order, .profile-fav-item').forEach(el => {
+            document.querySelectorAll('.mc, .ftb, .fi, .wc, .dc, .profile-stat, .profile-order, .profile-fav-item, .modal-box, .profile-fav-item, .profile-order').forEach(el => {
                 el.style.backgroundColor = isLight ? '#0d0d0f' : '#ffffff';
                 el.style.borderColor = isLight ? '#1c1c1e' : '#d0d0d0';
             });
@@ -1670,7 +2158,7 @@
             icon.textContent = isLight ? '☾' : '☀';
         }
 
-        // ── CURSOR CON ESTELA ──
+        // ── CURSOR ──
         document.addEventListener('DOMContentLoaded', function() {
             const cursor = document.getElementById('cur');
             let mouseX = 0,
@@ -1718,16 +2206,45 @@
             anim();
         });
 
-        // ── CARRUSEL LATERAL DE PUBLICIDAD ──
+        // ── CARRUSEL LATERAL ──
         function changeSlide(index) {
             document.querySelectorAll('.ad-thumb').forEach((el, i) => {
                 el.classList.toggle('active', i === index);
             });
-            // Aquí se podría cambiar una imagen principal
             showToast('Slide ' + (index + 1));
         }
 
-        // ── VISOR 3D (Three.js) ──
+        // ── MODAL DE REGISTRO ──
+        function openRegisterModal() {
+            document.getElementById('register-modal').classList.add('open');
+            // Animación de entrada
+            const box = document.querySelector('.modal-box');
+            box.style.animation = 'none';
+            setTimeout(() => { box.style.animation = 'fadeIn 0.4s ease'; }, 10);
+        }
+
+        function closeRegisterModal() {
+            document.getElementById('register-modal').classList.remove('open');
+        }
+
+        function registerUser() {
+            const email = document.getElementById('register-email').value;
+            if (!email || !email.includes('@')) {
+                showToast('Please enter a valid email');
+                return;
+            }
+            showToast(translations[currentLang]['toast-register'] || 'Welcome! Check your email for 15% OFF.');
+            closeRegisterModal();
+            document.getElementById('register-email').value = '';
+            // Aquí se podría enviar el email a un backend
+        }
+
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('register-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeRegisterModal();
+        });
+
+        // ── VISOR 3D ──
         let currentViewer = null;
 
         function openProductViewer(productIndex) {
@@ -1735,10 +2252,8 @@
             viewer.style.display = 'flex';
             const container = document.getElementById('viewer-3d');
 
-            // Limpiar contenedor
             while (container.firstChild) container.removeChild(container.firstChild);
 
-            // Inicializar Three.js
             const scene = new THREE.Scene();
             scene.background = new THREE.Color(0x0e0e16);
 
@@ -1750,7 +2265,6 @@
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             container.appendChild(renderer.domElement);
 
-            // Luces
             const ambient = new THREE.AmbientLight(0x404060);
             scene.add(ambient);
             const dirLight = new THREE.DirectionalLight(0xffffff, 1);
@@ -1760,12 +2274,10 @@
             backLight.position.set(-1, 0, -1);
             scene.add(backLight);
 
-            // Crear modelo según el producto
             let geometry;
             let color = 0x1a4fbf;
             let material;
 
-            // Determinar tipo de producto (0-2: tee, 3-4: hoodie, 5-7: acc)
             let type = 'tee';
             if (productIndex >= 3 && productIndex <= 4) type = 'hoodie';
             else if (productIndex >= 5 && productIndex <= 7) type = 'acc';
@@ -1777,14 +2289,13 @@
                 geometry = new THREE.BoxGeometry(1.4, 1.8, 0.25);
                 material = new THREE.MeshStandardMaterial({ color: 0x2a2a3a, roughness: 0.6, metalness: 0.05 });
             } else {
-                // Accesorio: gorra o bolsa
-                if (productIndex === 5) { // gorra
+                if (productIndex === 5) {
                     geometry = new THREE.CylinderGeometry(0.6, 0.6, 0.3, 16);
                     material = new THREE.MeshStandardMaterial({ color: 0x1a1a2a, roughness: 0.5 });
-                } else if (productIndex === 6) { // beanie
+                } else if (productIndex === 6) {
                     geometry = new THREE.SphereGeometry(0.5, 16, 16);
                     material = new THREE.MeshStandardMaterial({ color: 0x2a2a3a, roughness: 0.7 });
-                } else { // tote bag
+                } else {
                     geometry = new THREE.BoxGeometry(0.8, 1.0, 0.1);
                     material = new THREE.MeshStandardMaterial({ color: 0x1a1a2a, roughness: 0.5 });
                 }
@@ -1793,7 +2304,6 @@
             const model = new THREE.Mesh(geometry, material);
             scene.add(model);
 
-            // Añadir un plano de fondo
             const planeGeo = new THREE.PlaneGeometry(4, 4);
             const planeMat = new THREE.MeshBasicMaterial({ color: 0x0a0a12, side: THREE.DoubleSide, transparent: true,
                 opacity: 0.3 });
@@ -1801,12 +2311,10 @@
             plane.position.z = -1.5;
             scene.add(plane);
 
-            // Rotación automática
             let autoRotate = true;
             let isDragging = false;
             let prevMouse = { x: 0, y: 0 };
 
-            // Eventos para arrastrar
             const canvas = renderer.domElement;
             canvas.addEventListener('mousedown', (e) => {
                 isDragging = true;
@@ -1827,7 +2335,6 @@
                 setTimeout(() => { autoRotate = true; }, 3000);
             });
 
-            // Touch
             let touchStart = { x: 0, y: 0 };
             canvas.addEventListener('touchstart', (e) => {
                 const t = e.touches[0];
@@ -1850,7 +2357,6 @@
                 setTimeout(() => { autoRotate = true; }, 3000);
             }, { passive: true });
 
-            // Redimensionar
             const resize = () => {
                 const w = container.clientWidth;
                 const h = container.clientHeight;
@@ -1860,7 +2366,6 @@
             };
             window.addEventListener('resize', resize);
 
-            // Animación
             function animate() {
                 requestAnimationFrame(animate);
                 if (model && autoRotate && !isDragging) {
@@ -1870,7 +2375,6 @@
             }
             animate();
 
-            // Guardar referencia para cerrar
             currentViewer = { scene, camera, renderer, model, container, resize };
         }
 
@@ -1891,14 +2395,17 @@
                 if (href === '#') return;
                 e.preventDefault();
                 const target = document.querySelector(href);
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
+                if (target) target.scrollIntoView({ behavior: 'smooth' });
             });
         });
 
         // ── INICIALIZACIÓN ──
-        console.log('ABYSS SOCIETY — Web cargada correctamente.');
+        document.addEventListener('DOMContentLoaded', function() {
+            // Recuperar idioma guardado
+            const savedLang = localStorage.getItem('lang') || 'en';
+            setLanguage(savedLang);
+            console.log('ABYSS SOCIETY — Web cargada correctamente.');
+        });
     </script>
 
 </body>
