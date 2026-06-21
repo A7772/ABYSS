@@ -5,6 +5,690 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ABYSS SOCIETY — SYSTEM INTEGRATED</title>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <style>
+        /* ── VARIABLES Y CONFIGURACIÓN RAÍZ (Gris Espacial Premium Mate) ── */
+        :root {
+            --c: #1a4fbf;         /* Azul Abisal */
+            --w: #f5f5f7;         /* Blanco Suave / Tipografía Legible */
+            --k: #141419;         /* Gris Espacial Profundo (Cero ruido visual de pantallas OLED) */
+            --s: #1c1c24;         /* Superficie Contenedores Gris Espacial Medio */
+            --bd: #2d2d3a;        /* Bordes Tecnológicos */
+            --g: #9090a8;         /* Gris de Lectura de Alto Contraste */
+            --or: #ff7a00;        /* Limited Drop */
+            --rd: #ff3b30;        /* Sold Out */
+            --nav-h: 110px;       /* Altura de Nav ampliada para mejorar proporciones visuales */
+            
+            --font-display: 'Impact', 'Arial Narrow', sans-serif;
+            --font-mono: 'Courier New', Courier, monospace;
+        }
+
+        .light-mode {
+            --w: #141419;
+            --k: #f5f5f7;
+            --s: #ffffff;
+            --bd: #d1d1d6;
+            --g: #505060;
+        }
+
+        /* Reset global con bloqueo estricto del cursor nativo e interactividad limpia */
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
+        
+        html {
+            scroll-behavior: smooth;
+            overflow-y: auto; /* Scroll nativo totalmente libre y fluido */
+            height: 100%;
+        }
+
+        body {
+            background: var(--k);
+            color: var(--w);
+            font-family: var(--font-mono);
+            font-size: 16px;
+            line-height: 1.6;
+            padding-top: var(--nav-h);
+            transition: background 0.3s, color 0.3s;
+            min-height: 100%;
+        }
+
+        /* ── LIENZO Y PUNTERO INTELIGENTE (Micro-puntero + Estela de Partículas) ── */
+        #cursor-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 99999; transition: opacity 0.4s ease; opacity: 0;
+        }
+        #custom-pointer {
+            position: fixed; width: 4px; height: 4px; background: var(--w); /* Ligeramente más pequeño y estilizado */
+            border-radius: 50%; pointer-events: none; z-index: 100000;
+            transform: translate(-50%, -50%); transition: opacity 0.4s ease, transform 0.1s ease; opacity: 0;
+            box-shadow: 0 0 8px var(--c);
+        }
+
+        /* ── HEADER / NAVIGATION (Legible, accesible y proporcional) ── */
+        #nav {
+            position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+            z-index: 900; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 50px; background: rgba(20, 20, 25, 0.95); border-bottom: 2px solid var(--bd);
+            backdrop-filter: blur(20px);
+        }
+        .light-mode #nav { background: rgba(245, 245, 247, 0.95); }
+
+        .nav-logo { font-family: var(--font-display); font-size: 32px; letter-spacing: 0.1em; }
+        .nav-logo small { display: block; font-size: 12px; letter-spacing: 0.35em; color: var(--c); font-family: var(--font-mono); margin-top: 4px; }
+
+        #nav-links { display: flex; gap: 40px; list-style: none; }
+        #nav-links a { font-size: 15px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--g); text-decoration: none; font-weight: bold; }
+        #nav-links a:hover { color: var(--w); }
+
+        .nav-actions { display: flex; align-items: center; gap: 20px; }
+        .action-btn {
+            background: transparent; border: 1px solid var(--bd); color: var(--w);
+            width: 52px; height: 52px; display: flex; align-items: center; justify-content: center;
+            font-size: 20px; transition: all 0.2s ease;
+        }
+        .action-btn:hover { border-color: var(--c); color: var(--c); background: rgba(26, 79, 191, 0.05); }
+
+        /* ── SCENE 01: HERO SLIDESHOW (Contenedor aislado, flechas fijas) ── */
+        #s0 { position: relative; height: calc(100vh - var(--nav-h)); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .slide-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: contain; background-repeat: no-repeat; background-position: center; opacity: 0;
+            transition: opacity 1.2s ease-in-out; z-index: 1; filter: brightness(0.65);
+        }
+        .slide-bg.on { opacity: 1; }
+
+        .hero-overlay { position: relative; z-index: 10; text-align: center; max-width: 900px; padding: 40px; background: rgba(20,20,25,0.4); backdrop-filter: blur(10px); border: 1px solid var(--bd); }
+        .hero-title { font-family: var(--font-display); font-size: clamp(38px, 5vw, 75px); line-height: 1.1; margin-bottom: 20px; text-transform: uppercase; }
+
+        /* Flechas de carrusel integradas de forma estática en su plano */
+        .sl-arrow {
+            position: absolute; top: 50%; transform: translateY(-50%); z-index: 15;
+            background: rgba(28, 28, 36, 0.9); border: 1px solid var(--bd); color: #fff;
+            width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; font-size: 24px; transition: 0.2s;
+        }
+        .sl-arrow:hover { border-color: var(--c); color: var(--c); }
+        #sl-prev { left: 30px; } #sl-next { right: 30px; }
+
+        /* ── SCENE 02: COLLECTION & INTERACTIVE HOVER LABELS ── */
+        .sc { padding: 120px 50px; border-bottom: 2px solid var(--bd); }
+        
+        /* Cortina Drop Context Ad (Imagen publicitaria interactiva) */
+        #drop-ad-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--k);
+            z-index: 1500; display: flex; align-items: center; justify-content: center;
+            transform: translateY(100%); transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        #drop-ad-screen.active { transform: translateY(0); }
+        #drop-ad-screen.slide-up { transform: translateY(-100%); }
+        .ad-banner-text { font-family: var(--font-display); font-size: 3.5vw; color: var(--c); text-transform: uppercase; text-align: center; line-height: 1.2; }
+
+        .filter-container { display: flex; justify-content: center; gap: 20px; margin-bottom: 70px; }
+        
+        /* Botones de Filtro Tecnológicos con Efecto Desplazamiento */
+        .filter-btn {
+            background: var(--s); border: 1px solid var(--bd); color: var(--g);
+            padding: 18px 38px; font-size: 14px; text-transform: uppercase; font-family: inherit; font-weight: bold;
+            position: relative; overflow: hidden; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .filter-btn .btn-txt-move { display: inline-block; transition: transform 0.3s ease; }
+        .filter-btn .btn-extra-meta {
+            position: absolute; right: -80px; opacity: 0; font-size: 11px;
+            color: var(--c); letter-spacing: 0.1em; transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover { border-color: var(--c); color: var(--w); padding-right: 95px; }
+        .filter-btn:hover .btn-txt-move { transform: translateX(-10px); }
+        .filter-btn:hover .btn-extra-meta { right: 22px; opacity: 1; }
+        .filter-btn.on { border-color: var(--c); color: var(--w); background: rgba(26,79,191,0.08); }
+
+        /* Grilla de productos centrada simétrica */
+        .products-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 50px; max-width: 1400px; margin: 0 auto; }
+        .product-card { background: var(--s); border: 1px solid var(--bd); width: 380px; overflow: hidden; display: flex; flex-direction: column; transition: border-color 0.3s; }
+        .product-card:hover { border-color: var(--g); }
+
+        /* Ajuste nativo para las imágenes reales de tu repositorio local */
+        .product-visual {
+            width: 100%; height: 440px; background: #181822; display: flex;
+            align-items: center; justify-content: center; position: relative; overflow: hidden;
+        }
+        .product-visual img {
+            width: 85%; height: 85%; object-fit: contain; transition: transform 0.5s ease;
+        }
+        
+        /* Capa Hover Opaca (Muestra la Colección al pasar por encima, no al hacer clic) */
+        .product-hover-layer {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background: rgba(20, 20, 25, 0.93); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; opacity: 0; transition: opacity 0.35s ease; padding: 25px;
+        }
+        .product-card:hover .product-hover-layer { opacity: 1; }
+        .hover-collection-name { font-size: 14px; color: var(--c); letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 12px; font-weight: bold; }
+        .hover-action-text { font-size: 15px; color: var(--w); border-bottom: 1px solid var(--w); padding-bottom: 4px; text-transform: uppercase; letter-spacing: 0.1em; }
+
+        /* Información de Producto Proporcionada y Armoniosa (Cero Solapamientos) */
+        .product-info { padding: 35px; border-top: 1px solid var(--bd); background: var(--s); display: flex; flex-direction: column; gap: 10px; }
+        .product-meta-tags { display: flex; gap: 8px; }
+        .tag { font-size: 11px; padding: 5px 12px; text-transform: uppercase; font-weight: bold; letter-spacing: 0.08em; }
+        .tag.limited { background: rgba(255,122,0,0.15); color: var(--or); border: 1px solid rgba(255,122,0,0.3); }
+        .tag.soldout { background: rgba(255,59,48,0.15); color: var(--rd); border: 1px solid rgba(255,59,48,0.3); }
+
+        .product-title { font-family: var(--font-display); font-size: 26px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--w); }
+        .product-desc { font-size: 14px; color: var(--g); min-height: 48px; line-height: 1.5; }
+        
+        .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+        .product-price { font-family: var(--font-display); font-size: 26px; color: var(--w); }
+
+        .card-actions { display: flex; gap: 12px; }
+        .btn-icon {
+            width: 46px; height: 46px; border: 1px solid var(--bd); background: transparent;
+            color: var(--w); display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 16px;
+        }
+        .btn-icon:hover { border-color: var(--c); color: var(--c); background: rgba(26, 79, 191, 0.05); }
+
+        /* ── INTERACTIVE 3D LAB (Pivote y orbitales estables) ── */
+        #canvas-container { width: 100%; max-width: 1000px; height: 550px; background: #111116; border: 2px solid var(--bd); margin: 40px auto; }
+
+        /* ── SYSTEM SIDEBAR DRAWERS (Paneles Laterales Desplegables Organizados) ── */
+        .sidebar-drawer {
+            position: fixed; top: 0; right: 0; width: 100%; max-width: 500px; height: 100%;
+            background: var(--s); border-left: 2px solid var(--bd); z-index: 2000;
+            transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            padding: 45px; display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+        }
+        .sidebar-drawer.open { transform: translateX(0); }
+        .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; border-bottom: 1px solid var(--bd); padding-bottom: 20px; }
+        .drawer-title { font-family: var(--font-display); font-size: 32px; text-transform: uppercase; letter-spacing: 0.05em; }
+        
+        .drawer-tabs { display: flex; gap: 10px; margin-bottom: 30px; }
+        .drawer-tab-btn {
+            background: transparent; border: 1px solid var(--bd); color: var(--g);
+            padding: 12px 20px; font-size: 13px; text-transform: uppercase; font-weight: bold; font-family: inherit;
+        }
+        .drawer-tab-btn.active { border-color: var(--c); color: var(--w); background: rgba(26,79,191,0.15); }
+        
+        .profile-view { display: none; width: 100%; } 
+        .profile-view.active { display: flex; flex-direction: column; }
+        
+        .form-group { margin-bottom: 22px; }
+        .form-group label { display: block; font-size: 12px; color: var(--g); margin-bottom: 8px; text-transform: uppercase; font-weight: bold; letter-spacing: 0.05em; }
+        .form-control { width: 100%; background: var(--k); border: 1px solid var(--bd); padding: 16px; color: var(--w); font-family: inherit; font-size: 14px; }
+        .form-control:focus { outline: none; border-color: var(--c); }
+        
+        .btn-submit { width: 100%; background: var(--c); color: #fff; border: none; padding: 18px; text-transform: uppercase; font-weight: bold; font-family: inherit; letter-spacing: 0.1em; transition: background 0.2s; }
+        .btn-submit:hover { background: #2262ed; }
+
+        .item-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--bd); font-size: 15px; }
+
+        /* ── FAQ ACCORDION SUAVE ── */
+        .faq-wrapper { max-width: 900px; margin: 40px auto 0; width: 100%; }
+        .faq-item { border: 1px solid var(--bd); background: var(--s); margin-bottom: 18px; transition: border-color 0.3s; }
+        .faq-item:hover { border-color: var(--c); }
+        .faq-trigger {
+            width: 100%; padding: 28px; background: transparent; border: none; color: var(--w);
+            font-family: inherit; font-size: 18px; font-weight: bold; text-align: left; display: flex; justify-content: space-between; align-items: center;
+        }
+        .faq-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 28px; color: var(--g); font-size: 15px; line-height: 1.7; }
+        .faq-item.open .faq-content { max-height: 180px; padding-bottom: 28px; }
+
+        /* ── MODAL DE PRODUCTO INTEGRADO (Cero interferencias de scroll) ── */
+        #product-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(20,20,25,0.97); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 30px; }
+        .modal-body { background: var(--s); border: 2px solid var(--bd); width: 100%; max-width: 950px; display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); position: relative; }
+        .modal-close { position: absolute; top: 25px; right: 25px; background: transparent; border: none; color: var(--w); font-size: 32px; z-index: 10; transition: color 0.2s; }
+        .modal-close:hover { color: var(--rd); }
+        #modal-img-box { background: var(--k); height: 450px; display: flex; align-items: center; justify-content: center; padding: 30px; border-right: 1px solid var(--bd); }
+        #modal-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
+    </style>
+</head>
+<body>
+
+    <canvas id="cursor-canvas"></canvas>
+    <div id="custom-pointer"></div>
+
+    <div id="drop-ad-screen">
+        <div class="ad-banner-text">DEPLOYING ARCHIVE DATA // SYSTEM SELECTION</div>
+    </div>
+
+    <header id="nav">
+        <div class="nav-logo" onclick="window.scrollTo(0,0)">
+            ABYSS SOCIETY
+            <small>DESIGN STUDIO & CORE SYSTEM</small>
+        </div>
+        <nav id="nav-links">
+            <a href="#s0">Home</a>
+            <a href="#s1">Drop Core</a>
+            <a href="#s2">3D Lab</a>
+            <a href="#s5">FAQ</a>
+            <a href="#s6">Network</a>
+        </nav>
+        <div class="nav-actions">
+            <button class="action-btn" id="theme-toggle" title="Cambiar Tema">🌗</button>
+            <button class="action-btn" id="profile-toggle" title="Perfil de Usuario">👤</button>
+            <button class="action-btn" id="cart-toggle" title="Manifest / Cesta">🛒 (<span id="cart-count">0</span>)</button>
+        </div>
+    </header>
+
+    <main>
+        <section id="s0">
+            <div class="slide-bg on" style="background-image: url('./multimedia/hoodie_delante.png')"></div>
+            <div class="slide-bg" style="background-image: url('./multimedia/camiseta_delante.png')"></div>
+            <div class="slide-bg" style="background-image: url('./multimedia/hoodie_detras.png')"></div>
+            
+            <button class="sl-arrow" id="sl-prev">←</button>
+            <button class="sl-arrow" id="sl-next">→</button>
+
+            <div class="hero-overlay">
+                <h1 class="hero-title">LABORATORY EXPERIMENTAL APPAREL</h1>
+                <p style="color: var(--c); font-weight: bold; letter-spacing: 0.3em; font-size: 14px;">DESIGNED TO CONCEAL // FORWARD RESPONSIVE</p>
+            </div>
+        </section>
+
+        <section id="s1" class="sc">
+            <div class="filter-container">
+                <button class="filter-btn on" data-filter="all">
+                    <span class="btn-txt-move">All Drop</span>
+                    <span class="btn-extra-meta">SYSTEM</span>
+                </button>
+                <button class="filter-btn" data-filter="hoodies">
+                    <span class="btn-txt-move">Hoodies</span>
+                    <span class="btn-extra-meta">THE VOID</span>
+                </button>
+                <button class="filter-btn" data-filter="tees">
+                    <span class="btn-txt-move">Tees</span>
+                    <span class="btn-extra-meta">FORCE 01</span>
+                </button>
+            </div>
+
+            <div class="products-grid">
+                <div class="product-card" data-cat="hoodies" data-id="1">
+                    <div class="product-visual">
+                        <img src="./multimedia/hoodie_delante.png" alt="Abyss Alpha Hoodie" />
+                        <div class="product-hover-layer">
+                            <span class="hover-collection-name">ARCHIVE CORE 01</span>
+                            <span class="hover-action-text">Inspect Build</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-meta-tags"><span class="tag limited">NEW LIMIT</span></div>
+                        <h3 class="product-title">Abyss Alpha Hoodie</h3>
+                        <p class="product-desc">450GSM Technical Loopback Ultraweave.</p>
+                        <div class="product-footer">
+                            <span class="product-price">110.00 €</span>
+                            <div class="card-actions">
+                                <button class="btn-icon fav-btn">♥</button>
+                                <button class="btn-icon add-cart-btn">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card" data-cat="tees" data-id="2">
+                    <div class="product-visual">
+                        <img src="./multimedia/camiseta_delante.png" alt="Liquid Chrome Tee" />
+                        <div class="product-hover-layer">
+                            <span class="hover-collection-name">METADATA LAB</span>
+                            <span class="hover-action-text">Inspect Build</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-meta-tags"><span class="tag soldout">SOLD OUT</span></div>
+                        <h3 class="product-title">Liquid Chrome Tee</h3>
+                        <p class="product-desc">High-density liquid polymer typography layer.</p>
+                        <div class="product-footer">
+                            <span class="product-price">55.00 €</span>
+                            <div class="card-actions">
+                                <button class="btn-icon fav-btn">♥</button>
+                                <button class="btn-icon add-cart-btn" disabled style="opacity:0.25; border-color:var(--bd); color:var(--g);">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="s2" class="sc" style="text-align: center;">
+            <h2 class="drawer-title">3D Render Laboratory</h2>
+            <p style="color: var(--g); margin-bottom: 20px; font-size: 15px;">Manipulación libre tridimensional. Eje e imantación centralizada.</p>
+            <div id="canvas-container"></div>
+        </section>
+
+        <section id="s5" class="sc">
+            <h2 class="drawer-title" style="text-align: center; margin-bottom: 40px;">System F.A.Q.</h2>
+            <div class="faq-wrapper">
+                <div class="faq-item">
+                    <button class="faq-trigger"><span>Logística de Distribución Global</span> <span>+</span></button>
+                    <div class="faq-content"><p>Los despachos prioritarios se procesan en un intervalo técnico de 48 horas bajo sistemas de encriptación de seguimiento automatizados y globales.</p></div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-trigger"><span>Política de Devoluciones del Manifiesto</span> <span>+</span></button>
+                    <div class="faq-content"><p>Dispone de 14 días naturales para revocar o procesar reemplazos completos de sus prendas inteligentes de manera centralizada a través de nuestro portal.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="s6" class="sc" style="text-align: center; background: var(--s);">
+            <h2 class="drawer-title" style="margin-bottom: 20px;">Direct Encryption Link</h2>
+            <p style="color: var(--g); margin-bottom: 40px; font-size: 16px;">ops@abysssociety.com — Tokyo Sub-Levels</p>
+            <div style="display: flex; justify-content: center; gap: 30px;">
+                <a href="#" style="color: var(--c); text-decoration: none; font-weight: bold; letter-spacing: 0.15em; font-size: 15px;">INSTAGRAM</a>
+                <a href="#" style="color: var(--c); text-decoration: none; font-weight: bold; letter-spacing: 0.15em; font-size: 15px;">DISCORD</a>
+            </div>
+        </section>
+    </main>
+
+    <div class="sidebar-drawer" id="profile-drawer">
+        <div class="drawer-header">
+            <h2 class="drawer-title">User Network</h2>
+            <button class="btn-icon" id="close-profile">✕</button>
+        </div>
+        <div class="drawer-tabs">
+            <button class="drawer-tab-btn active" data-tab="tab-auth">Access</button>
+            <button class="drawer-tab-btn" data-tab="tab-orders">Orders</button>
+            <button class="drawer-tab-btn" data-tab="tab-favs">Favs</button>
+        </div>
+
+        <div class="profile-view active" id="tab-auth">
+            <div class="form-group">
+                <label>Access Key / Email</label>
+                <input type="email" class="form-control" id="auth-email" placeholder="user@domain.com">
+            </div>
+            <div class="form-group">
+                <label>Secret Password</label>
+                <input type="password" class="form-control" id="auth-pass" placeholder="••••••••">
+            </div>
+            <button class="btn-submit" id="btn-login-mock">Authorize System</button>
+            <p style="font-size:11px; color: var(--g); text-align:center; margin-top:20px; line-height: 1.5;">
+                <span style="text-decoration: underline; cursor: none;">Recover Access Key</span><br>Accepting Cookies Security Policies via Cloudflare Core.
+            </p>
+        </div>
+
+        <div class="profile-view" id="tab-orders">
+            <div class="item-row"><span>Order #882C — In Transit</span> <span style="font-weight: bold;">110.00 €</span></div>
+            <div class="item-row" style="color: var(--g);"><span>Order #741A — Delivered</span> <span>55.00 €</span></div>
+        </div>
+
+        <div class="profile-view" id="tab-favs">
+            <div id="favs-container" style="display: flex; flex-direction: column; gap: 5px;">
+                <p style="color:var(--g); font-size:14px; text-align: center; margin-top: 40px;">Ninguna prenda guardada en memoria.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar-drawer" id="cart-drawer">
+        <div class="drawer-header">
+            <h2 class="drawer-title">Your Manifest</h2>
+            <button class="btn-icon" id="close-cart">✕</button>
+        </div>
+        <div style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 5px;" id="cart-items-wrapper">
+            <p style="color: var(--g); text-align: center; margin-top: 50px; font-size: 15px;">Manifest Empty.</p>
+        </div>
+        <div style="border-top: 1px solid var(--bd); padding-top: 25px;">
+            <button class="btn-submit">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <div id="product-modal">
+        <div class="modal-body">
+            <button class="modal-close" id="close-modal">✕</button>
+            <div id="modal-img-box">
+                <img id="modal-real-img" src="" alt="Ficha Táctica" />
+            </div>
+            <div style="padding:45px; display:flex; flex-direction:column; justify-content:center; gap: 15px;">
+                <h2 class="drawer-title" id="modal-title">Product Specs</h2>
+                <p id="modal-desc" style="color:var(--g); font-size: 15px; line-height: 1.6;"></p>
+                <button class="btn-submit" id="modal-add-btn">Add to Bag</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ── MOTOR DEL CURSOR INTELIGENTE (AUTO-HIDE & PARTICULAS CANVAS) ──
+        const canvas = document.getElementById('cursor-canvas');
+        const ctx = canvas.getContext('2d');
+        const pointer = document.getElementById('custom-pointer');
+        
+        let particles = [];
+        let lastMouseX = 0, lastMouseY = 0;
+        let idleTimer;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function handlePointerVisibility(show) {
+            const opacityValue = show ? '1' : '0';
+            pointer.style.opacity = opacityValue;
+            canvas.style.opacity = opacityValue;
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+
+            pointer.style.left = x + 'px';
+            pointer.style.top = y + 'px';
+
+            handlePointerVisibility(true);
+            clearTimeout(idleTimer);
+
+            // Generar partículas fluidas
+            if (Math.abs(x - lastMouseX) > 2 || Math.abs(y - lastMouseY) > 2) {
+                particles.push({
+                    x: x, y: y,
+                    alpha: 1.0,
+                    size: Math.random() * 2 + 1, /* Partículas equilibradas e impactantes */
+                    vx: (Math.random() - 0.5) * 1,
+                    vy: (Math.random() - 0.5) * 1
+                });
+            }
+
+            lastMouseX = x; lastMouseY = y;
+
+            // Auto-hide tras inactividad de 1.2 segundos
+            idleTimer = setTimeout(() => {
+                handlePointerVisibility(false);
+            }, 1200);
+        });
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                let p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.alpha -= 0.025;
+
+                if (p.alpha <= 0) {
+                    particles.splice(i, 1);
+                    i--;
+                    continue;
+                }
+
+                ctx.fillStyle = `rgba(26, 79, 191, ${p.alpha})`;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // ── INTERFACES GLOBALES Y CAMBIO DE TEMA ──
+        document.getElementById('theme-toggle').addEventListener('click', () => document.body.classList.toggle('light-mode'));
+
+        // Carrusel rotativo fluido Scene 01
+        const slides = document.querySelectorAll('.slide-bg');
+        let currentSlide = 0;
+        function changeSlide(n) {
+            slides[currentSlide].classList.remove('on');
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('on');
+        }
+        document.getElementById('sl-next').addEventListener('click', () => changeSlide(currentSlide + 1));
+        document.getElementById('sl-prev').addEventListener('click', () => changeSlide(currentSlide - 1));
+        setInterval(() => changeSlide(currentSlide + 1), 6000);
+
+        // Drop Context: Intermitencia de carga limpia al cambiar categorías
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const cards = document.querySelectorAll('.product-card');
+        const adScreen = document.getElementById('drop-ad-screen');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('on'));
+                btn.classList.add('on');
+                const targetCat = btn.getAttribute('data-filter');
+
+                adScreen.classList.add('active');
+                setTimeout(() => {
+                    cards.forEach(card => {
+                        card.style.display = (targetCat === 'all' || card.getAttribute('data-cat') === targetCat) ? 'flex' : 'none';
+                    });
+                    adScreen.classList.add('slide-up');
+                }, 900);
+
+                setTimeout(() => { adScreen.className = ''; }, 1600);
+            });
+        });
+
+        // Apertura y Cierre Centralizado de Cajones
+        const profileDrawer = document.getElementById('profile-drawer');
+        const cartDrawer = document.getElementById('cart-drawer');
+        document.getElementById('profile-toggle').addEventListener('click', () => profileDrawer.classList.add('open'));
+        document.getElementById('close-profile').addEventListener('click', () => profileDrawer.classList.remove('open'));
+        document.getElementById('cart-toggle').addEventListener('click', () => cartDrawer.classList.add('open'));
+        document.getElementById('close-cart').addEventListener('click', () => cartDrawer.classList.remove('open'));
+
+        // Control de Pestañas del Perfil de Usuario
+        const tabBtns = document.querySelectorAll('.drawer-tab-btn');
+        const views = document.querySelectorAll('.profile-view');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                views.forEach(v => v.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(btn.getAttribute('data-tab')).classList.add('active');
+            });
+        });
+
+        // Gestión Simulada de Datos Reales del Repositorio Local
+        let favorites = []; let cart = [];
+        const productsData = {
+            "1": { title: "Abyss Alpha Hoodie", desc: "450GSM Technical Ultraweave fabric engineered for avant-garde daily use.", price: "110.00 €", img: "./multimedia/hoodie_delante.png" },
+            "2": { title: "Liquid Chrome Tee", desc: "Organic Boxy-fit High-density silhouette printing.", price: "55.00 €", img: "./multimedia/camiseta_delante.png" }
+        };
+
+        // Click en Tarjeta abre Modal con Imagen Real
+        cards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.card-actions')) return;
+                const id = card.getAttribute('data-id');
+                const data = productsData[id];
+                document.getElementById('modal-real-img').src = data.img;
+                document.getElementById('modal-title').innerText = data.title;
+                document.getElementById('modal-desc').innerText = data.desc;
+                document.getElementById('product-modal').style.display = 'flex';
+            });
+        });
+        document.getElementById('close-modal').addEventListener('click', () => document.getElementById('product-modal').style.display = 'none');
+
+        // Lógica de Favoritos en Orden Real
+        document.querySelectorAll('.fav-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = e.target.closest('.product-card').getAttribute('data-id');
+                if(!favorites.includes(id)) { 
+                    favorites.push(id); 
+                    e.target.style.color = 'var(--rd)'; 
+                    renderFavorites(); 
+                }
+            });
+        });
+
+        function renderFavorites() {
+            const container = document.getElementById('favs-container');
+            container.innerHTML = '';
+            favorites.forEach(id => { 
+                container.innerHTML += `<div class="item-row"><span>${productsData[id].title}</span> <span style="font-weight:bold;">${productsData[id].price}</span></div>`; 
+            });
+        }
+
+        // Lógica de Cesta Dinámica
+        document.querySelectorAll('.add-cart-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = e.target.closest('.product-card').getAttribute('data-id');
+                cart.push(id); 
+                document.getElementById('cart-count').innerText = cart.length; 
+                renderCart();
+            });
+        });
+
+        function renderCart() {
+            const wrapper = document.getElementById('cart-items-wrapper');
+            wrapper.innerHTML = '';
+            cart.forEach(id => { 
+                wrapper.innerHTML += `<div class="item-row"><span>${productsData[id].title}</span> <span style="font-weight:bold;">${productsData[id].price}</span></div>`; 
+            });
+        }
+
+        // Despliegue de FAQs
+        document.querySelectorAll('.faq-trigger').forEach(t => {
+            t.addEventListener('click', () => {
+                const p = t.parentElement; const isOp = p.classList.contains('open');
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+                if(!isOp) p.classList.add('open');
+            });
+        });
+
+        // Mock de inicio de sesión reactivo
+        document.getElementById('btn-login-mock').addEventListener('click', () => {
+            const email = document.getElementById('auth-email').value;
+            if(email) {
+                alert(`System Authorization Granted // Welcome ${email}`);
+            } else {
+                alert('Por favor introduzca credenciales válidas.');
+            }
+        });
+
+        // ── MOTOR TRIDIMENSIONAL ESTABLE (Pivote Seguro OrbitControls) ──
+        const container3d = document.getElementById('canvas-container');
+        if (container3d && typeof THREE !== 'undefined') {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, container3d.clientWidth / container3d.clientHeight, 0.1, 100);
+            camera.position.set(0, 0, 5);
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container3d.clientWidth, container3d.clientHeight);
+            container3d.appendChild(renderer.domElement);
+
+            const geometry = new THREE.IcosahedronGeometry(1.6, 1);
+            const material = new THREE.MeshBasicMaterial({ color: 0x1a4fbf, wireframe: true });
+            const coreMesh = new THREE.Mesh(geometry, material);
+            scene.add(coreMesh);
+
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true; controls.dampingFactor = 0.05; controls.enablePan = false;
+            controls.minDistance = 3; controls.maxDistance = 7;
+
+            function renderLoop() {
+                requestAnimationFrame(renderLoop);
+                coreMesh.rotation.y += 0.003;
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            renderLoop();
+        }
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ABYSS SOCIETY — SYSTEM INTEGRATED</title>
+
     <!-- Motores Gráficos y de Control 3D -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
